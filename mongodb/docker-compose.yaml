@@ -1,0 +1,18 @@
+version: "3.1"
+services:
+  mongo-db:
+    image: mongo:3.6
+    ports:
+        - "27017:27017"
+    networks:
+        - fiware
+    command: --bind_ip_all --smallfiles
+    volumes:
+            - mongo-db:/data/db
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+networks:
+  fiware:
+volumes:
+  mongo-db:
