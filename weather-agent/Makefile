@@ -4,16 +4,16 @@ deploy:
 	docker stack deploy -c docker-compose.yaml fiware
 
 rm:
-	docker service rm fiware_orion
+	docker service rm fiware_weather-agent
 
 ps:
 	docker stack ps fiware
 
 logs:
-	docker service logs fiware_orion -f
+	docker service logs fiware_weather-agent -f
 
 exec:
-	docker exec -it $(shell docker ps -f 'name=fiware_orion.1' -q) bash
+	docker exec -it $(shell docker ps -f 'name=fiware_weather-agent.1' -q) bash
 
 up:
 	docker-compose -p fiware up -d

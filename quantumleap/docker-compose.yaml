@@ -1,0 +1,20 @@
+version: '3'
+services:
+  quantumleap:
+    image: quantumleap
+    depends_on:
+      - mongo-db
+      - orion
+      - crate
+    networks:
+      - fiware
+    ports:
+      - "8668:8668"
+    environment:
+      - CRATE_HOST=crate
+      - USE_GEOCODING=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+networks:
+  fiware:
+

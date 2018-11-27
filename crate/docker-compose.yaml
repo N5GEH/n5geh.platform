@@ -1,0 +1,21 @@
+version: '3'
+services:
+  crate:
+    image: crate:3.0.5
+    networks:
+        - fiware
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./data:/data
+    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false -Ccluster.name=fiwaredemo -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == tst-fiware-testing
+
+networks:
+  fiware:
+

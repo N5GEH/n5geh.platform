@@ -1,0 +1,26 @@
+version: "3.1"
+services:
+  ngsi-proxy: 
+    image: fiware/tutorials.context-provider
+    #expose is deprecated!
+    #expose:
+    #   - "3000"
+    #   - "3001"
+    ports:
+        - "3000:3000"
+    networks:
+        - fiware
+    environment:
+        - "DEBUG=tutorial:*"
+        - "PORT=3000"
+        - "CONTEXT_BROKER=http://orion:127.0.0.1:1026/v2"
+        - "OPENWEATHERMAP_KEY_ID=7f072af53444f6e706680e337c049720"
+        - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
+        - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
+
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+networks:
+  fiware:
+

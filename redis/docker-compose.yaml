@@ -1,0 +1,19 @@
+version: '3'
+services:
+  redis:
+    image: redis 
+    networks:
+        - fiware
+    volumes:
+      - "./data:/data"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == tst-fiware-testing
+
+
+networks:
+  fiware:
+
