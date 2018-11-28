@@ -1,7 +1,7 @@
 version: "3.1"
 services:
 
-  mosquitto:
+  mqtt-broker:
     image: eclipse-mosquitto
     hostname: mosquitto
     ports:

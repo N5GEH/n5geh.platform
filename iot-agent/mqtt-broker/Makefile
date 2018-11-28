@@ -4,16 +4,16 @@ deploy:
 	docker stack deploy -c docker-compose.yaml fiware
 
 rm:
-	docker service rm fiware_mosquitto
+	docker service rm fiware_mqtt-broker
 
 ps:
 	docker stack ps fiware
 
 logs:
-	docker service logs fiware_mosquitto -f
+	docker service logs fiware_mqtt-broker -f
 
 exec:
-	docker exec -it $(shell docker ps -f 'name=fiware_mosquitto.1' -q) bash
+	docker exec -it $(shell docker ps -f 'name=fiware_mqtt-broker.1' -q) bash
 
 up:
 	docker-compose -p fiware up -d
