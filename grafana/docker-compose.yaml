@@ -6,6 +6,9 @@ services:
       - crate
     environment:
       - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+    volumes:
+            - grafana:/var/lib/grafana
+            # - "./data:/var/lib/grafana"
     ports:
       - "3001:3000"
     networks:
@@ -13,4 +16,5 @@ services:
 
 networks:
   fiware:
-
+volumes:
+  grafana:

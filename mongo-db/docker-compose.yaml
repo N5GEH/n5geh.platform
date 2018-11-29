@@ -15,4 +15,4 @@ services:
 networks:
   fiware:
 volumes:
-  mongo-db:
+  mongo-db:        
