@@ -1,7 +1,7 @@
 version: "3.1"
 services:
     iot-agent:
-        image: fiware/iotagent-ul:latest
+        image: fiware/iotagent-json:1.8.0
         hostname: iot-agent
         depends_on:
             - mongo-db
