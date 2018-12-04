@@ -1,6 +1,9 @@
 # FIWARE-Core Setup
 
-Welcome to the quick setup of the fiware core!
+Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some
+minor changes in the docker-compose files it might also work on a Windows OS but this
+is not tested!
+
 
 ## Introduction
 
