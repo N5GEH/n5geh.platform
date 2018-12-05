@@ -9,6 +9,7 @@ services:
     ports:
         - "1026:1026"
     command: -dbhost mongo-db -logLevel DEBUG
+# Probably this placement is not necessary    
     deploy:
       placement:
         constraints: [node.role == manager]
