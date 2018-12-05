@@ -4,8 +4,8 @@ services:
     image: crate:3.0.5
     networks:
         - fiware
-    ports:
-      - "4200:4200"
+#    ports:
+#     - "4200:4200"
     volumes:
       - ./data:/data
     command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false -Ccluster.name=fiwaredemo -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
