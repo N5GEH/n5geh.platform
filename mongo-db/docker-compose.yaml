@@ -2,8 +2,9 @@ version: "3.1"
 services:
   mongo-db:
     image: mongo:3.6
-    ports:
-        - "27017:27017"
+#    ports:                 # Because within the same network the containers 
+# are connected port exposing is not required 
+#        - "27017:27017"
     networks:
         - fiware
     command: --bind_ip_all --smallfiles
