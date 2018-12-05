@@ -14,7 +14,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.hostname == watt.livinglab.chalmers.se
+        - node.hostname == <yourHostName>
 
 networks:
   fiware:
