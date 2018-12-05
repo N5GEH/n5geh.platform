@@ -24,14 +24,11 @@ edition for free.
 Beside from CrateDB there are also many other DB-engines our there. The developers of
 fiware timeseries API "QuantumLeap" started testing InfluxDB, RethinkDB and Crate. However, they have decided for now to focus the development on the translator for CrateDB because of the its advantages mentioned above. In future there might be also other  DB-engines supported. For
 comparative overview of diffenrent engines, also the underlying of fiware click
- [here](https://db-engines.com/en/system/CrateDB%3BInfluxDB%3BMongoDB). Among other detailed comparisons in their a series of white paper [LINK](https://crate.io/cratedb-comparison/visit]
-CrateDB offers a comparism between CrateDB and InfluxDB made in 2017 click [Link](http://go.cratedb.com/rs/832-QEZ-801/images/CrateDB-vs-Specialized-Time-Series-Databases.pdf?utm_medium=email&utm_source=mkto). For a performance evaluation of timeseries databases for monitoring purposes in general we recommend the master's thesis:
+ [here](https://db-engines.com/en/system/CrateDB%3BInfluxDB%3BMongoDB). Among other detailed comparisons in their a series of white paper that you find [here](https://crate.io/cratedb-comparison/visit). CrateDB offers a comparism between CrateDB and InfluxDB made in 2017 click [here](http://go.cratedb.com/rs/832-QEZ-801/images/CrateDB-vs-Specialized-Time-Series-Databases.pdf?utm_medium=email&utm_source=mkto). For a performance evaluation of timeseries databases for monitoring purposes in general we recommend the master's thesis:
 ["Performance Evaluation of Low-Overhead Messaging Protocols and Time Series Databases
 via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit, 2017.
 
 ## How to start:
-
-
 
 1. Before we start with setting up the database we need to take care of a **known bug.**
 
