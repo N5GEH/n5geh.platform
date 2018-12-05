@@ -49,8 +49,9 @@ use `/etc/sysctl.conf` to set the value on every restart
 3. You may the docker-compose.yaml or *.conf to you preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
 docker container where the data is stored we always need to place the database container on
-the same host of our docker-swarm. You may want to adjust that in case you want to use
-a NFS-server or something other.
+the same host of our docker-swarm. Hence, you need to adjust that line.
+In case you want to use a NFS-server or something other you need to change this line
+and in additionally the volume mapping line.
 
   **Note:** Our configuration uses the community edition as default. In because
  you own a license you may change it within your personal copy of the
