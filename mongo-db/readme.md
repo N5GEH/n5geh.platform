@@ -4,7 +4,7 @@
 
 ## Introduction and general information
 
-Within the fiware core mongodb is used for storing context data. It is a requirement to the context-broker, which itself is the main core of fiware.
+Within the fiware core mongodb is used for storing context data. It is a requirement to the context-broker aka Orion, which itself is the main core of fiware.
 To retrieve data from this database, users can query API of the context-broker.
 It is always recommended to use the context-broker instead of the direct database access for both reasons: Security and data consistancy.
 
