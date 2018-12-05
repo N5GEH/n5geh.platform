@@ -2,7 +2,7 @@
 
 Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some
 minor changes in the docker-compose files it might also work on a Windows OS but this
-is not tested!
+is not tested so far!
 
 
 ## Introduction
@@ -12,8 +12,6 @@ deployment of core elements aka *Generic Enablers* of the the fiware plattform i
 a docker swarm. "FIWARE is a curated framework of open source platform components
 to accelerate the development of Smart Solutions."
 For more general information about fiware please check https://www.fiware.org/ <br>
-
-
 
 The core of the fiware plattform that provide the functionality suited for most
 IoT-Applications consists of the elements aka *Generic Enablers* depict in image below.
@@ -26,14 +24,14 @@ This Git gives only a short overview of the functionalities it also provides
 a postman-collection that contains the basic CRUD queries for accessing the individual functionalities. For a closer look on fiware you will find a comprehensive tutorial here:
 https://fiware-tutorials.readthedocs.io/en/latest/index.html
 
-**Note:** The tutoial does not cover all the aspects, but it is a good starting point to get to know fiware a little better. I will reference the detailed description and gits.
+**Note:** The tutoial does not cover all the aspects, but it is a good starting point to get to know fiware a little better. We will reference the detailed description and gits.
 
 **Note:** In case you are not familiar with docker and docker-swarm I highly recommend
 to start here:
-https://docs.docker.com/. The get started tutorial explains the basic functionalities
-in very good way. Also in case of issues with docker the page contains docker's full guidebook and documentation. We use the docker community edition!
+https://docs.docker.com/. The get-started tutorial explains the basic functionalities
+in a very good way. Also in case of issues with docker the page contains docker's full guidebook and documentation. Usually we use the docker community edition for our purposes!
 
-Before you ask many many questions. Please try to read the docs first. I try to keep the collection of links up-to-date as long as I am actively working with the plattform.
+Before you ask many many questions please try to read the docs first. We try to keep the collection of links up-to-date as long as we are actively working with the plattform.
 <br>
 
 **Try it out!<br>
