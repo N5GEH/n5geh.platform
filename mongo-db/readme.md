@@ -1,6 +1,3 @@
-Within the fiware core mongodb is used for storing context data. It is a requirement
-to the context-broker, which itself is the main core.
-
 # MongoDB as storage for the context data wihtin FIWARE
 
 **Note:** Within the total setup procedure always start with the mongoDB first.
@@ -39,7 +36,7 @@ Beside from mongo-db there are also many other DB-engines our there. The develop
 
 3. You may the docker-compose.yaml to you preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
-docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in additionally the volume mapping line.
+docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in addition to that the volume mapping line.
 
       **Note:** Some changes may require the modification of Makefile that comes
       along or other depending services!

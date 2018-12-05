@@ -15,8 +15,7 @@ For detailed information please visit https://crate.io.
 **Note:** For our purposes the community edition should be sufficient. If you
 need more functionalities, please check [Link](https://crate.io/docs/crate/reference/en/latest/enterprise/index.html). For research purposes you may request an enterprise edition for free.
 
-Beside from CrateDB there are also many other DB-engines our there. The developers of
-fiware timeseries API "QuantumLeap" started testing InfluxDB, RethinkDB and Crate. However, they have decided for now to focus the development on the translator for CrateDB because of the its advantages mentioned above. In future there might be also other  DB-engines supported. For
+Beside from CrateDB there are also many other DB-engines our there. The developers of fiware timeseries API "QuantumLeap" started testing InfluxDB, RethinkDB and Crate. However, they have decided for now to focus the development on the translator for CrateDB because of the its advantages mentioned above. In future there might be also other  DB-engines supported. For
 comparative overview of diffenrent engines, also the underlying of fiware click
  [here](https://db-engines.com/en/system/CrateDB%3BInfluxDB%3BMongoDB). Among other detailed comparisons in their a series of white paper that you find [here](https://crate.io/cratedb-comparison/visit). CrateDB offers a comparism between CrateDB and InfluxDB made in 2017 click [here](http://go.cratedb.com/rs/832-QEZ-801/images/CrateDB-vs-Specialized-Time-Series-Databases.pdf?utm_medium=email&utm_source=mkto). For a performance evaluation of timeseries databases for monitoring purposes in general we recommend the master's thesis:
 ["Performance Evaluation of Low-Overhead Messaging Protocols and Time Series Databases
@@ -37,12 +36,9 @@ use `/etc/sysctl.conf` to set the value on every restart
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-3. You may the docker-compose.yaml or *.conf to you preferences e.g. you need to
+3. You may the docker-compose.yaml to you preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
-docker container where the data is stored we always need to place the database container on
-the same host of our docker-swarm. Hence, you need to adjust that line.
-In case you want to use a NFS-server or something other you need to change this line
-and in additionally the volume mapping line.
+docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in addition to that the volume mapping line.
 
       **Note:** Our configuration uses the community edition as default. In because you own a license you may change it within your personal copy of the compose-file.
 
