@@ -4,7 +4,7 @@
 
 ## Introduction and general information
 
-![Overview of the core generic enablers of fiware](../docs/figures/orion.png)
+![Overview of the core generic enablers of fiware](orion.png)
 
 Together with the mongodb the context-broker also known as Orion is the main core of the fiware plattform. It handles all data wihtin the plattform and is required for all activities in and around fiware. To retrieve data from this database, users can query API of the context-broker.
 
