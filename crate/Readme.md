@@ -24,7 +24,6 @@ via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit,
 ## How to start:
 
 1. Before we start with setting up the database we need to take care of a **known bug.**
-
   In order to start the database on a Unix OS, `vm.max_map_count` has to be increased:
 
   ```
