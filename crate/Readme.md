@@ -23,13 +23,11 @@ via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit,
 
 ## How to start:
 
-1. Before we start with setting up the database we need to take care of a **known bug.**
-  In order to start the database on a Unix OS, `vm.max_map_count` has to be increased:
+1. Before we start with setting up the database we need to take care of a **known bug.**  In order to start the database on a Unix OS, `vm.max_map_count` has to be increased:
 
-  ```
-  sudo sysctl -w vm.max_map_count=262144
-  ```
-use `/etc/sysctl.conf` to set the value on every restart
+        sudo sysctl -w vm.max_map_count=262144
+
+      use `/etc/sysctl.conf` to set the value on every restart
 
 2. Go into the crate subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
