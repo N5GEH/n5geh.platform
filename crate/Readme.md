@@ -43,6 +43,7 @@ docker container where the data is stored we always need to place the database c
       along or other depending services!
 
 4. Start the service either using the commands provided in the Makefile
+
         make deploy
 
       or directly with docker command
