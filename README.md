@@ -27,13 +27,11 @@ Before you ask many many questions please try to read the docs first. We try to 
 Thanks for any comments on it!**
 
 ## How to start
-**Note:** There might be dependencies among the enablers. Within the startup procedure
-always start with the mongoDB first followed by the Context-Broker. These two act as the
-brain of the plattform and manage all context.
+
 
 1. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for true high availability (HA). This will follow later.
 
-**Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
+  **Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
 
 2. Clone this repository
 
@@ -53,3 +51,5 @@ brain of the plattform and manage all context.
         make deploy
 or directly with docker command
         docker stack deploy -c docker-compose.yaml fiware
+
+  **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **mongoDB** first followed by the **Context-Broker**. These two act as the brain of the plattform and manage all context.
