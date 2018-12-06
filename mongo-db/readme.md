@@ -8,7 +8,6 @@ Within the fiware core mongodb is used for storing context data. It is a require
 To retrieve data from this database, users can query API of the context-broker.
 It is always recommended to use the context-broker instead of the direct database access for both reasons: Security and data consistancy.
 
-
 "MongoDB is a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 
 - MongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time
