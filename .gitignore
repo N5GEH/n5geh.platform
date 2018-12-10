@@ -1,3 +1,4 @@
 # ignore all directories with data in it
 **/data/
 *.yaml
+*.yml
