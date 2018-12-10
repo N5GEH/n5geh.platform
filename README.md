@@ -1,6 +1,6 @@
 # FIWARE-Core Setup
 
-Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! Anyway, you cen not make use of the Makefiles directly and need to type in the commands directly!
+Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! Anyway, you can not make use of the Makefiles directly and need to type in the docker commands directly!
 
 **Note:** We mostly link, sum up and also copy official documentaion written and published by the fiware foundation forthat we do not claim ownership.
 
