@@ -34,7 +34,11 @@ via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit,
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
 3. You may the docker-compose.yaml to you preferences e.g. you need to
-adjust the placement of the container. Because of the mapped local volume of the
+adjust the placement of the container. In the example we use a local folder "data" for storing our data which we need to create first.
+        
+        mkdir data
+
+Because of the mapped local volume of the
 docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in addition to that the volume mapping line.
 
       **Note:** Our configuration uses the community edition as default. In because you own a license you may change it within your personal copy of the compose-file.
