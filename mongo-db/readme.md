@@ -31,7 +31,7 @@ Beside from mongo-db there are also many other DB-engines our there. The develop
 
 1. Go into the mongodb subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
-        cp docker-compose.yaml.EXAMPLE docker-compose.yaml
+        cp docker-compose.yamlEXAMPLE docker-compose.yaml
 
 3. You may the docker-compose.yaml to you preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
