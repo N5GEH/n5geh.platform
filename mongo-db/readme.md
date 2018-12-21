@@ -4,9 +4,9 @@
 
 ## Introduction and general information
 
-Within the fiware core mongodb is used for storing context data. It is a requirement to the context-broker aka Orion, which itself is the main core of fiware.
-To retrieve data from this database, users can query API of the context-broker.
-It is always recommended to use the context-broker instead of the direct database access for both reasons: Security and data consistancy.
+Within the fiware core mongodb is used for persisting context data across restarts. It is a requirement to the context-broker aka Orion, which itself is the main core of fiware.
+To retrieve data from this database, you should always use the query API of the context-broker.
+It is recommended to use the context-broker instead of the direct database access for both reasons: Security and data consistency.
 
 "MongoDB is a document database with the scalability and flexibility that you want with the querying and indexing that you need"
 
@@ -31,9 +31,9 @@ Beside from mongo-db there are also many other DB-engines our there. The develop
 
 1. Go into the mongodb subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
-        cp docker-compose.yamlEXAMPLE docker-compose.yaml
+        cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-3. You may the docker-compose.yaml to you preferences e.g. you need to
+3. You may adjust the docker-compose.yaml to your preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
 docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in addition to that the volume mapping line.
 
@@ -43,6 +43,6 @@ docker container where the data is stored we always need to place the database c
 4. Start the service either using the commands provided in the Makefile
         make deploy
 
-      or directly with docker command
+      Note, that this is just a shortcut for
 
         docker stack deploy -c docker-compose.yaml fiware
