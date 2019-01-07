@@ -54,3 +54,14 @@ Note, that this is only a shortcut for executing
         docker stack deploy -c docker-compose.yaml fiware
 
   **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **mongoDB** first followed by the **Context-Broker**. These two act as the brain of the platform and manage all context.
+  
+## Security
+
+This tutorial does not cover authentication for fiware-services or Grafana. 
+Thus, a firewall is required to restrict access to fiware. 
+Within the RWTH and EBC networks, access from other networks is usually restricted and no further actions are needed.
+However, if the Docker host is publicly accessible, make sure to 
+  1. use a firewall such as [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04) and drop new incomming connections by default, and
+  2. do not expose any ports from docker containers in a compose file or via `-p 1234:1234`. Without further modifications, these forwardings __bypass the local firewall__. Note, that in Swarm Mode, even ports exposed as `127.0.0.1:80:80` are [globally accessible](https://github.com/moby/moby/issues/32299#issuecomment-290978794).
+
+Have a look at [Keyrock](https://fiware-idm.readthedocs.io/en/latest/) for securing fiware services.
