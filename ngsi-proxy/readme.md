@@ -1,6 +1,10 @@
-# Orion Context-Broker
+# NGSI Proxy
 
-**Note:** Before you start with the context-broker make sure that the mongoDB is up and running!
+![ngsi proxy integration in fiware](../docs/figures/proxy.png)
+
+
+
+**Note:** Before you start with the NGSI proxy context provider   make sure that the mongoDB and orion is up and running!
 
 ## Introduction and general information
 
