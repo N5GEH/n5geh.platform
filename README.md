@@ -48,8 +48,8 @@ Thanks for any comments on it!**
 
   **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-5. Start each service either using the commands provided in the Makefile
-        make deploy
+5. Start each service either using the commands provided in the Makefile or with the command
+        "make deploy".
 Note, that this is only a shortcut for executing
         docker stack deploy -c docker-compose.yaml fiware
 
