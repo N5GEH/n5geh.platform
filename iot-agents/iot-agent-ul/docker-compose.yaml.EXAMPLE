@@ -27,4 +27,4 @@ services:
             - "IOTA_PROVIDER_URL=http://iot-agent-ul:4061"
             
 networks:
-    - fiware            
+    fiware:            
