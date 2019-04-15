@@ -24,6 +24,9 @@ services:
             - IOTA_MONGO_DB=iotagent-ul
             - IOTA_HTTP_PORT=7896
             - IOTA_PROVIDER_URL=http://iot-agent-ul:4061
+            - IOTA_MQTT_HOST=mosquitto
+            - IOTA_MQTT_PORT=1883
+
             
 networks:
     fiware:            
