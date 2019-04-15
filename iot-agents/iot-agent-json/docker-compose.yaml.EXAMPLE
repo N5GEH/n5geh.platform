@@ -9,7 +9,7 @@ services:
             - fiware
         ports:
             - "4041:4041"
-            - "7896:7896"
+            - "7876:7896"
         environment:
             - "IOTA_CB_HOST=orion"
             - "IOTA_CB_PORT=1026"
