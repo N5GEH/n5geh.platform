@@ -4,14 +4,10 @@ services:
     iot-agent-ul:
         image: fiware/iotagent-ul
         hostname: iot-agent-ul
-        container_name: fiware-iot-agent-ul
         networks:
             - fiware  
         depends_on:
             - mongodb
-        expose:
-            - "4061"
-            - "7896"
         ports:
             - "4061:4061"
             - "7896:7896"
