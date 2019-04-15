@@ -1,10 +1,12 @@
 version: "3.1"
 
 services:
-    iot-agent:
+    iot-agent-ul:
         image: fiware/iotagent-ul
-        hostname: iot-agent
+        hostname: iot-agent-ul
         container_name: fiware-iot-agent-ul
+        networks:
+            - fiware  
         depends_on:
             - mongodb
         expose:
@@ -23,3 +25,6 @@ services:
             - "IOTA_MONGO_DB=iotagent-ul"
             - "IOTA_HTTP_PORT=7896"
             - "IOTA_PROVIDER_URL=http://iot-agent:4061"
+            
+networks:
+    - fiware            
