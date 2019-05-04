@@ -1,4 +1,4 @@
-# FIWARE-Core Setup
+# FIWARE-Sandbox Setup
 
 Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! Anyway, you can not make use of the Makefiles directly and need to type in the docker commands directly!
 
@@ -13,6 +13,8 @@ The core of the fiware plattform that provide the functionality suited for most
 IoT-Applications consists of the elements aka *Generic Enablers* depict in image below. For each of the components you find an description of its setup and basic funtionality in the individual subdirectories.
 
 ![Overview of the core generic enablers of fiware](docs/figures/Overview.png)
+
+***Figure 1:*** *Overview of FIWARE platform and its components (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
 This Git gives only a short overview of the functionalities it also provides
 a postman-collection that contains the basic CRUD queries for accessing the individual functionalities. For a closer look on fiware you will find a comprehensive tutorial here:

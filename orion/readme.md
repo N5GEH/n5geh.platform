@@ -19,7 +19,7 @@ Furthermore, if you are interested in the code itself you'll find it on GitHub:
 https://github.com/telefonicaid/fiware-orion
 
 ## Newest developments of the API:
-Currently, the developers extent the orion API by NGSI-LD defined by the ETSO ISG CIM group. "This Cross-domain Context Information Management API allows to provide, consume and subscribe to context information in multiple scenarios and involving multiple stakeholders."
+Currently, the developers extent the orion API with NGSI-LD defined by the ETSO ISG CIM group. "This Cross-domain Context Information Management API allows to provide, consume and subscribe to context information in multiple scenarios and involving multiple stakeholders."
 
 For quick overview about the API we recommend the check: https://app.swaggerhub.com/apis/jmcanterafonseca/NGSI-LD_Full/0.1.
 Neverthelesse, the concept of linked-data should be fully understood beforehand because it is the main idea how to efficiently network multiple devices and add context information to them please check the additional information provided below. From our perspective within in the energy sector the concept of networking should follow the Smart Appliances REFerence (SAREF) ontology and its domoan specific extensions. The specification can be found [here](https://www.etsi.org/standards-search#page=1&search=SAREF&title=1&etsiNumber=1&content=1&version=0&onApproval=1&published=1&historical=1&startDate=1988-01-15&endDate=2018-12-06&harmonized=0&keyword=&TB=&stdType=&frequency=&mandate=&collection=&sort=3).
@@ -52,9 +52,7 @@ adjust the placement of the container.
 
         curl -X GET \
         'http://<yourHostAddress>:1026/version'
-
 the response should lokk similar to the this:
-
         {
             "orion": {
                 "version": "1.12.0-next",
@@ -70,4 +68,4 @@ the response should lokk similar to the this:
 
 5. For creating your first context-data we recommend the Step-by-Step Tutorial:
     https://fiware-tutorials.readthedocs.io/en/latest/getting-started/index.html.
-    However, for the building domain you might includ the information provived above. A small example will follow shortly.
+    However, for the building domain you might include the information provived above. A small example will follow shortly.
