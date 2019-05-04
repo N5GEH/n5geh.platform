@@ -9,7 +9,7 @@ Within the context of FIWARE MQTT changes the communication structure of devices
 
 Consequently, the overall architecture changes to the following:
 
-![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/MQTT.PNG)
+![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/mqtt.png)
 ***Figure 2:*** *FIWARE platform with connected MQTT-Broker (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
 ## How to start
