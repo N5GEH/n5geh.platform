@@ -52,7 +52,8 @@ adjust the placement of the container.
 
         curl -X GET \
         'http://<yourHostAddress>:1026/version'
-the response should lokk similar to the this:
+the response should look similar to the this:
+
         {
             "orion": {
                 "version": "1.12.0-next",
