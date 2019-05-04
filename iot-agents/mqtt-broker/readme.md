@@ -12,6 +12,10 @@ Consequently, the overall architecture changes to the following:
 ![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/MQTT.PNG)
 ***Figure 2:*** *FIWARE platform with connected MQTT-Broker (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
+## How to start
+
+WARNING: Please be aware of the fact that we do not cover security aspects here.
+
 1. Go into the mqtt-broker subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and the mosquitto configuration file and rename them to:
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
