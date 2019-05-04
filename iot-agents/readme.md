@@ -6,9 +6,12 @@
 
 For connecting IoT-devices, send their data and be managed from a FIWARE based platform using thier native protocol FIWARE offers a selection of IoT Agents based on a node.js library that you can find here ([LINK](https://github.com/telefonicaid/iotagent-node-lib)). The corresponding manual is available under https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/usermanual.md
 
+
 Generally, the library offers developers the opportunity to build custom agents for their devices and specific protocols that then can easily connect to NGSI Context Brokers (such as Orion).
 
 However, before starting implementing your own agents you should first check if the already exiting agents may fit your needs. Here ([LINK](https://www.fiware.org/developers/catalogue/)) you find a list of exiting agents and their documentation.
+
+On low level the agents can be configured via a config.js file. However, in this tutorial we use docker as framework for our platform. Therefore, it is important how the configuration via docker-compose and environment variables. An overview of the commonly allowed variables is given here ([LINK](https://iotagent-node-lib.readthedocs.io/en/latest/installationguide/index.htmlµ)). If needed this list is extended by the individual agents because not all of them need e,g. a configuration for MQTT. 
 
 ## How to start
 

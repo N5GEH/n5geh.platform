@@ -24,6 +24,8 @@ services:
             - IOTA_PROVIDER_URL=http://iot-agent-json:4041
             - IOTA_MQTT_HOST=mqtt-broker
             - IOTA_MQTT_PORT=1883
+        heathcheck:
+          test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
 
 networks:
       fiware:

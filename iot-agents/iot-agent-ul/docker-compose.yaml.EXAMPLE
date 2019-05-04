@@ -5,7 +5,7 @@ services:
         image: fiware/iotagent-ul
         hostname: iot-agent-ul
         networks:
-            - fiware  
+            - fiware
         depends_on:
             - mongodb
         ports:
@@ -14,7 +14,7 @@ services:
         environment:
             - IOTA_CB_HOST=orion
             - IOTA_CB_PORT=1026
-            - IOTA_CB_NGSI_VERSION=v2              
+            - IOTA_CB_NGSI_VERSION=v2
             - IOTA_NORTH_PORT=4061
             - IOTA_REGISTRY_TYPE=mongodb
             - IOTA_LOG_LEVEL=DEBUG
@@ -26,7 +26,9 @@ services:
             - IOTA_PROVIDER_URL=http://iot-agent-ul:4061
             - IOTA_MQTT_HOST=mosquitto
             - IOTA_MQTT_PORT=1883
+            heathcheck:
+              test: curl --fail -s http://iot-agent-ul:4061/iot/about || exit 1
 
-            
+
 networks:
-    fiware:            
+    fiware:
