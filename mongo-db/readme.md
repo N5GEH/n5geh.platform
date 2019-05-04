@@ -1,4 +1,4 @@
-# MongoDB as storage for the context data wihtin FIWARE
+# MongoDB as storage for the context data within FIWARE
 
 **Note:** Within the total setup procedure always start with the mongoDB first.
 
