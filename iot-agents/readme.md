@@ -4,12 +4,11 @@
 
 ## Introduction and general information
 
-For connecting IoT-devices, send their data and be managed from a FIWARE based platform using thier native protocol FIWARE offers a selection of IoT Agents based on a node.js library that you can find [here](https://github.com/telefonicaid/iotagent-node-lib)
-The corresponding manual is available under https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/usermanual.md
+For connecting IoT-devices, send their data and be managed from a FIWARE based platform using thier native protocol FIWARE offers a selection of IoT Agents based on a node.js library that you can find here ([LINK](https://github.com/telefonicaid/iotagent-node-lib)). The corresponding manual is available under https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/usermanual.md
 
 Generally, the library offers developers the opportunity to build custom agents for their devices and specific protocols that then can easily connect to NGSI Context Brokers (such as Orion).
 
-However, before starting implementing your own agents you should first check if the already exiting agents may fit your needs. [Here](https://www.fiware.org/developers/catalogue/) you find a list of exiting agents and their documentation.
+However, before starting implementing your own agents you should first check if the already exiting agents may fit your needs. Here ([LINK](https://www.fiware.org/developers/catalogue/)) you find a list of exiting agents and their documentation.
 
 ## How to start
 
