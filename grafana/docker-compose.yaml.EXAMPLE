@@ -5,7 +5,7 @@ services:
     depends_on:
       - crate
     environment:
-      - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
     volumes:
             - grafana:/var/lib/grafana
             # - "./data:/var/lib/grafana"

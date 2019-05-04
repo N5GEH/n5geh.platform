@@ -1,11 +1,13 @@
 version: '3'
 services:
   quantumleap:
-    image: smartsdk/quantumleap
+    image: smartsdk/quantumleap:0.6
     depends_on:
       - mongo-db
       - orion
       - crate
+    healthcheck:
+      test: curl --fail -s http://quantumleap:8668/v2/version || exit 1
     networks:
       - fiware
     ports:
@@ -17,4 +19,3 @@ services:
         # - REDIS_PORT=6379
 networks:
   fiware:
-

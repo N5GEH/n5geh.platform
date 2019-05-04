@@ -18,7 +18,8 @@ This Git gives only a short overview of the functionalities it also provides
 a postman-collection that contains the basic CRUD queries for accessing the individual functionalities. For a closer look on fiware you will find a comprehensive tutorial here:
 https://fiware-tutorials.readthedocs.io/en/latest/index.html
 
-**Note:** The tutoial does not cover all the aspects, but it is a good starting point to get to know fiware a little better. We will reference the detailed description and GITs.
+**Note:** The tutoial does not cover all the aspects, but it is a good starting point to get to know fiware a little better. We will reference the detailed description where needed. Otherwise please check the fiware tour which also links to a deep dive documentation:
+https://github.com/Fiware/catalogue/releases
 
 Before you ask many many questions please try to read the docs first. We try to keep the collection of links up-to-date as long as we are actively working with the plattform.
 <br>
@@ -44,7 +45,10 @@ Thanks for any comments on it!**
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-4. You may adjust the docker-compose.yaml or *.conf to your preferences. But the functionality will then be left to you.
+4. You may adjust the docker-compose.yaml or *.conf to your preferences. But the
+functionality will then be left to you. **_Please_** do not use the latest version of
+the available services because these may be still under development and
+eventually not be stable. Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
 
   **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
@@ -54,13 +58,13 @@ Note, that this is only a shortcut for executing
         docker stack deploy -c docker-compose.yaml fiware
 
   **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **mongoDB** first followed by the **Context-Broker**. These two act as the brain of the platform and manage all context.
-  
+
 ## Security
 
-This tutorial does not cover authentication for fiware-services or Grafana. 
-Thus, a firewall is required to restrict access to fiware. 
+This tutorial does not cover authentication for fiware-services or Grafana.
+Thus, a firewall is required to restrict access to fiware.
 Within the RWTH and EBC networks, access from other networks is usually restricted and no further actions are needed.
-However, if the Docker host is publicly accessible, make sure to 
+However, if the Docker host is publicly accessible, make sure to
   1. use a firewall such as [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04) and drop new incomming connections by default, and
   2. do not expose any ports from docker containers in a compose file or via `-p 1234:1234`. Without further modifications, these forwardings __bypass the local firewall__. Note, that in Swarm Mode, even ports exposed as `127.0.0.1:80:80` are [globally accessible](https://github.com/moby/moby/issues/32299#issuecomment-290978794).
 

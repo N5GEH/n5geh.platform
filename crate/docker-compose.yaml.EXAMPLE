@@ -1,7 +1,7 @@
 version: '3'
 services:
   crate:
-    image: crate:3.0.5
+    image: crate:3.3 # Please check release notes!
     networks:
         - fiware
 #    ports:
@@ -18,4 +18,3 @@ services:
 
 networks:
   fiware:
-

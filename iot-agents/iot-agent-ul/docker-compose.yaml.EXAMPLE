@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
     iot-agent-ul:
-        image: fiware/iotagent-ul
+        image: fiware/iotagent-ul:1.8.0
         hostname: iot-agent-ul
         networks:
             - fiware

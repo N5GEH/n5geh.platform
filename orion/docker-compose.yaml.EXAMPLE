@@ -3,7 +3,7 @@ services:
   orion:
   # Sometimes the newest builds fail. Hence, we fixed a stable version that
   # probably will be updated once in a while
-    image: fiware/orion:2.0.0
+    image: fiware/orion:2.2.0
     depends_on:
       - mongo-db
     networks:
@@ -12,7 +12,7 @@ services:
         - "1026:1026"
     command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans #For in production mode please change these settings!
     heathcheck:
-      test: curl --fail -s http://orion:1026/v2/version || exit 1
+      test: curl --fail -s http://orion:1026/version || exit 1
 # Probably this placement is not necessary
     deploy:
       placement:
