@@ -2,6 +2,7 @@ version: '3.7'
 services:
   quantumleap:
     image: smartsdk/quantumleap:0.6
+    hostname:
     depends_on:
       - mongo-db
       - orion
@@ -14,7 +15,7 @@ services:
     ports:
       - "8668:8668"
     environment:
-      - CRATE_HOST=crate
+      - CRATE_HOST=crate-db
         # - USE_GEOCODING=false
         # - REDIS_HOST=redis
         # - REDIS_PORT=6379

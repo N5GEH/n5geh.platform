@@ -2,10 +2,11 @@ version: "3.7"
 services:
   mongo-db:
     image: mongo:4.0 #Check https://docs.mongodb.com/manual/release-notes/
+    hostname: mongo-db
 # Because within the same network the containers
-# are connected port exposing is not required
-#    ports:
-#        - "27017:27017"
+# are connected port exposing is not required and only for external access
+    ports:
+        - "27017:27017"
     networks:
         - fiware
     command: --bind_ip_all --smallfiles

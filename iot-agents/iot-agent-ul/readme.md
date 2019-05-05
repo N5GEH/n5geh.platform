@@ -23,22 +23,11 @@ adjust the placement of the container.
 4. Check if the service is up and running by making an HTTP request to the exposed port:
 
         curl -X GET \
-        'http://<yourHostAddress>:4061/version'
+        'http://<yourHostAddress>:4061/iot/about'
 
 the response should look similar to the this:
 
-        {
-            "orion": {
-                "version": "1.12.0-next",
-                "uptime": "0 d, 0 h, 3 m, 21 s",
-                "git_hash": "e2ff1a8d9515ade24cf8d4b90d27af7a616c7725",
-                "compile_time": "Wed Apr 4 19:08:02 UTC 2018",
-                "compiled_by": "root",
-                "compiled_in": "2f4a69bdc191",
-                "release_date": "Wed Apr 4 19:08:02 UTC 2018",
-                "doc": "https://fiware-orion.readthedocs.org/en/master/"
-            }
-        }
+        {"libVersion":"2.8.0-next","port":"4061","baseRoot":"/","version":"1.8.0-next"}
 
 5. For creating your first context-data we recommend the Step-by-Step Tutorial:
     https://fiware-tutorials.readthedocs.io/en/latest/getting-started/index.html.

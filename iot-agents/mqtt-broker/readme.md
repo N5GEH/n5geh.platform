@@ -17,21 +17,34 @@ Consequently, the overall architecture changes to the following:
 
 WARNING: Please be aware of the fact that we do not cover security aspects here.
 
-1. Go into the mqtt-broker subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and the mosquitto configuration file and rename them to:
+1. Go into the mqtt-broker subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and the mosquitto configuration file and rename them:
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-        cp mosquitto.conf.EXAMPLE to mosquitto.conf
+        cp mosquitto.conf.EXAMPLE mosquitto.conf
 
 2. You may adjust the docker-compose.yaml to your preferences e.g. you need to adjust the placement of the container to your gateway machine.
 
       **Note:** Some changes may require the modification of Makefile that comes along or other depending services!
 
 3. Start the service either using the commands provided in the Makefile
+
         make deploy
 
       Note, that this is just a shortcut for
 
         docker stack deploy -c docker-compose.yaml fiware
 
-4. For a quick overview for how to use the broker we recommend to check: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html
+4. Check if the service is up and running using the mosquitto client:
+
+        sudo apt-get install mosquitto-client
+
+  Start the command line subscriber:
+
+        mosquitto_sub -h <yourHostAddress> -t  'test/topic'
+
+  Publish test message with the command line publisher from a second terminal:
+
+        mosquitto_pub <yourHostAddress> -t 'test/topic' -m 'helloWorld'
+
+5. For a quick overview for how to use the broker we recommend to check: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html
