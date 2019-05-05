@@ -5,6 +5,7 @@ services:
         hostname: iot-agent-json
         depends_on:
             - mongo-db
+            - mqtt-broker
         networks:
             - fiware
         ports:

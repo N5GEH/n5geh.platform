@@ -8,6 +8,7 @@ services:
             - fiware
         depends_on:
             - mongodb
+            - mqtt-broker
         ports:
             - "4061:4061"
             - "7896:7896"
