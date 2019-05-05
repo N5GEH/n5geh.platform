@@ -45,6 +45,6 @@ WARNING: Please be aware of the fact that we do not cover security aspects here.
 
   Publish test message with the command line publisher from a second terminal:
 
-        mosquitto_pub <yourHostAddress> -t 'test/topic' -m 'helloWorld'
+        mosquitto_pub -h <yourHostAddress> -t 'test/topic' -m 'helloWorld'
 
 5. For a quick overview for how to use the broker we recommend to check: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html

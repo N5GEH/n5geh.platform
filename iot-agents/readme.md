@@ -61,6 +61,8 @@ For troubleshooting the FIWARE community offers a quite good webinar on youtube
 where they explain how to solve common mistakes and problems with iot agents.
 https://www.youtube.com/watch?v=FRqJsywi9e8&feature=youtu.be
 
-However, if you simply want to check for traffic you can use the integrated pm2 tool:
+However, if you simply want to check for traffic you can use the integrated pm2 tool. Execute in the chosen iot-agent folder:
 
-    docker exec -it <your-iot-agent-container> pm2 monit
+      make exec
+
+      pm2 monit

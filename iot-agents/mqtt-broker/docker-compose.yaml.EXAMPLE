@@ -1,9 +1,9 @@
 version: "3.7"
 services:
 
-  mqtt-broker:
+  mosquitto:
     image: eclipse-mosquitto
-    hostname: mosquitto
+    #hostname: mosquitto
     ports:
       - "1883:1883"
       - "9001:9001"

@@ -2,7 +2,7 @@ version: "3.7"
 services:
     iot-agent-json:
         image: fiware/iotagent-json:1.9.0
-        hostname: iot-agent-json
+        #hostname: iot-agent-json
         depends_on:
             - mongo-db
             - mqtt-broker
