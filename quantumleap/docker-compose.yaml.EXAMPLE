@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   quantumleap:
     image: smartsdk/quantumleap:0.6
@@ -6,8 +6,9 @@ services:
       - mongo-db
       - orion
       - crate
-    healthcheck:
-      test: curl --fail -s http://quantumleap:8668/v2/version || exit 1
+    # Docker stack does not allow additional health check
+    # healthcheck:
+    #  test: curl --fail -s http://quantumleap:8668/v2/version || exit 1
     networks:
       - fiware
     ports:

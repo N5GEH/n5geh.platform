@@ -7,7 +7,7 @@ Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with s
 ## Introduction
 
 This repository contains example docker-compose-files and for the easy
-deployment of core elements aka *Generic Enablers* of the the fiware plattform in a docker swarm. "FIWARE is a curated framework of open source platform components to accelerate the development of Smart Solutions." For more general information about fiware please check https://www.fiware.org/ <br>
+deployment of core elements aka *Generic Enablers* of the the fiware plattform in a docker swarm. "FIWARE is a curated framework of open source platform components to accelerate the development of Smart Solutions." For more general information about fiware, why to use it and its core concept please check https://www.fiware.org/developers/ <br>
 
 The core of the fiware plattform that provide the functionality suited for most
 IoT-Applications consists of the elements aka *Generic Enablers* depict in image below. For each of the components you find an description of its setup and basic funtionality in the individual subdirectories.

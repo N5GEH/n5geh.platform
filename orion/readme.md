@@ -43,6 +43,7 @@ adjust the placement of the container.
       along or other depending services!
 
 3. Start the service either using the commands provided in the Makefile
+
         make deploy
 
       or directly with docker command

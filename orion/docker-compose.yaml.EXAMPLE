@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.7"
 services:
   orion:
   # Sometimes the newest builds fail. Hence, we fixed a stable version that
@@ -11,8 +11,9 @@ services:
     ports:
         - "1026:1026"
     command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans #For in production mode please change these settings!
-    heathcheck:
-      test: curl --fail -s http://orion:1026/version || exit 1
+    # Docker stack does not allow additional health check
+    #heathcheck:
+    #  test: curl --fail -s http://orion:1026/version || exit 1
 # Probably this placement is not necessary
     deploy:
       placement:

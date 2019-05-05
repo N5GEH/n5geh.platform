@@ -33,14 +33,15 @@ Beside from mongo-db there are also many other DB-engines our there. The develop
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-3. You may adjust the docker-compose.yaml to your preferences e.g. you need to
+2. You may adjust the docker-compose.yaml to your preferences e.g. you need to
 adjust the placement of the container. Because of the mapped local volume of the
 docker container where the data is stored we always need to place the database container on the same host of our docker-swarm. Hence, you need to adjust that line. In case you want to use a NFS-server or some other kind of shared volumes you need to change this line and in addition to that the volume mapping line.
 
       **Note:** Some changes may require the modification of Makefile that comes
       along or other depending services!
 
-4. Start the service either using the commands provided in the Makefile
+3. Start the service either using the commands provided in the Makefile
+
         make deploy
 
       Note, that this is just a shortcut for
