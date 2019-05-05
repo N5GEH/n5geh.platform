@@ -20,7 +20,7 @@ services:
             - IOTA_TIMESTAMP=true
             - IOTA_MONGO_HOST=mongo-db
             - IOTA_MONGO_PORT=27017
-            - IOTA_MONGO_DB=iotagent-json
+            - IOTA_MONGO_DB=iotagentjson
             - IOTA_PROVIDER_URL=http://iot-agent-json:4041
             - IOTA_MQTT_HOST=mosquitto
             - IOTA_MQTT_PORT=1883
