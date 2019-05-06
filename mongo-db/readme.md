@@ -47,3 +47,7 @@ docker container where the data is stored we always need to place the database c
       Note, that this is just a shortcut for
 
         docker stack deploy -c docker-compose.yaml fiware
+
+4. For watching what is happening in the database you can use a GUI tool such  as MongoDB Compass ([Link](https://www.mongodb.com/download-center/compass))
+
+    **Note:** For using an external GUI you need to expose the port mongoDB. Which should be **always** handeled with care in the security settings. For docker network internal operation this is not necessary.
