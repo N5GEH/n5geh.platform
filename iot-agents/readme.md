@@ -14,7 +14,7 @@ https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/usermanual.md
 
 An overview of the concept is given in the figure below:
 
-![FIWARE IoT Device Management GE architecture (_source_: https://fiwaretourguide.readthedocs.io/en/latest/iot-agents/introduction/)](..//docs/figures/iot-agents_zoom.png)
+![FIWARE IoT Device Management GE architecture (_source_: https://fiwaretourguide.readthedocs.io/en/latest/iot-agents/introduction/)](../docs/figures/iot-agents_zoom.png)
 
 ***Figure 1:*** *FIWARE IoT Device Management GE architecture (_source_: https://fiwaretourguide.readthedocs.io/en/latest/iot-agents/introduction/)*
 
