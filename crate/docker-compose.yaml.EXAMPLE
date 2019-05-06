@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   crate:
     image: crate:3.3 # Please check release notes!
@@ -14,8 +14,11 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints:
-        - node.hostname == <yourHostName>
+        constraints: [node.role==manager]
+        #- node.hostname == <yourHostName>
+      #healthcheck is not allowed with docker stack
+      #healthcheck:
+      #  disable: false
 
 networks:
   fiware:

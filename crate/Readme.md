@@ -54,3 +54,7 @@ adjust the placement of the container. In this example we use a local folder "da
       Note, that this is just a shortcut for
 
         docker stack deploy -c docker-compose.yaml fiware
+
+5. For watching what is happening in the database you can use a Web GUI tool:
+
+            **Note:** For using an accessing the GUI you need to expose the port 4200. Which should be **always** handeled with care in the security settings. For docker network internal operation this is not necessary.        
