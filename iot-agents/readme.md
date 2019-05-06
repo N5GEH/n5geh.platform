@@ -64,5 +64,5 @@ https://www.youtube.com/watch?v=FRqJsywi9e8&feature=youtu.be
 However, if you simply want to check for traffic you can use the integrated pm2 tool. Execute in the chosen iot-agent folder:
 
       make exec
-
+      
       pm2 monit
