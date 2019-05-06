@@ -39,7 +39,7 @@ Thanks for any comments on it!**
 
 2. Clone this repository
 
-        git clone https://git.rwth-aachen.de/EBC/Team_BA/fiware/fiware-core.git fiware-core
+        git clone https://git.rwth-aachen.de/EBC/Team_BA/fiware/fiware-example-setup.git
 
 3. Go into each subdirectory and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
