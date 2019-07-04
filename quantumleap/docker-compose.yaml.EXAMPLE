@@ -1,8 +1,8 @@
 version: '3.7'
 services:
   quantumleap:
-    image: smartsdk/quantumleap:0.6
-    hostname:
+    image: smartsdk/quantumleap:0.7.0
+    hostname: quantumleap
     depends_on:
       - mongo-db
       - orion
@@ -14,10 +14,18 @@ services:
       - fiware
     ports:
       - "8668:8668"
+    deploy:
+      replicas: 5
     environment:
-      - CRATE_HOST=crate-db
+      - CRATE_HOST=crate
         # - USE_GEOCODING=false
         # - REDIS_HOST=redis
         # - REDIS_PORT=6379
+    logging:
+        driver: "json-file"
+        options:
+            max-file: 5
+            max-size: 10m        #
 networks:
   fiware:
+

@@ -1,20 +1,25 @@
 version: "3.7"
 services:
   mongo-db:
-    image: mongo:4.0 #Check https://docs.mongodb.com/manual/release-notes/
-    #hostname: mongo-db
-# Because within the same network the containers
-# are connected port exposing is not required and only for external access
-    ports:
+    image: mongo:4.0 # Check https://docs.mongodb.com/manual/release-notes/
+    hostname: mongo-db
+    # Because within the same network the containers
+	# are connected port exposing is not required --> only for external access
+	ports:
         - "27017:27017"
     networks:
         - fiware
-    command: --bind_ip_all --smallfiles
+    command: --bind_ip_all --smallfiles --quiet
     volumes:
             - mongo-db:/data/db
     deploy:
       placement:
         constraints: [node.role == manager]
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
 networks:
   fiware:
 volumes:

@@ -4,21 +4,36 @@ services:
   # Sometimes the newest builds fail. Hence, we fixed a stable version that
   # probably will be updated once in a while
     image: fiware/orion:2.2.0
-    #hostname: orion
+    hostname: orion
     depends_on:
       - mongo-db
     networks:
         - fiware
     ports:
         - "1026:1026"
-    command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans #For in production mode please change these settings!
+    # Check carefully documentation for options:
+	# https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
+	# For in production mode please adjust these settings!
+	command: -dbhost mongo-db 
+		     -logLevel ERROR
+			 -logForHumans
+			 -statCounters 
+			 -statSemWait 
+			 -statTiming 
+			 -statNotifQueue 
     # Docker stack does not allow additional health check
     #heathcheck:
     #  test: curl --fail -s http://orion:1026/version || exit 1
 # Probably this placement is not necessary
     deploy:
+      replicas: 5
       placement:
         constraints: [node.role == manager]
+    logging:
+      driver: "json-file"
+      options:
+         max-file: 5
+         max-size: 10m
 
 
 networks:

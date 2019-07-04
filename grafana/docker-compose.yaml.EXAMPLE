@@ -1,7 +1,7 @@
-version: '3'
+version: '3.7'
 services:
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:6.2.2
     depends_on:
       - crate
     environment:
@@ -18,3 +18,4 @@ networks:
   fiware:
 volumes:
   grafana:
+

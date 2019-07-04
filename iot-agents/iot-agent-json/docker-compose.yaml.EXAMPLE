@@ -28,6 +28,10 @@ services:
         # Docker stack does not allow additional health check
         #heathcheck:
         #  test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
-
+				logging:
+          driver: "json-file"
+          options:
+            max-file: 5
+            max-size: 10m
 networks:
       fiware:
