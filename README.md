@@ -1,6 +1,6 @@
-# FIWARE-Sandbox Setup
+# FIWARE-Example Setup
 
-Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! Anyway, you can not make use of the Makefiles directly and need to type in the docker commands directly!
+Welcome to the quick setup of the fiware core on a Unix OS! Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! Anyway, you can not make use of the Makefiles directly using a Windows OS and need to type in the docker commands directly!
 
 **Note:** We mostly link, sum up and also copy official documentation written and published by the fiware foundation for that we do not claim ownership.
 
