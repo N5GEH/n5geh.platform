@@ -28,6 +28,7 @@ via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit,
         sudo sysctl -w vm.max_map_count=262144
 
       append the entry to the file `/etc/sysctl.conf` to automatically set the value on every restart
+      https://crate.io/docs/crate/guide/en/latest/admin/bootstrap-checks.html?highlight=max_map_count
 
 2. Go into the crate subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
