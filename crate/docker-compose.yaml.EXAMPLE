@@ -1,7 +1,8 @@
 version: '3.7'
 services:
   crate:
-    image: crate:3.3 # Please check release notes!
+	#We try to always provide the latest stable version
+    image: crate:4.04 # Please check release notes!
     hostname: crate-db
     networks:
         - fiware
@@ -19,6 +20,12 @@ services:
       #healthcheck is not allowed with docker stack
       #healthcheck:
       #  disable: false
-
+	# Limiting of logging
+	logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
+		
 networks:
   fiware:

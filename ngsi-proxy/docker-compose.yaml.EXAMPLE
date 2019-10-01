@@ -1,11 +1,7 @@
 version: "3.7"
 services:
   ngsi-proxy:
-    image: fiware/tutorials.context-provider
-    #expose is deprecated!
-    #expose:
-    #   - "3000"
-    #   - "3001"
+    image: fiware/ngsiproxy:1.2.0
     ports:
         - "3000:3000"
     networks:
@@ -21,5 +17,10 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+	logging:
+        driver: "json-file"
+        options:
+			max-file: 5
+            max-size: 10m	
 networks:
   fiware:

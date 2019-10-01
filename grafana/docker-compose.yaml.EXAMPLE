@@ -1,7 +1,8 @@
 version: '3.7'
 services:
   grafana:
-    image: grafana/grafana:6.2.2
+	# We try to always provide the latest stable version
+    image: grafana/grafana:6.3.6
     depends_on:
       - crate
     environment:
@@ -13,6 +14,12 @@ services:
       - "3001:3000"
     networks:
       - fiware
+	# Limiting of logging
+	logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
 
 networks:
   fiware:

@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   quantumleap:
+	# We try to always provide the latest stable version
     image: smartsdk/quantumleap:0.7.0
     hostname: quantumleap
     depends_on:

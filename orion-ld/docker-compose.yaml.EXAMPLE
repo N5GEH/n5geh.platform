@@ -1,10 +1,9 @@
 version: "3.7"
 services:
   orion:
+	# Sometimes the newest builds fail. In this case please try a former version.
 	# Please, do only run one service of the following: orion, orion-ld, djeane
-	# Sometimes the newest builds fail. Hence, we fixed a stable version that
-	# probably will be updated once in a while
-    image: fiware/orion:2.2.0
+    image: fiware/orion-ld
     hostname: orion
     depends_on:
       - mongo-db
@@ -31,7 +30,7 @@ services:
       replicas: 5
       placement:
         constraints: [node.role == manager]
-    #Limitation of logging
+    # Limitation of logging
 	logging:
       driver: "json-file"
       options:
