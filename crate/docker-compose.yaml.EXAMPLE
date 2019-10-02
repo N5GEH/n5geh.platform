@@ -1,31 +1,45 @@
 version: '3.7'
 services:
   crate:
-	#We try to always provide the latest stable version
-    image: crate:4.04 # Please check release notes!
-    hostname: crate-db
+    # We try to always provide the latest stable version!
+	# Please check release notes!
+	# In future we will probably provide an image of the community edition
+    image: crate:4.0.4 
+    hostname: crate
     networks:
         - fiware
-#    ports:
-#     - "4200:4200"
+    #port exposal for remote acces from outside the docker network
+    #    ports:
+    #     - "4200:4200"
     volumes:
-      - ./data:/data
-    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false -Ccluster.name=fiwaredemo -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+      - cratedb:/data
+    command: >
+			crate
+			 -Cnetwork.host=_site_ 
+			 -Cdiscovery.type=single-node
+             -Cauth.host_based.enabled=false
+             -Ccluster.name=fiware
+             -Chttp.cors.enabled=true
+             -Chttp.cors.allow-origin="*"
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints: [node.role==manager]
         #- node.hostname == <yourHostName>
-      #healthcheck is not allowed with docker stack
-      #healthcheck:
-      #  disable: false
-	# Limiting of logging
-	logging:
+    healthcheck:
+        disable: true
+    # Limiting of logging
+    logging:
       driver: "json-file"
       options:
         max-file: 5
         max-size: 50m
+	environment:
+       - CRATE_HEAP_SIZE=2g	
 		
 networks:
   fiware:
+volumes:
+  cratedb:  
+  
