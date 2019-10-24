@@ -4,7 +4,7 @@ services:
     # We try to always provide the latest stable version
     # Check https://docs.mongodb.com/manual/release-notes/
     image: mongo:4.2 
-    hostname: mongodb
+    hostname: mongo
 
     # Because within the same network the containers
     # are connected anyways port exposing is not required 
@@ -54,7 +54,7 @@ services:
     
     # Adding dependencies
     depends_on:
-        - mongodb
+        - mongo
         
     # Settings for log-files
     logging:

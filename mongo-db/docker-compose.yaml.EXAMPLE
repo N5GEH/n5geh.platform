@@ -42,4 +42,4 @@ networks:
 
 # Map volume to mongo db
 volumes:
-  mongodb:
+  mongo:
