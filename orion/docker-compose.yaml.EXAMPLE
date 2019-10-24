@@ -24,8 +24,12 @@ services:
 			 -statNotifQueue
 			 -reqMutexPolicy none
     # Docker stack does not allow additional health check
-    #heathcheck:
-    #  test: curl --fail -s http://orion:1026/version || exit 1
+    heathcheck:
+      test: ["CMD", "curl", "-f", "http://orion:1026/version" || exit 1]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 40
 	# Probably this placement is not necessary
     deploy:
       replicas: 5
