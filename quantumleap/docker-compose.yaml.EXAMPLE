@@ -5,9 +5,9 @@ services:
     image: smartsdk/quantumleap:0.7.0
     hostname: quantumleap
     depends_on:
-      - mongo-db
+      - mongodb
       - orion
-      - crate
+      - cratedb
     # Docker stack does not allow additional health check
     # healthcheck:
     #  test: curl --fail -s http://quantumleap:8668/v2/version || exit 1

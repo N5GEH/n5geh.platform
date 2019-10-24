@@ -4,25 +4,28 @@ services:
 	# Please, do only run one service of the following: orion, orion-ld, djeane
 	# Sometimes the newest builds fail. Hence, we fixed a stable version that
 	# probably will be updated once in a while
-    image: fiware/orion:2.2.0
+    image: fiware/orion:${ORION_VERSION:-2.2.0}
     hostname: orion
-    depends_on:
-      - mongodb
     networks:
         - fiware
     ports:
         - "1026:1026"
+    
     # Check carefully documentation for options:
 	# https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
 	# For in production mode please adjust these settings!
-	command: -dbhost mongo 
-		     -logLevel ERROR
+    -logLevel ${ORION_LOG_LEVEL:-DEBUG} -dbhost ${MONGO_SERVICE_URI:-"mongo"} -rplSet ${REPLICASET_NAME:-rs} -dbTimeout 10000
+	command: -dbhost ${MONGO_SERVICE_URI:-"mongo"}
+             -rplSet ${REPLICASET_NAME:-rs}
+             -dbTimeout 10000
+		     -logLevel ${ORION_LOG_LEVEL:-DEBUG}
 			 -logForHumans
-			 -statCounters 
-			 -statSemWait 
-			 -statTiming 
+			 -statCounters
+			 -statSemWait
+			 -statTiming
 			 -statNotifQueue
 			 -reqMutexPolicy none
+    
     # Docker stack does not allow additional health check
     heathcheck:
       test: ["CMD", "curl", "-f", "http://orion:1026/version" || exit 1]
@@ -30,11 +33,14 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40
-	# Probably this placement is not necessary
+	
+    # Probably this placement is not necessary
     deploy:
+      mode: replicated
       replicas: 5
       placement:
         constraints: [node.role == manager]
+    
     #Limitation of logging
 	logging:
       driver: "json-file"

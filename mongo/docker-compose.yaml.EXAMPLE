@@ -1,0 +1,73 @@
+version: "3.7"
+services:
+  mongodb:
+    # We try to always provide the latest stable version
+    # Check https://docs.mongodb.com/manual/release-notes/
+    image: mongo:4.2 
+    hostname: mongo
+
+    # Because within the same network the containers
+    # are connected anyways port exposing is not required 
+    # --> only for external access
+    ports:
+    - "27017:27017"
+    
+    networks:
+        - fiware
+    # 
+    command: --bind_ip_all --quiet
+    environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+        - MONGODB_SYSTEM_LOG_VERBOSITY=3
+        - MONGO_DATA_DIR=/data/db
+        - MONGO_LOG_DIR=/dev/null
+        
+    volumes:
+       - mongodb:/data/db
+
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+
+  mongo-express:
+    image: mongo-express:0.49 # Check https://docs.mongodb.com/manual/release-notes/
+    hostname: mongo-express
+    # Because within the same network the containers
+    # are connected port exposing is not required --> only for external access
+    ports:
+        - "8081:8081"
+    networks:
+        - fiware
+    environment:
+        - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+        - ME_CONFIG_MONGODB_SERVER=mongodb
+        - ME_CONFIG_MONGODB_PORT=27017
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+        # - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+    
+    # Adding dependencies
+    depends_on:
+        - mongo
+        
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+
+
+# Initilize network if not already existing
+networks:
+  fiware:
+
+# Map volume to mongoDB
+volumes:
+  mongodb:

@@ -4,7 +4,7 @@ services:
         image: fiware/iotagent-json:1.11.0
         #hostname: iot-agent-json
         depends_on:
-            - mongo-db
+            - mongodb
             - mqtt-broker
         networks:
             - fiware
@@ -19,7 +19,7 @@ services:
             - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
             - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
             - IOTA_CB_NGSI_VERSION=v2 # use NGSIv2 when sending updates for active attributes
-            - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
+            - IOTA_MONGO_HOST=mongodb # The host name of MongoDB
             - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
             - IOTA_MONGO_DB=iotagentjson # The name of the database used in mongoDB
             - IOTA_MQTT_HOST=mosquitto # The host name of the MQTT Broker
