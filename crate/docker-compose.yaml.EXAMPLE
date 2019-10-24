@@ -4,7 +4,7 @@ services:
     # We try to always provide the latest stable version!
 	# Please check release notes!
 	# In future we will probably provide an image of the community edition
-    image: crate:4.0.4 
+    image: crate:3.3.5 
     hostname: crate
     networks:
         - fiware
@@ -15,8 +15,7 @@ services:
       - cratedb:/data
     command: >
 			crate
-			 -Cnetwork.host=_site_ 
-			 -Cdiscovery.type=single-node
+             -Clicense.enterprise=false
              -Cauth.host_based.enabled=false
              -Ccluster.name=fiware
              -Chttp.cors.enabled=true
@@ -36,7 +35,9 @@ services:
         max-file: 5
         max-size: 50m
 	environment:
-       - CRATE_HEAP_SIZE=2g	
+       - CRATE_HEAP_SIZE=2g
+       - MAX_MAP_COUNT=262144
+       - ES_JAVA_OPTS="-Xms1g -Xmx1g"
 		
 networks:
   fiware:
