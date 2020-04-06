@@ -5,7 +5,7 @@ services:
     # Please, do only run one service of the following: orion, orion-ld, djeane
     # Sometimes the newest builds fail. Hence, we fixed a stable version that
     # probably will be updated once in a while
-    image: fiware/orion:2.2.0
+    image: fiware/orion:2.4.0
     hostname: orion
     depends_on:
         - mongodb
@@ -16,7 +16,7 @@ services:
     # Check carefully documentation for options:
     # https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
     # For in production mode please adjust these settings!
-    command: -dbhost mongo 
+    command: -dbhost mongodb
             -logLevel ERROR
             -logForHumans
             -statCounters 
@@ -25,16 +25,16 @@ services:
             -statNotifQueue
             -reqMutexPolicy none
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://orion:1026/version" || exit 1]
+      test: ["CMD", "curl", "-f", "http://orion:1026/version"]
       interval: 5m
       timeout: 10s
       retries: 3
-      start_period: 40
+      start_period: 40s
     # Probably this placement is not necessary
     deploy:
       replicas: 5
       placement:
-        constraints: [node.role == manager
+        constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -48,13 +48,12 @@ services:
          max-size: 10m
     
     
-    #MongoDB is the unterlying database engine
-    mongodb:
+  #MongoDB is the unterlying database engine
+  mongodb:
     # We try to always provide the latest stable version
     # Check https://docs.mongodb.com/manual/release-notes/
-    image: mongo:4.2 
+    image: mongo:4.2.2
     hostname: mongo
-
     # Because within the same network the containers
     # are connected anyways port exposing is not required 
     # --> only for external access
@@ -87,7 +86,7 @@ services:
   
   #Mongo-express is a simple visualisation of mongoDB-instances
   mongo-express:
-    image: mongo-express:0.49 # Check https://docs.mongodb.com/manual/release-notes/
+    image: mongo-express:0.54 # Check https://docs.mongodb.com/manual/release-notes/
     hostname: mongo-express
     # Because within the same network the containers
     # are connected port exposing is not required --> only for external access
@@ -113,6 +112,8 @@ services:
         max-file: 5
         max-size: 5m
 
+volumes:
+  mongodb:
 
 networks:
   fiware:
