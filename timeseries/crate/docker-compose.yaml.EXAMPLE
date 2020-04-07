@@ -2,18 +2,18 @@ version: '3.7'
 services:
   cratedb:
     # We try to always provide the latest stable version!
-	# Please check release notes!
-	# In future we will probably provide an image of the community edition
-    image: crate:3.3.5 
+    # Please check release notes!
+    # In future we will probably provide an image of the community edition
+    image: crate:3.3.6 
     hostname: cratedb
     networks:
-        - fiware
-#    ports:
-#     - "4200:4200"
+        - fiware_backend
+    ports:
+     - "4200:4200"
     volumes:
       - cratedb:/data
     command: >
-			crate
+      crate
              -Clicense.enterprise=false
              -Cauth.host_based.enabled=false
              -Ccluster.name=fiware
@@ -24,20 +24,22 @@ services:
       replicas: 1
       placement:
         constraints: [node.role==manager]
-        #- node.hostname == <yourHostName>
+      #- node.hostname == <yourHostName>
       #healthcheck is not allowed with docker stack
       #healthcheck:
       #  disable: false
-	# Limiting of logging
-	logging:
+    # Limiting of logging
+    logging:
       driver: "json-file"
       options:
         max-file: 5
         max-size: 50m
-	environment:
+  environment:
        - CRATE_HEAP_SIZE=2g
        - MAX_MAP_COUNT=262144
        - ES_JAVA_OPTS="-Xms1g -Xmx1g"
-		
+
 networks:
-  fiware:
+  fiware_backend:
+    external: true
+

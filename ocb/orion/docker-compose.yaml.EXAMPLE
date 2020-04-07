@@ -1,0 +1,52 @@
+version: "3.7"
+services:
+  # Orion is the original reference implementation of NGSIv2-Based datemanagement
+  orion:
+    # Please, do only run one service of the following: orion, orion-ld, djeane
+    # Sometimes the newest builds fail. Hence, we fixed a stable version that
+    # probably will be updated once in a while
+    image: fiware/orion:2.4.0
+    hostname: orion
+    depends_on:
+        - mongodb
+    networks:
+        - fiware_backend
+    ports:
+        - "1026:1026"
+    # Check carefully documentation for options:
+    # https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
+    # For in production mode please adjust these settings!
+    command: -dbhost mongodb
+            -logLevel ERROR
+            -logForHumans
+            -statCounters 
+            -statSemWait 
+            -statTiming 
+            -statNotifQueue
+            -reqMutexPolicy none
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://orion:1026/version"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Probably this placement is not necessary
+    deploy:
+      replicas: 5
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    #Limitation of logging
+    logging:
+      driver: "json-file"
+      options:
+         max-file: 5
+         max-size: 10m
+
+networks:
+  fiware_backend:
+    external: true
