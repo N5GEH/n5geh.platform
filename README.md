@@ -106,3 +106,11 @@ However, if the Docker host is publicly accessible, make sure to
   2. do not expose any ports from docker containers in a compose file or via `-p 1234:1234`. Without further modifications, these forwardings __bypass the local firewall__. Note, that in Swarm Mode, even ports exposed as `127.0.0.1:80:80` are [globally accessible](https://github.com/moby/moby/issues/32299#issuecomment-290978794).
 
 Have a look at [Keyrock](https://fiware-idm.readthedocs.io/en/latest/) for securing fiware services.
+
+## How to cite
+
+We also used this platform setup in the following publications:
+
+Storek, T., Lohmöller, J., Kümpel, A., Baranski, M. & Müller, D. (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. 
+
+
