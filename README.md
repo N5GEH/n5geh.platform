@@ -29,7 +29,7 @@ Similar to Orion, QuantumLeap provides an API for managing the historic data sto
 Via the two APIs, data can be provided to any external service such as visualization, analysis or control algorithms.
 For seamlessly connecting, managing and gathering data of IoT devices, FIWARE offers a set of IoT Agents that translate IoT specific protocols and message formats, such as Ultralight 2.0, JSON, etc. into the platform-internal NGSI format.
 Devices located in the building energy system send and receive the data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
-Particularly, in this paper, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/).
+Particularly, in this work, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/).
 The latter also provides authentication and Transport Layer Security (TLS) encryption mechanisms.
 Whenever a device is registered at an IoT Agent via its API, the agent automatically connects the device and the corresponding data with a specified content in Orion and stores the configuration in the MongoDB.
 Hence, each time the device measurement is updated, the data of the corresponding content in Orion is instantaneously updated; conversely, if a command in a content is updated, it is directly sent to the device.
@@ -62,34 +62,34 @@ and grafana on [timeseries](timeseries)
 
 ## How to start
 
-0. Start with a fresh Ubuntu Linux 18.04 instance. While an used machine might work, there often are remnants that cause our setup to fail.
+1. Start with a fresh Ubuntu Linux 18.04 instance. While an used machine might work, there often are remnants that cause our setup to fail.
 
-1. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for high availability (HA). This will follow later.
+2. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for high availability (HA). This will follow later.
 
   **Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
 
-2. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [Docker](https://docs.docker.com/network/network-tutorial-overlay/).
+3. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [Docker](https://docs.docker.com/network/network-tutorial-overlay/).
 This first network will be used for all FIWARE backend components.
 The second one is meant for additional services you may want to add to your platform.
 
-3. Clone this repository
+4. Clone this repository
 
         git clone https://git.rwth-aachen.de/EBC/Team_BA/fiware/fiware-example-setup.git
 
-4. Go into each subdirectory and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
+5. Go into each subdirectory and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
         cp <ServiceName>.conf.EXAMPLE <ServiceName>.conf
 
         cp docker-compose.yaml.EXAMPLE docker-compose.yaml
 
-5. You may adjust the docker-compose.yaml or *.conf to your preferences. But the
+6. You may adjust the docker-compose.yaml or *.conf to your preferences. But the
 functionality will then be left to you. **_Please_** do not use the latest version of
 the available services because these may be still under development and
 eventually not be stable. Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
 
 **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-6. Start each service either using the commands provided in the Makefile or with the command
+7. Start each service either using the commands provided in the Makefile or with the command
         "make deploy".
 Note, that this is only a shortcut for executing
         docker stack deploy -c docker-compose.yaml fiware
@@ -111,4 +111,4 @@ Have a look at [Keyrock](https://fiware-idm.readthedocs.io/en/latest/) for secur
 
 We also used this platform setup in the following publications:
 
-Storek, T., Lohmöller, J., Kümpel, A., Baranski, M. & Müller, D. (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. 
+T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063
