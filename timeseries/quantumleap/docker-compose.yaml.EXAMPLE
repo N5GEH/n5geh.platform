@@ -1,24 +1,23 @@
 version: '3.7'
 services:
   quantumleap:
-	# We try to always provide the latest stable version
-    image: smartsdk/quantumleap:0.7.0
+    # We try to always provide the latest stable version
+    image: smartsdk/quantumleap:0.7.4
     hostname: quantumleap
     depends_on:
       - mongodb
       - orion
       - cratedb
-    # Docker stack does not allow additional health check
-    # healthcheck:
-    #  test: curl --fail -s http://quantumleap:8668/v2/version || exit 1
+    healthcheck:
+      test: curl --fail -s http://quantumleap:8668/v2/version || exit 1
     networks:
-      - fiware
+      - fiware_backend
     ports:
       - "8668:8668"
     deploy:
       replicas: 5
     environment:
-      - CRATE_HOST=crate
+      - CRATE_HOST=cratedb
         # - USE_GEOCODING=false
         # - REDIS_HOST=redis
         # - REDIS_PORT=6379
@@ -26,7 +25,8 @@ services:
         driver: "json-file"
         options:
             max-file: 5
-            max-size: 10m        #
+            max-size: 10m
 networks:
-  fiware:
+  fiware_backend:
+    external: true
 

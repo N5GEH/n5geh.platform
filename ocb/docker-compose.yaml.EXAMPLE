@@ -10,7 +10,7 @@ services:
     depends_on:
         - mongodb
     networks:
-        - fiware
+        - fiware_backend
     ports:
         - "1026:1026"
     # Check carefully documentation for options:
@@ -46,8 +46,7 @@ services:
       options:
          max-file: 5
          max-size: 10m
-    
-    
+
   #MongoDB is the unterlying database engine
   mongodb:
     # We try to always provide the latest stable version
@@ -61,7 +60,7 @@ services:
     - "27017:27017"
     
     networks:
-        - fiware
+        - fiware_backend
     # 
     command: --bind_ip_all --quiet
     environment:
@@ -93,7 +92,7 @@ services:
     ports:
         - "8081:8081"
     networks:
-        - fiware
+        - fiware_backend
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
         - ME_CONFIG_MONGODB_SERVER=mongodb
@@ -116,4 +115,7 @@ volumes:
   mongodb:
 
 networks:
-  fiware:
+  fiware_backend:
+    external: true
+  fiware_services:
+    external: true
