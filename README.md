@@ -112,5 +112,3 @@ Have a look at [Keyrock](https://fiware-idm.readthedocs.io/en/latest/) for secur
 We also used this platform setup in the following publications:
 
 Storek, T., Lohmöller, J., Kümpel, A., Baranski, M. & Müller, D. (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. 
-
-
