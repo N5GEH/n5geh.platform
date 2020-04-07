@@ -6,7 +6,7 @@ services:
     image: fiware/orion-ld
     hostname: orion
     depends_on:
-      - mongo-db
+      - mongodb
     networks:
         - fiware
     ports:

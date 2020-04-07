@@ -1,6 +1,5 @@
 version: "3.7"
 services:
-
   mosquitto:
     image: eclipse-mosquitto
     hostname: mosquitto
@@ -8,10 +7,11 @@ services:
       - "1883:1883"
       - "9001:9001"
     networks:
-        - fiware
+        - fiware_backend
 
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
 networks:
-  fiware:
+  fiware_backend:
+     external: true

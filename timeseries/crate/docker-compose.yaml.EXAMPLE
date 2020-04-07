@@ -1,57 +1,45 @@
 version: '3.7'
 services:
-  crate:
-<<<<<<< HEAD
+  cratedb:
     # We try to always provide the latest stable version!
-	# Please check release notes!
-	# In future we will probably provide an image of the community edition
-    image: crate:3.3.5 
-    hostname: crate
-=======
-	#We try to always provide the latest stable version
-    image: crate:4.04 # Please check release notes!
-    hostname: crate-db
->>>>>>> master
+    # Please check release notes!
+    # In future we will probably provide an image of the community edition
+    image: crate:3.3.6 
+    hostname: cratedb
     networks:
-        - fiware
-#    ports:
-#     - "4200:4200"
+        - fiware_backend
+    ports:
+     - "4200:4200"
     volumes:
-<<<<<<< HEAD
       - cratedb:/data
     command: >
-			crate
+      crate
              -Clicense.enterprise=false
              -Cauth.host_based.enabled=false
              -Ccluster.name=fiware
              -Chttp.cors.enabled=true
              -Chttp.cors.allow-origin="*"
-=======
-      - ./data:/data
-    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false -Ccluster.name=fiwaredemo -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
->>>>>>> master
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints: [node.role==manager]
-        #- node.hostname == <yourHostName>
+      #- node.hostname == <yourHostName>
       #healthcheck is not allowed with docker stack
       #healthcheck:
       #  disable: false
-	# Limiting of logging
-	logging:
+    # Limiting of logging
+    logging:
       driver: "json-file"
       options:
         max-file: 5
         max-size: 50m
-<<<<<<< HEAD
-	environment:
+  environment:
        - CRATE_HEAP_SIZE=2g
        - MAX_MAP_COUNT=262144
        - ES_JAVA_OPTS="-Xms1g -Xmx1g"
-=======
->>>>>>> master
-		
+
 networks:
-  fiware:
+  fiware_backend:
+    external: true
+

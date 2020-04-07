@@ -11,7 +11,7 @@ services:
         - fiware
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
-        - ME_CONFIG_MONGODB_SERVER=mongo-db
+        - ME_CONFIG_MONGODB_SERVER=mongodb
         - ME_CONFIG_MONGODB_PORT=27017
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
         - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
