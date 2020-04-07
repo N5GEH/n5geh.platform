@@ -66,3 +66,7 @@ However, if you simply want to check for traffic you can use the integrated pm2 
       make exec
       
       pm2 monit
+      
+## Related Publications  
+
+Preventis, A., Stravoskoufos, K., Sotiriadis, S. & Petrakis, E. G. M. (2016, April - 2016, April). IoT-A and FIWARE: Bridging the Barriers between the Cloud and IoT Systems Design and Implementation. In Proceedings of the 6th International Conference on Cloud Computing and Services Science (S. 146–153). SCITEPRESS - Science and and Technology Publications. https://doi.org/10.5220/0005912001460153
