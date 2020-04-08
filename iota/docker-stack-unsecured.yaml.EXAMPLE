@@ -1,23 +1,22 @@
 version: "3.7"
 services:
-  mosquitto:
+  mqtt-broker:
     image: eclipse-mosquitto
-    hostname: mosquitto
+    hostname: mqtt-broker
     ports:
       - "1883:1883"
       - "9001:9001"
     networks:
         - fiware_backend
-
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mqtt-broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   iot-agent-json:
       image: fiware/iotagent-json:1.13.0
-      #hostname: iot-agent-json
+      hostname: iot-agent-json
       depends_on:
           - mongodb
-          - mosquitto
+          - mqtt-broker
       networks:
           - fiware_backend
       ports:
@@ -34,14 +33,18 @@ services:
           - IOTA_MONGO_HOST=mongodb # The host name of MongoDB
           - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
           - IOTA_MONGO_DB=iotagentjson # The name of the database used in mongoDB
-          - IOTA_MQTT_HOST=mqtt.bdd2c.eonerc.rwth-aachen.de # The host name of the MQTT Broke
-          - IOTA_MQTT_PORT=8883 # The port the MQTT Broker is listening on to receive topics
+          - IOTA_MQTT_HOST=mqtt-broker # The host name of the MQTT Broke
+          - IOTA_MQTT_PORT=1883 # The port the MQTT Broker is listening on to receive topics
           - IOTA_MQTT_PROTOCOL=mqtt # THe MQTT type supposed to use
           - IOTA_PROVIDER_URL=http://iot-agent-json:4041
           - IOTA_MULTI_CORE=true
           - PM2_ENABLED=true
-      heathcheck:
-        test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://iot-agent-json:4041/iot/about"]
+     #   interval: 5m
+     #   timeout: 10s
+     #   retries: 3
+     #   start_period: 40s
       logging:
         driver: "json-file"
         options:
@@ -56,7 +59,7 @@ services:
           - fiware_backend
       depends_on:
           - mongodb
-          - mosquitto
+          - mqtt-broker
       ports:
           - "4061:4061"
           - "7896:7896"
@@ -72,7 +75,7 @@ services:
           - IOTA_MONGO_HOST=mongodb
           - IOTA_MONGO_PORT=27017
           - IOTA_MONGO_DB=iotagentul
-          - IOTA_MQTT_HOST=mosquitto
+          - IOTA_MQTT_HOST=mqtt-broker
           - IOTA_MQTT_PORT=1883
           - IOTA_PROVIDER_URL=http://iot-agent-ul:4061
           - IOTA_MULTI_CORE=true
@@ -88,4 +91,3 @@ services:
 networks:
   fiware_backend:
      external: true
-
