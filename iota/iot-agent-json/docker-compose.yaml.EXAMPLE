@@ -27,7 +27,7 @@ services:
             - IOTA_PROVIDER_URL=http://iot-agent-json:4041
         healthcheck:
           test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
-		logging:
+        logging:
           driver: "json-file"
           options:
             max-file: 5
