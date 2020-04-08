@@ -8,7 +8,6 @@ services:
       - "9001:9001"
     networks:
         - fiware_backend
-
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
