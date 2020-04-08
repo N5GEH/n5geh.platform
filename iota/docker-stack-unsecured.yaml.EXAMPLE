@@ -13,7 +13,7 @@ services:
 
   iot-agent-json:
       image: fiware/iotagent-json:1.13.0
-      #hostname: iot-agent-json
+      hostname: iot-agent-json
       depends_on:
           - mongodb
           - mqtt-broker
@@ -40,7 +40,11 @@ services:
           - IOTA_MULTI_CORE=true
           - PM2_ENABLED=true
       healthcheck:
-        test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
+        test: ["CMD", "curl", "-f", "http://iot-agent-json:4041/iot/about"]
+     #   interval: 5m
+     #   timeout: 10s
+     #   retries: 3
+     #   start_period: 40s
       logging:
         driver: "json-file"
         options:
