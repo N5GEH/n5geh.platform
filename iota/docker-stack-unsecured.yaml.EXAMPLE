@@ -40,7 +40,7 @@ services:
           - IOTA_PROVIDER_URL=http://iot-agent-json:4041
           - IOTA_MULTI_CORE=true
           - PM2_ENABLED=true
-      heathcheck:
+      healthcheck:
         test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
       logging:
         driver: "json-file"
@@ -88,4 +88,3 @@ services:
 networks:
   fiware_backend:
      external: true
-
