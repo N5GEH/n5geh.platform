@@ -10,7 +10,7 @@ services:
         - fiware_backend
 
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mqtt-broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   iot-agent-json:
       image: fiware/iotagent-json:1.13.0
