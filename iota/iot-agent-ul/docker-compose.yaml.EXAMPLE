@@ -28,9 +28,8 @@ services:
             - IOTA_MQTT_HOST=mosquitto # The host name of the MQTT Broker
             - IOTA_MQTT_PORT=1883 # The port the MQTT Broker is listening on to receive topics
             - IOTA_PROVIDER_URL=http://iot-agent-ul:4061
-            # Docker stack does not allow additional health check
-            #heathcheck:
-            #  test: curl --fail -s http://iot-agent-ul:4061/iot/about || exit 1
+        healthcheck:
+          test: curl --fail -s http://iot-agent-ul:4061/iot/about || exit 1
 		logging:
           driver: "json-file"
           options:
