@@ -22,7 +22,7 @@ services:
             - IOTA_MONGO_HOST=mongodb # The host name of MongoDB
             - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
             - IOTA_MONGO_DB=iotagentjson # The name of the database used in mongoDB
-            - IOTA_MQTT_HOST=mosquitto # The host name of the MQTT Broker
+            - IOTA_MQTT_HOST=mqtt-broker # The host name of the MQTT Broker
             - IOTA_MQTT_PORT=1883 # The port the MQTT Broker is listening on to receive topics
             - IOTA_PROVIDER_URL=http://iot-agent-json:4041
         # Docker stack does not allow additional health check
