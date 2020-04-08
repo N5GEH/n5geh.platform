@@ -7,7 +7,7 @@ services:
             - mongodb
             - mqtt-broker
         networks:
-            - fiware
+            - fiware_backend
         ports:
             - "4041:4041"
             - "7876:7896"
@@ -33,4 +33,5 @@ services:
             max-file: 5
             max-size: 10m
 networks:
-      fiware:
+      fiware_backend:
+        external: true
