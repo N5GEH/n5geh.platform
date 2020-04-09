@@ -3,7 +3,7 @@ version: "3.7"
 services:
     iot-agent-ul:
 		# We try to always provide the latest stable version
-        image: fiware/iotagent-ul:1.10.0
+        image: fiware/iotagent-ul:1.13.0
         hostname: iot-agent-ul
         networks:
             - fiware
