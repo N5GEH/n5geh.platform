@@ -56,6 +56,7 @@ services:
       replicas: 5
     environment:
       - CRATE_HOST=cratedb
+      - LOGLEVEL=DEBUG
         # - USE_GEOCODING=false
         # - REDIS_HOST=redis
         # - REDIS_PORT=6379
