@@ -90,6 +90,6 @@ services:
 networks:
   fiware_backend:
     external: true
-  volumes:
-   grafana:
-   cratedb:
+volumes:
+  grafana:
+  cratedb:
