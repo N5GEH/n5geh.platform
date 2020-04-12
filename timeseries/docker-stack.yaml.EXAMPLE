@@ -4,7 +4,7 @@ services:
     # We try to always provide the latest stable version!
     # Please check release notes!
     # In future we will probably provide an image of the community edition
-    image: crate:3.3.6 
+    image: crate:3.3.5
     hostname: cratedb
     networks:
         - fiware_backend
