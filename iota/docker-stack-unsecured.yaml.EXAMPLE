@@ -10,6 +10,11 @@ services:
         - fiware_backend
     volumes:
       - ./mqtt-broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 10m      
 
   iot-agent-json:
       image: fiware/iotagent-json:1.13.0
