@@ -85,7 +85,13 @@ services:
       driver: "json-file"
       options:
         max-file: 5
-        max-size: 10m
+        max-size: 5m
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role==manager]
+      #- node.hostname == <yourHostName>    
 
 networks:
   fiware_backend:
