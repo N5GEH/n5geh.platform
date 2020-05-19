@@ -9,7 +9,7 @@ services:
     networks:
         - fiware_backend
     ports:
-    # - "4200:4200"
+     - "4200:4200"
     volumes:
       - /storage/cratedb:/data
     # -Ccluster.name                 https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
@@ -24,10 +24,10 @@ services:
     # -Cgateway.recover_after_nodes  https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway    
     command: >
             crate
-            -Ccluster.name=%{CLUSTER_NAME:-n5geh}
-            -Cnode.name={NODE_NAME:crate01}
+            -Ccluster.name=${CLUSTER_NAME:-n5geh}
+            -Cnode.name=${NODE_NAME:-crate01}
             -Cnetwork.host=_site_
-            -Cdiscovery.seed_hosts=${NODE_LIST:-cratedb}
+            -Cdiscovery.seed_hosts=${NODE_LIST:-crate01}
             -Ccluster.initial_master_nodes=${MASTER_NODE_LIST:-cratedb}
             -Cauth.host_based.enabled=false
             -Chttp.cors.enabled=true
@@ -35,12 +35,12 @@ services:
             -Cgateway.expected_nodes=${EXPECTED_NODES:-1}
             -Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}
     deploy:
-      endpoint_mode: dnsrr
+      #endpoint_mode: dnsrr
       mode: global
       placement:
         constraints: 
-          -node.labels.country==${COUNTRY:-DE}
-          -node.labels.type==storage
+          - node.labels.country==${COUNTRY:-DE}
+          - node.labels.type==storage
           #- node.hostname == <yourHostName>
     healthcheck:
       disable: false
@@ -51,9 +51,9 @@ services:
         max-file: 5
         max-size: 50m
     environment:
-       -CRATE_HEAP_SIZE=2g
-       -MAX_MAP_COUNT=262144
-       -ES_JAVA_OPTS="-Xms1g -Xmx1g"
+       - CRATE_HEAP_SIZE=2g
+       - MAX_MAP_COUNT=262144
+       - ES_JAVA_OPTS="-Xms1g -Xmx1g"
 
   quantumleap:
     # We try to always provide the latest stable version
