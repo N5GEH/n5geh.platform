@@ -55,7 +55,7 @@ services:
     networks:
       - fiware_backend
     environment:
-      - LISTENER_ADDRESS=crate-swarm-listener
+      - LISTENER_ADDRESS=cratedb-swarm-listener
       - MODE=swarm
       - BIND_PORTS=4200
       - BIND_PORTS=4300
