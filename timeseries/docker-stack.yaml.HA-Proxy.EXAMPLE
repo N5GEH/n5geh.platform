@@ -46,7 +46,7 @@ services:
 
   cratedb-proxy:
     image: dockerflow/docker-flow-proxy:latest
-    hostname: crate-proxy
+    hostname: cratedb-proxy
     ports:
       - "80:80"
       - "443:443"
@@ -78,7 +78,7 @@ services:
     image: crate:${CRATE_VERSION:-4.1.5}
     networks:
       - fiware_backend
-    ports:
+    # ports:
     # - "4200:4200"
     # - "4300:4300"
     # - "5432:5432"
