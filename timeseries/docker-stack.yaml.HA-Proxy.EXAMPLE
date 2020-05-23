@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    quantumleap:
+  quantumleap:
     # We try to always provide the latest stable version
     image: smartsdk/quantumleap:${QUANTUMLEAP_VERSION:-0.7.5}
     hostname: quantumleap
@@ -22,15 +22,15 @@ services:
         # - REDIS_HOST=redis
         # - REDIS_PORT=6379
     logging:
-        driver: "json-file"
-        options:
-            max-file: 5
-            max-size: 10m
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 10m
 
     # We are accessing the cratedb via a proxy using roundrobin as basic loadbalancing mechanism.
     # In used proxy service (https://proxy.dockerflow.com/) is based on HA-Proxy and will 
     # reconfigureautomatically when scaling the database on multiple nodes.
-    cratedb-swarm-listener:
+  cratedb-swarm-listener:
     image: dockerflow/docker-flow-swarm-listener:latest
     hostname: crate-swarm-listener
     networks:
@@ -44,96 +44,99 @@ services:
       placement:
         constraints: [node.role == manager]
 
-    cratedb-proxy:
-      image: dockerflow/docker-flow-proxy:latest
-      hostname: crate-proxy
-      ports:
-        - "80:80"
-        - "443:443"
-        - "4200:4200"
-        - "4300:4300"
-      networks:
-        - fiware_backend
-      environment:
-        - LISTENER_ADDRESS=crate-swarm-listener
-        - MODE=swarm
-        - BIND_PORTS=4200
-        - BIND_PORTS=4300
-      deploy:
-        mode: global
-        placement:
-          constraints: 
-            - node.labels.country==${COUNTRY:-DE}
-            - node.labels.type==storage
+  cratedb-proxy:
+    image: dockerflow/docker-flow-proxy:latest
+    hostname: crate-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "4200:4200"
+      - "4300:4300"
+    networks:
+      - fiware_backend
+    environment:
+      - LISTENER_ADDRESS=crate-swarm-listener
+      - MODE=swarm
+      - BIND_PORTS=4200
+      - BIND_PORTS=4300
+    deploy:
+      mode: global
+      placement:
+        constraints: 
+          - node.labels.country==${COUNTRY:-DE}
+          - node.labels.type==storage
+      update_config:
         parallelism: 1
-          delay: 10s
+        delay: 10s
     
-    # Setup for cratedb as distributed time-series storage.
-    # We always try to provide the latest stable version!
-    # Please check release notes!
-    # https://crate.io/docs/crate/guide/en/latest/deployment/containers/docker.html
-    # In future we will probably provide an image of the community edition
-    cratedb:
-      image: crate:${CRATE_VERSION:-4.1.5}
-      networks:
-          - fiware_backend
-      ports:
-       - "4200:4200"
-      volumes:
-        - /storage/cratedb:/data
-      # -Ccluster.name                 https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
-      # -Cnode.name                    https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
-      # -Cnetwork.host                 https://crate.io/docs/crate/reference/en/latest/config/node.html#hosts
-      # -Cdiscovery.seed_hosts         https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
-      # -Ccluster.initial_master_nodes https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
-      # -Cauth.host_based.enabled      https://crate.io/docs/crate/reference/en/latest/config/node.html#host-based-authentication
-      # -Chttp.cors.enabled            https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
-      # -Chttp.cors.allow-origin       https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
-      # -Cgateway.expected_nodes       https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway
-      # -Cgateway.recover_after_nodes  https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway    
-      command: >
-              crate
-              -Ccluster.name=${CLUSTER_NAME:-n5geh}
-              -Cnode.name={{.Node.Hostname}}
-              -Cnetwork.host=0.0.0.0
-              -Cdiscovery.seed_hosts=cratedb
-              -Ccluster.initial_master_nodes=${MASTER_NODE_LIST:-node01}
-              -Cauth.host_based.enabled=false
-              -Chttp.cors.enabled=true
-              -Chttp.cors.allow-origin="*"
-              -Cgateway.expected_nodes=${EXPECTED_NODES:-1}
-              -Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}
-      deploy:
-        endpoint_mode: dnsrr
-        mode: global
-        placement:
-          constraints: 
-            - node.labels.country==${COUNTRY:-DE}
-            - node.labels.type==storage
-            #- node.hostname == <yourHostName>
-        labels:
-          - com.df.notify=true
-          - com.df.distribute=true
-          - com.df.servicePath=/cratedb
-          - com.df.port=4200
-          - com.df.srcPort=4200
-          - com.df.port=4300
-          - com.df.srcPort=4300
-        update_config:
-          parallelism: 1
-          delay: 10s
-      healthcheck:
-        disable: false
-      # Limiting of logging
-      logging:
-        driver: "json-file"
-        options:
-          max-file: 5
-          max-size: 50m
-      environment:
-         - CRATE_HEAP_SIZE=2g
-         - MAX_MAP_COUNT=262144
-         - ES_JAVA_OPTS="-Xms1g -Xmx1g"
+  # Setup for cratedb as distributed time-series storage.
+  # We always try to provide the latest stable version!
+  # Please check release notes!
+  # https://crate.io/docs/crate/guide/en/latest/deployment/containers/docker.html
+  # In future we will probably provide an image of the community edition
+  cratedb:
+    image: crate:${CRATE_VERSION:-4.1.5}
+    networks:
+      - fiware_backend
+    ports:
+    # - "4200:4200"
+    # - "4300:4300"
+    # - "5432:5432"
+    volumes:
+      - /storage/cratedb:/data
+    # -Ccluster.name                 https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
+    # -Cnode.name                    https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
+    # -Cnetwork.host                 https://crate.io/docs/crate/reference/en/latest/config/node.html#hosts
+    # -Cdiscovery.seed_hosts         https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
+    # -Ccluster.initial_master_nodes https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
+    # -Cauth.host_based.enabled      https://crate.io/docs/crate/reference/en/latest/config/node.html#host-based-authentication
+    # -Chttp.cors.enabled            https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
+    # -Chttp.cors.allow-origin       https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
+    # -Cgateway.expected_nodes       https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway
+    # -Cgateway.recover_after_nodes  https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway    
+    command: >
+            crate
+            -Ccluster.name=${CLUSTER_NAME:-n5geh}
+            -Cnode.name={{.Node.Hostname}}
+            -Cnetwork.host=0.0.0.0
+            -Cdiscovery.seed_hosts=cratedb
+            -Ccluster.initial_master_nodes=${MASTER_NODE_LIST:-node01}
+            -Cauth.host_based.enabled=false
+            -Chttp.cors.enabled=true
+            -Chttp.cors.allow-origin="*"
+            -Cgateway.expected_nodes=${EXPECTED_NODES:-1}
+            -Cgateway.recover_after_nodes=${RECOVER_AFTER_NODES:-1}
+    deploy:
+      endpoint_mode: dnsrr
+      mode: global
+      placement:
+        constraints: 
+          - node.labels.country==${COUNTRY:-DE}
+          - node.labels.type==storage
+          #- node.hostname == <yourHostName>
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/cratedb
+        - com.df.port=4200
+        - com.df.srcPort=4200
+        - com.df.port=4300
+        - com.df.srcPort=4300
+      update_config:
+        parallelism: 1
+        delay: 10s
+    healthcheck:
+      disable: false
+    # Limiting of logging
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
+    environment:
+       - CRATE_HEAP_SIZE=2g
+       - MAX_MAP_COUNT=262144
+       - ES_JAVA_OPTS="-Xms1g -Xmx1g"
 
 networks:
   fiware_backend:
