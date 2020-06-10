@@ -1,10 +1,10 @@
 # FIWARE-Stack Setup
 
 Welcome to the quick setup of the FIWARE core on a Unix OS! 
-Nevertheless, with some minor changes in the docker-compose files it might also work on a Windows OS but this is not tested so far! 
-Anyway, you cannot make use of the Makefiles directly using a Windows OS and need to type in the docker commands directly!
+With some minor changes to the docker stack files it might also work on a Windows OS but this is not tested so far! 
 
-**Note:** We mostly link, sum up and also copy official documentation written and published by the FIWARE (Future Internet Software) foundation for that we do not claim ownership.
+**Note:** We mostly link, sum up and also copy official documentation written and published by the FIWARE (Future Internet Software) foundation for that we do not claim ownership. Furthermore, we used the the recipes created as part of the SmartSDK project (https://www.smartsdk.eu/) which can be found on github:
+https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
 
@@ -19,7 +19,13 @@ The core of the FIWARE plattform that provides the functionality suited for most
  
 ![Overview of the core generic enablers of fiware](docs/figures/Overview.png)
 
-***Figure 1:*** *Overview of FIWARE platform and its components (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
+***Figure 1:*** *Overview of the FIWARE platform and its components (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
+
+How the platform can be used in the context of energy applications is depict here:
+
+![Overview of fiware in the context of energy](docs/figures/Platform_Images-Under development.png)
+
+***Figure 2:*** *Overview of FIWARE platform and its components in the context of energy systems and deployed within a Docker-Swarm(_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html). (We are currently waiting for license agreements before publishing this image)*
 
 The Orion context broker is the central component of the FIWARE stack that provides update, query, registration and subscription functionality via its API for managing the context information in the platform.
 The data itself is stored in an underlying [MongoDB](https://www.mongodb.com/) database.
@@ -33,10 +39,12 @@ Particularly, in this work, we use the open source broker implementation of [Ecl
 The latter also provides authentication and Transport Layer Security (TLS) encryption mechanisms.
 Whenever a device is registered at an IoT Agent via its API, the agent automatically connects the device and the corresponding data with a specified content in Orion and stores the configuration in the MongoDB.
 Hence, each time the device measurement is updated, the data of the corresponding content in Orion is instantaneously updated; conversely, if a command in a content is updated, it is directly sent to the device.
+To exploit the hardware potential of cloud technology, we embed the platform into a container virtualization using images provided by FIWARE. 
+Not only does this enable an easy setup and configuration procedure, but also the distribution on multiple hardware nodes via Docker-Swarm.
 
-This Git gives only a short overview of the functionality it also provides a postman-collection that contains the basic CRUD queries for accessing the individual functionality. 
  For a closer look on FIWARE you will find a comprehensive tutorial here:
- https://fiware-tutorials.readthedocs.io/en/latest/index.html
+ https://fiware-tutorials.readthedocs.io/en/latest/index.html and the corresponding Git-Repositories: https://github.com/fiware/tutorials.Step-by-Step/ 
+ These Git-Repos also provide a postman-collection that contain the basic CRUD queries for accessing the individual functionality. 
 
 **Note:** The tutoial does not cover all the aspects, but it is a good
  starting point to get to know FIWARE a little better. 
@@ -54,6 +62,7 @@ Thanks for any comments on it!**
 ## Structure of this repository
 
 We grouped and structured the repository by means of functionality of the introduced GEs.
+Each subdirectory contains a small corresponding readme.
 - For setting up the core component, the Orion context broker, the underlying mongodb and mongo-express you will the a complete stack-file as well as individual files in [ocb](ocb)
 - Everything for connecting IoT-Devices to the platform is collected in [iota](iota) (_short for_: IoT-Architecture).
 - For storing and retrieving time series data you will find stack-files for quantumleap, cratedb,
@@ -66,7 +75,7 @@ and grafana on [timeseries](timeseries)
 
 2. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for high availability (HA). This will follow later.
 
-  **Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
+      **Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
 
 3. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [Docker](https://docs.docker.com/network/network-tutorial-overlay/).
 This first network will be used for all FIWARE backend components.
@@ -74,27 +83,34 @@ The second one is meant for additional services you may want to add to your plat
 
 4. Clone this repository
 
-        git clone https://git.rwth-aachen.de/EBC/Team_BA/fiware/fiware-example-setup.git
+        git clone https://github.com/N5GEH/n5geh.platform.git
 
-5. Go into each subdirectory and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
+5. Go into each subdirectory and copy the docker-stack.yaml.EXAMPLE and possibly further configuration files. We recommend to start with Orion Context Broker (OCB) and the underlying MongoDB, since the other components might rely on it.
 
         cp <ServiceName>.conf.EXAMPLE <ServiceName>.conf
 
-        cp docker-compose.yaml.EXAMPLE docker-compose.yaml
+        cp docker-stack.yaml.EXAMPLE docker-stack.yaml
 
-6. You may adjust the docker-compose.yaml or *.conf to your preferences. But the
-functionality will then be left to you. **_Please_** do not use the latest version of
-the available services because these may be still under development and
-eventually not be stable. Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
+6. You may adjust the docker-stack.yaml or *.conf to your preferences. But the
+functionality will then be left to you. 
+**_Please_** do not use the latest version of the available services because these may be still under development and possibly not be stable. 
+Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
 
-**Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
+    **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-7. Start each service either using the commands provided in the Makefile or with the command
-        "make deploy".
-Note, that this is only a shortcut for executing
-        docker stack deploy -c docker-compose.yaml fiware
+7. Start each service using:
 
-  **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **mongoDB** first followed by the **Context-Broker**. These two act as the brain of the platform and manage all context.
+        docker stack deploy -c <yourStackFile> <nameOfStack>
+
+    e.g    docker stack deploy -c docker-stack.yaml fiware
+
+  **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **MongoDB** and **Orion-Context-Broker (OCB)** in OCB. 
+  These two act as the brain of the platform and manage all context.
+  
+8. Check if the stack and all corresponding service are up and running with:
+    
+        docker stack ls
+        docker stack ps <nameOfStack>  
 
 ## Security
 
