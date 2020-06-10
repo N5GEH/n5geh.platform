@@ -1,5 +1,7 @@
 # ignore all directories with data in it
 **/data/
 # ignoring personalized docker-compose-filesand configuration
-**/docker-compose.yaml
+*.yaml
+*.yml
 **/*.conf
+*.toml

@@ -16,16 +16,7 @@ services:
     volumes:
       - crate01:/data
 
-    # -Ccluster.name                 https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
-    # -Cnode.name                    https://crate.io/docs/crate/reference/en/latest/config/node.html#basics
-    # -Cnetwork.host                 https://crate.io/docs/crate/reference/en/latest/config/node.html#hosts
-    # -Cdiscovery.seed_hosts         https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
-    # -Ccluster.initial_master_nodes https://crate.io/docs/crate/reference/en/latest/config/cluster.html#discovery
-    # -Cauth.host_based.enabled      https://crate.io/docs/crate/reference/en/latest/config/node.html#host-based-authentication
-    # -Chttp.cors.enabled            https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
-    # -Chttp.cors.allow-origin       https://crate.io/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
-    # -Cgateway.expected_nodes       https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway
-    # -Cgateway.recover_after_nodes  https://crate.io/docs/crate/reference/en/latest/config/cluster.html#metadata-gateway
+
 
     command: >
             crate
