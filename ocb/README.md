@@ -72,18 +72,25 @@ adjust the placement of the container.
    You should find Orion, MongoDB and MongoExpress
          
 5. Check if Orion is properly working by making an HTTP request to the exposed port:
-
-        curl -X GET \
+    
+                curl -X GET \
         'http://<yourHostAddress>:4041/version'
-    
-    or 
-    
-        curl -X GET \
-        'http://<yourHostAddress>:4061/version'
         
-    the responses should look similar to the this:
+    the response should look similar to the this:
 
-        {"libVersion":"2.11.0","port":"4041","baseRoot":"/","version":"1.13.0"}
+        {
+            "orion": {
+                "version": "1.12.0-next",
+                "uptime": "0 d, 0 h, 3 m, 21 s",
+                "git_hash": "e2ff1a8d9515ade24cf8d4b90d27af7a616c7725",
+                "compile_time": "Wed Apr 4 19:08:02 UTC 2018",
+                "compiled_by": "root",
+                "compiled_in": "2f4a69bdc191",
+                "release_date": "Wed Apr 4 19:08:02 UTC 2018",
+                "doc": "https://fiware-orion.readthedocs.org/en/master/"
+            }
+        }
+
 
 6. You can also check the MongoDB watching what is happening in the database 
 via MongoExpress from your browser simply enter:
