@@ -19,7 +19,7 @@ WARNING: Please be aware of the fact that we do not cover security aspects here.
 
 1. Go into the mqtt-broker subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and the mosquitto configuration file and rename them:
 
-        cp docker-compose.yaml.EXAMPLE docker-compose.yaml
+        cp docker-stack.yaml.EXAMPLE docker-stack.yaml
 
         cp mosquitto.conf.EXAMPLE mosquitto.conf
 
@@ -33,7 +33,7 @@ WARNING: Please be aware of the fact that we do not cover security aspects here.
 
       Note, that this is just a shortcut for
 
-        docker stack deploy -c docker-compose.yaml fiware
+        docker stack deploy -c docker-stack.yaml fiware
 
 4. Check if the service is up and running using the mosquitto client:
 
