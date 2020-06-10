@@ -100,6 +100,6 @@ via MongoExpress from your browser simply enter:
     However, for the building domain you might include the information provived above. 
     A small example will follow soon.
     
-## How to setup with encryption
+## How to setup in high available environment (HA):
 
 This will follow soon ...
