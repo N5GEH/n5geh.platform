@@ -32,7 +32,7 @@ via a Common Middleware"](http://mitja.cc/master_thesis.pdf) by Mitja Schmakeit,
 
 2. Go into the crate subdirectory of your cloned version of the git and copy the docker-compose.yaml.EXAMPLE and possibly further configuration files
 
-        cp docker-compose.yaml.EXAMPLE docker-compose.yaml
+        cp docker-stack.yaml.EXAMPLE docker-stack.yaml
 
 3. You may adjust the docker-compose.yaml to your preferences, e.g., you need to
 adjust the placement of the container. In this example we use a local folder "data" for storing our data which we need to create it first in our subdirectory.
@@ -54,7 +54,7 @@ adjust the placement of the container. In this example we use a local folder "da
 
       Note, that this is just a shortcut for
 
-        docker stack deploy -c docker-compose.yaml fiware
+        docker stack deploy -c docker-stack.yaml fiware
 
 5. For watching what is happening in the database you can use a Web GUI tool:
 

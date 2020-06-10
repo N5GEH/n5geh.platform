@@ -49,11 +49,18 @@ and copy the docker-stack.yaml.EXAMPLE and possibly further configuration files
 
       **Note:** Our configuration uses the community edition as default. In case you own a license you may change it within your personal copy of the compose-file.
 
-3. Start the service either using this docker command:
+3. Before we start the database service we need to take care of a **known bug.**  In order to start the database on a Unix OS, `vm.max_map_count` has to be increased on each machine the database is supposed to run on:
+
+        sudo sysctl -w vm.max_map_count=262144
+
+      append the entry to the file `/etc/sysctl.conf` to automatically set the value on every restart
+      https://crate.io/docs/crate/guide/en/latest/admin/bootstrap-checks.html?highlight=max_map_count
+
+4. Start the service either using this docker command:
 
         docker stack deploy -c docker-stack.yaml fiware
         
-4. Check if the services are up and running by making an HTTP request to the exposed port:
+5. Check if the services are up and running by making an HTTP request to the exposed port:
 
         curl -X GET \
         'http://<yourHostAddress>:/v2/version'
@@ -67,12 +74,12 @@ and copy the docker-stack.yaml.EXAMPLE and possibly further configuration files
           }
         }
 
-5. If you published the port of the CrateDB as well you can check its admin GUI here:
+6. If you published the port of the CrateDB as well you can check its admin GUI here:
 
         http://<yourHostAddress>:4200 
 
 
-6. For handling your first timeseries data we recommend the Step-by-Step Tutorial:
+7. For handling your first timeseries data we recommend the Step-by-Step Tutorial:
 https://fiware-tutorials.readthedocs.io/en/latest/time-series-data/index.html.
 
 ## How to setup in high availability environment (HA):
@@ -80,5 +87,33 @@ https://fiware-tutorials.readthedocs.io/en/latest/time-series-data/index.html.
 A detailed description of this will follow soon but you can already find an example for the docker-stack.yaml
 in the repository.
 
-![CrateDB in HA setup](../docs/figures/Platform_Images-CrateDB.png)
+![CrateDB in HA setup](../docs/figures/Platform_Images-CrateDB.png)   
+
 **Figure 1** _CrateDB in HA environment using two data nodes, one arbiter and docker-flow as HA-Proxy configuration service_
+
+1. For each of the storage node we create a directory holding the data of the CrateDB. This has to be done manually on the machine e.g.
+
+        mkdir /storage/cratedb
+ 
+     If your chose other please adjust line in your stack file where the volume is mapped to the crated-worker.
+2. Again to start the database on a Unix OS, `vm.max_map_count` has to be increased on each machine the database is supposed to run on:
+
+        sudo sysctl -w vm.max_map_count=262144
+
+      append the entry to the file `/etc/sysctl.conf` to automatically set the value on every restart
+      https://crate.io/docs/crate/guide/en/latest/admin/bootstrap-checks.html?highlight=max_map_count
+ 
+3. Adjust the labels of nodes and of the services in the stack file for proper placement on your machines.
+
+        $ docker node update --label-add <yourLabel> <yourNodeName>
+        
+    For more information see:
+    
+    https://docs.docker.com/engine/reference/commandline/node_update/
+
+4. Adjust the cluster initial_master_nodes in the CrateDB services. 
+
+4. Start the stack from one of your manager nodes.
+
+5. The CrateDB GUI will know be available on port 4202 and show a database cluster of 3 nodes.
+This the maximum freely licensed number of nodes.
