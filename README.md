@@ -98,16 +98,17 @@ Simply check the latest release for the last stable version [Link](https://githu
 
     **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-7. Start each service using:
+7. Start the stack using:
 
-        docker stack deploy -c <yourStackFile> <nameOfStack>
+        docker swarm init
+        docker-compose up
 
     e.g    docker stack deploy -c docker-stack.yaml fiware
 
   **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **MongoDB** and **Orion-Context-Broker (OCB)** in OCB. 
   These two act as the brain of the platform and manage all context.
   
-8. Check if the stack and all corresponding service are up and running with:
+7. Check if the stack and all corresponding service are up and running with:
     
         docker stack ls
         docker stack ps <nameOfStack>  
