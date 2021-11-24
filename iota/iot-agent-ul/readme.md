@@ -7,7 +7,7 @@ https://fiware-iotagent-ul.readthedocs.io/en/latest/installationguide/index.html
 
         cp docker-stack.yaml.EXAMPLE docker-stack.yaml
 
-2. You may the docker-stack.yaml to your preferences e.g. you need to
+2. You may configure the docker-stack.yaml based on your preferences e.g. you need to
 adjust the placement of the container.
 
       **Note:** Some changes may require the modification of the Makefile that comes
