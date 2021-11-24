@@ -4,12 +4,12 @@ MQTT(Message Queuing Telemetry Transport) is a widely used message protocol in I
 
 Within the context of FIWARE, MQTT changes the communication structure of devices according to the overview below:
 
-![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/HTTP-MQTT.JPG)
-***Figure 1:*** *Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
+![Comparision between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/HTTP-MQTT.JPG)
+***Figure 1:*** *Comparision between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
 Consequently, the overall architecture changes to the following:
 
-![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/mqtt.png)
+![Comparision between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/mqtt.png)
 
 ***Figure 2:*** *FIWARE platform with connected MQTT-Broker (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
