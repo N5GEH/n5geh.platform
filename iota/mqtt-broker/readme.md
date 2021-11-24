@@ -2,7 +2,7 @@
 
 MQTT(Message Queuing Telemetry Transport) is a widely used message protocol in IoT applications for realizing a machine-to-machine (M2M) communication. It has its origins in SCADA systems and therefore from the designed point a good starting point for most IoT purposes. Further instruction would go beyond of this tutorial.
 
-Within the context of FIWARE MQTT changes the communication structure of devices according to the overview below:
+Within the context of FIWARE, MQTT changes the communication structure of devices according to the overview below:
 
 ![Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)](../../docs/figures/HTTP-MQTT.JPG)
 ***Figure 1:*** *Comparism between transport over HTTP and MQTT (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
