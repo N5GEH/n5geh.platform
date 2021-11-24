@@ -318,7 +318,6 @@ services:
       - IOTA_AUTOCAST=${IOTA_UL_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
       - IOTA_MONGO_HOST=${IOTA_UL_MONGODB_HOST:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
       - IOTA_MONGO_PORT=${IOTA_UL_MONGODB_PORT:-27017} # The port mongoDB is listening on
-      - IOTA_MONGO_REPLICASET=${IOTA_UL_MONGO_REPLICASET:-rs0} # Optional - name of the replicaset if mongodb is instanciated as replicaset
       - IOTA_MONGO_DB=${IOTA_UL_MONGODB_DB_NAME:-iotagentul} # The name of the database used in mongoDB
       - IOTA_MQTT_HOST=${IOTA_UL_MQTT_HOST:-mqtt-broker} # The host name of the MQTT Broker
       - IOTA_MQTT_PORT=${IOTA_UL_MQTT_PORT:-1883} # The port the MQTT Broker is listening on to receive topics
