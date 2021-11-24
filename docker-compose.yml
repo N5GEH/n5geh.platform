@@ -8,6 +8,8 @@ services:
     # probably will be updated once in a while
     image: fiware/orion:${ORION_VERSION:-3.1.0}
     hostname: orion
+    depends_on:
+        - mongodb
     networks:
         - fiware_backend
     ports:
