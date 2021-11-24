@@ -85,20 +85,14 @@ The second one is meant for additional services you may want to add to your plat
 
         git clone https://github.com/N5GEH/n5geh.platform.git
 
-5. Go into each subdirectory and copy the docker-stack.yaml.EXAMPLE and possibly further configuration files. We recommend to start with Orion Context Broker (OCB) and the underlying MongoDB, since the other components might rely on it.
-
-        cp <ServiceName>.conf.EXAMPLE <ServiceName>.conf
-
-        cp docker-stack.yaml.EXAMPLE docker-stack.yaml
-
-6. You may adjust the docker-stack.yaml or *.conf to your preferences. But the
+5. You may adjust the docker-stack.yaml or *.conf to your preferences. But the
 functionality will then be left to you. 
 **_Please_** do not use the latest version of the available services because these may be still under development and possibly not be stable. 
 Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
 
     **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-7. Start the stack using:
+6. Start the stack using:
 
         docker swarm init
         docker-compose up
