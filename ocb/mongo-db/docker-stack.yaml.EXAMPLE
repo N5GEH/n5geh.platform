@@ -1,45 +1,52 @@
-version: "3.7"
+version: "3.8"
 services:
   mongodb:
     # We try to always provide the latest stable version
     # Check https://docs.mongodb.com/manual/release-notes/
-    image: mongo:4.2 
-    hostname: mongodb
+      image: mongo:${MONGODB_VERSION:-4.4}
+      hostname: mongodb1
+      # Because within the same network the containers
+      # are connected anyways port exposing is not required
+      # --> only for external access
+      ports:
+        - "27017:27017"
+      #healthcheck:
+      #  test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongodb1:27017\",tags:'primary'},{_id:1,host:\"mongodb2:27017\",tags:'secondary'},{_id:2,host:\"mongodb3:27017\",tags:'secondary'}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+      #  interval: 10s
+      #  start_period: 30s
+      networks:
+          - fiware_backend
+      entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+      environment:
+          - MONGODB_REPLICA_SET_MODE=primary
+          - ALLOW_EMPTY_PASSWORD=${MONGODB_ALLOW_EMPTY_PASSWORD:-yes}
+          - MONGODB_SYSTEM_LOG_VERBOSITY=${MONGODB_SYSTEM_LOG_VERBOSITY:-3}
+          - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
+          - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
+      volumes:
+          - ${MONGODB_VOLUME_PATH:-/home/ebcadmin/fiware/data/mongodb}:/data/db
+      deploy:
+        placement:
+          constraints: 
+            - node.role == worker
+            - node.labels.role == storage
+            - node.hostname == tst-fiware-dev-storage1
+        resources: # no clear resource constraints yet developed
+          limits:
+            cpus: '4'
+            memory: 4G
+          reservations:
+            cpus: '2'
+            memory: 2G
+      #ulimits:
+      #  memlock: -1
+      # Settings for log-files
+      logging:
+        driver: "json-file"
+        options:
+          max-file: 5
+          max-size: 5m
 
-    # Because within the same network the containers
-    # are connected anyways port exposing is not required 
-    # --> only for external access
-    ports:
-    - "27017:27017"
-    
-    networks:
-        - fiware
-    # 
-    command: --bind_ip_all --quiet --smallfiles
-    environtment:
-        - ALLOW_EMPTY_PASSWORD=yes
-        - MONGODB_SYSTEM_LOG_VERBOSITY=3
-        - MONGO_DATA_DIR=/data/db
-        - MONGO_LOG_DIR=/dev/null
-        
-    volumes:
-       - mongodb:/data/db
-
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-    
-    # Settings for log-files
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
-
-# Initilize network if not already existing
 networks:
-  fiware:
-
-# Map volume to mongo db
-volumes:
-  mongo:
+  fiware_backend:
+    #external: true
