@@ -21,9 +21,6 @@ The core of the FIWARE plattform that provides the functionality suited for most
 
 ***Figure 1:*** *Overview of the FIWARE platform and its components (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
 
-How the platform can be used in the context of energy applications is depict here:
-
-![Overview of fiware in the context of energy](docs/figures/Platform_Images-Under development.png)
 
 ***Figure 2:*** *Overview of FIWARE platform and its components in the context of energy systems and deployed within a Docker-Swarm(_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html). (We are currently waiting for license agreements before publishing this image)*
 
@@ -59,15 +56,14 @@ We try to keep the collection of links up-to-date as long as we are actively wor
 **Try it out!<br>
 Thanks for any comments on it!**
 
-## Structure of this repository
-
-We grouped and structured the repository by means of functionality of the introduced GEs.
-Each subdirectory contains a small corresponding readme.
-- For setting up the core component, the Orion context broker, the underlying mongodb and mongo-express you will the a complete stack-file as well as individual files in [ocb](ocb)
-- Everything for connecting IoT-Devices to the platform is collected in [iota](iota) (_short for_: IoT-Architecture).
-- For storing and retrieving time series data you will find stack-files for quantumleap, cratedb,
-and grafana on [timeseries](timeseries)
-- Additionally you will find the NGSI-Proxy for retrieving data from foreign APIs
+## Services in the stack file 
+* Orion Context Broker (OCB)
+* MongoDB
+* Mongo-Express
+* QuantumLeap
+* CrateDB-Cluster (3 nodes) and necessary proxies
+* IOT-Agent-Json
+* MQTT-Broker (Mosquitto)
 
 ## How to start
 
