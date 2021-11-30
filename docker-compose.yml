@@ -14,7 +14,6 @@ services:
         - fiware_backend
     ports:
         - "1026:1026"
-    command: -logLevel DEBUG -dbhost mongodb1,mongodb2,mongodb3 -rplSet rs0 -dbTimeout 10000
     # Check carefully documentation for options:
     # https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
     # For in production mode please adjust these settings!
@@ -316,7 +315,7 @@ services:
       - IOTA_TIMESTAMP=${IOTA_UL_TIMESTAMP:-true} # Supply timestamp information with each measurement
       - IOTA_CB_NGSI_VERSION=${IOTA_UL_CB_NGSI_VERSION:-v2} # use NGSIv2 when sending updates for active attributes
       - IOTA_AUTOCAST=${IOTA_UL_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=${IOTA_UL_MONGODB_HOST:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
+      - IOTA_MONGO_HOST=${IOTA_UL_MONGODB_HOST:-mongodb} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
       - IOTA_MONGO_PORT=${IOTA_UL_MONGODB_PORT:-27017} # The port mongoDB is listening on
       - IOTA_MONGO_DB=${IOTA_UL_MONGODB_DB_NAME:-iotagentul} # The name of the database used in mongoDB
       - IOTA_MQTT_HOST=${IOTA_UL_MQTT_HOST:-mqtt-broker} # The host name of the MQTT Broker
@@ -353,7 +352,7 @@ services:
       - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true} # Supply timestamp information with each measurement
       - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-v2} # use NGSIv2 when sending updates for active attributes
       - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
+      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST:-mongodb} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
       - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017} # The port mongoDB is listening on
       - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson} # The name of the database used in mongoDB
       - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker} # The host name of the MQTT Broker
