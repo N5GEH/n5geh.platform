@@ -1,71 +1,59 @@
 # FIWARE-Stack Setup
 
 Welcome to the quick setup of the FIWARE core on a Unix OS! 
-With some minor changes to the docker stack files it might also work on a Windows OS but this is not tested so far! 
+With some minor changes to the docker files it might also work on a Windows OS but this is not tested so far! There are possibilities to run a sandbox with a Unix OS for Windows OS.
 
 **Note:** We mostly link, sum up and also copy official documentation written and published by the FIWARE (Future Internet Software) foundation for that we do not claim ownership. Furthermore, we used the the recipes created as part of the SmartSDK project (https://www.smartsdk.eu/) which can be found on github:
 https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
 
-This repository contains example docker-stack.yamls and for the easy deployment of core elements aka *Generic Enablers* of the the FIWARE plattform in a docker swarm setup.
+This repository contains example docker yml files for the easy deployment of core elements aka *Generic Enablers* of the FIWARE plattform on a single computer setup via docker-compose and a multi node setup via docker swarm (also docker stack).
 "FIWARE is a curated framework of open source platform components to
  accelerate the development of Smart Solutions." 
- Beside the fact that FIWARE is freely distributed, it comes along with the benefits of a large community and offers a set of advanced components including a high performance database engine and a sophisticated set of Representational State Transfer (REST) application programming interfaces (API) using the standardized Next Generation Service Interface (NGSI) format, which is also the formal standard for context information management systems in smart cities.
+ Beside the fact that FIWARE is freely distributed, it comes along with the benefits of a large community and makes use of advanced components including high performance databases and a sophisticated set of Representational State Transfer (REST) application programming interfaces (API) using the standardized Next Generation Service Interface (NGSI) format. Latter is also the formal standard for context information management systems in smart cities.
  For more general information about FIWARE, why to use it and its core concept please check https://www.fiware.org/developers/ <br>
 
 At the moment, the FIWARE catalogue contains about 30 interoperable software modules, so-called Generic Enablers (GE) for developing and providing customized IoT platform solutions.
-The core of the FIWARE plattform that provides the functionality suited for most IoT-Applications consists of the GEs depict in image below. 
+The core of the FIWARE platform used in the N5GEH project provides functionalities suited for most IoT-Applications. An overview of the platform components and their communication is depicted in the image below.
  
 ![Overview of the core generic enablers of fiware](docs/figures/Fiware.png)
 
 ***Figure 1:*** *Overview of the FIWARE platform and its components*
 
 
-The Orion context broker is the central component of the FIWARE stack that provides update, query, registration and subscription functionality via its API for managing the context information in the platform.
-The data itself is stored in an underlying [MongoDB](https://www.mongodb.com/) database.
-Orion only provides information of the current data content.
-Hence, for storing time series data persistently, we deploy QuantumLeap, which subscribes a specified content and automatically stores updated data persistently in the connected high-performance [CrateDB](https://crate.io/) database.
-Similar to Orion, QuantumLeap provides an API for managing the historic data stored in the database and, thus, adds time series functionality to the platform. 
-Via the two APIs, data can be provided to any external service such as visualization, analysis or control algorithms.
-For seamlessly connecting, managing and gathering data of IoT devices, FIWARE offers a set of IoT Agents that translate IoT specific protocols and message formats, such as Ultralight 2.0, JSON, etc. into the platform-internal NGSI format.
-Devices located in the building energy system send and receive the data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
-Particularly, in this work, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/).
-The latter also provides authentication and Transport Layer Security (TLS) encryption mechanisms.
-Whenever a device is registered at an IoT Agent via its API, the agent automatically connects the device and the corresponding data with a specified content in Orion and stores the configuration in the MongoDB.
-Hence, each time the device measurement is updated, the data of the corresponding content in Orion is instantaneously updated; conversely, if a command in a content is updated, it is directly sent to the device.
-To exploit the hardware potential of cloud technology, we embed the platform into a container virtualization using images provided by FIWARE. 
-Not only does this enable an easy setup and configuration procedure, but also the distribution on multiple hardware nodes via Docker-Swarm.
+The Orion context broker is the central component of our platform that provides update, query, registration and subscription functionalities via its API for managing the context information (entities and attributes) stored in the platform.
+Orion is stateless and thus does not ofer any storage itself. 
+It stores the data in an underlying [MongoDB](https://www.mongodb.com/) database.
+MongoDB only stores the context information as well as the current values of the attributes.
+In order to store time series data persistently, the GE QuantumLeap is deployed. 
+Via the subscription mechanism, Orion can notify QuantumLeap whenever it receives updates on certain content. QuantumLeap then stores the data in the high-performance database [CrateDB](https://crate.io/).
+Similar to Orion, QuantumLeap provides an API for querying and managing the historic data stored in the database. . 
+Via the two APIs of Orion and QuantumLeap, data can be provided to any external service such as visualization, analysis or control algorithms.
+Since most devices do not support the platform internal NGSI format, FIWARE offers a set of IoT Agents that translate IoT specific protocols and message formats, such as Ultralight 2.0, JSON, etc. into NGSI format.
+For example, devices located in a building energy system can send and receive data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
+Particularly, in this work, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/). 
+Mosquitto supports Transport Layer Security (TLS) and basic authentication and authorization features.
+In this work, we used an adapted version of mosquitto in order to realize communication between the MQTT broker and a centrla Identity and Access Management (IDAM) using openID-connect and OAUth 2.0. 
+To exploit the potentials of cloud technology, we deploy the platform via the virtualization technology docker. 
+All images are open source and available on docker hub.
+Using the virtualization technology docker, the setup is not bound to the host operating system since each container comes with its own running environment. Furthermore, the setup and configuration procedures are simplified by using pre-configured yml files. Last, docker swarm allows the distribution of platform components on multiple hardware nodes.
 
- For a closer look on FIWARE you will find a comprehensive tutorial here:
+ For a closer look on FIWARE, please, find comprehensive tutorials here:
  https://fiware-tutorials.readthedocs.io/en/latest/index.html and the corresponding Git-Repositories: https://github.com/fiware/tutorials.Step-by-Step/ 
  These Git-Repos also provide a postman-collection that contain the basic CRUD queries for accessing the individual functionality. 
 
-**Note:** The tutoial does not cover all the aspects, but it is a good
- starting point to get to know FIWARE a little better. 
- We will reference the detailed description where needed.
- Otherwise please check the FIWARE tour which also links to a deep dive documentation:
+**Note:** We strongly encourage to work yourself through the tutorials since they provide sufficient knowledge for the proper use of platform components. For further informatoin, please, refer to:
 https://github.com/Fiware/catalogue/releases
 
-Before you ask many many questions please try to read the docs first. 
-We try to keep the collection of links up-to-date as long as we are actively working with the plattform.
 <br>
 
 **Try it out!<br>
 Thanks for any comments on it!**
 
-## Services in the stack file 
-* Orion Context Broker (OCB)
-* MongoDB
-* Mongo-Express
-* QuantumLeap
-* CrateDB-Cluster (3 nodes) and necessary proxies
-* IOT-Agent-Json
-* MQTT-Broker (Mosquitto)
-
 ## How to start
 
-1. Start with a fresh Ubuntu Linux 18.04 instance. While an used machine might work, there often are remnants that cause our setup to fail.
+1. Start with a fresh Ubuntu Linux 20.04 instance. While an used machine might work, there often are remnants that cause our setup to fail.
 
 2. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for high availability (HA). This will follow later.
 
