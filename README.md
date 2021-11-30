@@ -17,12 +17,10 @@ This repository contains example docker-stack.yamls and for the easy deployment 
 At the moment, the FIWARE catalogue contains about 30 interoperable software modules, so-called Generic Enablers (GE) for developing and providing customized IoT platform solutions.
 The core of the FIWARE plattform that provides the functionality suited for most IoT-Applications consists of the GEs depict in image below. 
  
-![Overview of the core generic enablers of fiware](docs/figures/Overview.png)
+![Overview of the core generic enablers of fiware](docs/figures/Fiware.png)
 
-***Figure 1:*** *Overview of the FIWARE platform and its components (_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html)*
+***Figure 1:*** *Overview of the FIWARE platform and its components*
 
-
-***Figure 2:*** *Overview of FIWARE platform and its components in the context of energy systems and deployed within a Docker-Swarm(_source_: https://fiware-tutorials.readthedocs.io/en/latest/iot-over-mqtt/index.html). (We are currently waiting for license agreements before publishing this image)*
 
 The Orion context broker is the central component of the FIWARE stack that provides update, query, registration and subscription functionality via its API for managing the context information in the platform.
 The data itself is stored in an underlying [MongoDB](https://www.mongodb.com/) database.
