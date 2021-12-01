@@ -53,55 +53,73 @@ Thanks for any comments on it!**
 
 ## How to start
 
-1. Start with a fresh Ubuntu Linux 20.04 instance. While an used machine might work, there often are remnants that cause our setup to fail.
+We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there coulb be remnants that cause our setup to fail.
 
-2. Install Docker-Swarm from https://www.docker.com. Usually we use the docker community edition for our purposes! Start a swarm with at least one worker. You may add additional workers as well, but in this GIT we do not show how to make fiware ready for high availability (HA). This will follow later.
+**Single computer setup:**
 
-      **Note:** In case you are not familiar with docker and docker-swarm we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. Also, in case of issues with docker the page contains docker's full guidebook and documentation.
 
-3. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [Docker](https://docs.docker.com/network/network-tutorial-overlay/).
-This first network will be used for all FIWARE backend components.
-The second one is meant for additional services you may want to add to your platform.
+1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
 
-4. Clone this repository
+
+      **Note:** In case you are not familiar with docker and docker-compose we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. In case of issues with docker the page contains docker's full guidebook and documentation.
+
+2. Clone this repository
 
         git clone https://github.com/N5GEH/n5geh.platform.git
 
-5. You may adjust the docker-stack.yaml or *.conf to your preferences. But the
-functionality will then be left to you. 
-**_Please_** do not use the latest version of the available services because these may be still under development and possibly not be stable. 
-Simply check the latest release for the last stable version [Link](https://github.com/FIWARE/catalogue/releases)!
+3. You may adjust the docker-compose.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
-    **Note:** Some changes (such as renaming services) may require the modification of the Makefile that comes along or other depending services!
 
-6. Start the stack using:
+4. Start the platform using:
+
+        docker-compose up -d
+
+
+5. After a while, the platform should be up and running. You can check this by typing:
+
+        docker ps
+
+6. Enjoy testing and leave your comments.
+
+
+**Multi node setup:**
+
+7. If not already done install docker as described in step 1.
+
+
+8. If not already done clone this repository as described in step 2.
+Start a swarm with at least one worker. You may add additional workers as well. At the moment, we do not show how to deploy the platform in high availability (HA). This will follow shortly.
+
+
+9. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [docker](https://docs.docker.com/network/network-tutorial-overlay/).
+This first network will be used for all FIWARE backend components.
+The second one is meant for additional services you may want to add to your platform.
+
+10. You may adjust the docker-stack.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
+
+11. Start the stack using:
 
         docker swarm init
-        docker-compose up
+        docker stack deploy -c <stack file> <stack name> 
 
-    e.g    docker stack deploy -c docker-stack.yaml fiware
+    e.g    docker stack deploy -c docker-stack.yml fiware
 
-  **Note:** There are dependencies among the enablers. Within the startup procedure always start with the **MongoDB** and **Orion-Context-Broker (OCB)** in OCB. 
-  These two act as the brain of the platform and manage all context.
-  
-7. Check if the stack and all corresponding service are up and running with:
+
+12. After a while, the platform should be up and running. You can check this by typing:
     
         docker stack ls
-        docker stack ps <nameOfStack>  
+        docker stack ps <stack name>  
 
 ## Security
 
-This tutorial does not cover authentication for fiware-services or Grafana.
-Thus, a firewall is required to restrict access to fiware.
-Within the RWTH and EBC networks, access from other networks is usually restricted and no further actions are needed.
-However, if the Docker host is publicly accessible, make sure to
-  1. use a firewall such as [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04) and drop new incomming connections by default, and
-  2. do not expose any ports from docker containers in a compose file or via `-p 1234:1234`. Without further modifications, these forwardings __bypass the local firewall__. Note, that in Swarm Mode, even ports exposed as `127.0.0.1:80:80` are [globally accessible](https://github.com/moby/moby/issues/32299#issuecomment-290978794).
-
-Have a look at [Keyrock](https://fiware-idm.readthedocs.io/en/latest/) for securing fiware services.
+This tutorial does not cover authentication for fiware services or Grafana. 
+This setup should run behind a firewall and no ports on your host system should be exposed to the outside world before you apply security measures.
+A suggestion of latter are shown in other tutorials, like [How to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications)
 
 ## How to cite
 
-We also used this platform setup in the following publications:
+We used this platform setup in the following publications:
 
 T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063
+
+A. Kümpel, T. Storek, M. Barnski, M. Schumacher & D. Müller (2019) A cloud-based operation optimization of building energy systems using a hierarchical multi-agent control. Journal of Physics: Conference Series, 1343, 12053. https://doi.org/10.1088/1742-6596/1343/1/012053
