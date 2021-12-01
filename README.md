@@ -26,15 +26,18 @@ The Orion context broker is the central component of our platform that provides 
 Orion is stateless and thus does not ofer any storage itself. 
 It stores the data in an underlying [MongoDB](https://www.mongodb.com/) database.
 MongoDB only stores the context information as well as the current values of the attributes.
+
 In order to store time series data persistently, the GE QuantumLeap is deployed. 
 Via the subscription mechanism, Orion can notify QuantumLeap whenever it receives updates on certain content. QuantumLeap then stores the data in the high-performance database [CrateDB](https://crate.io/).
-Similar to Orion, QuantumLeap provides an API for querying and managing the historic data stored in the database. . 
+Similar to Orion, QuantumLeap provides an API for querying and managing the historic data stored in the database.
 Via the two APIs of Orion and QuantumLeap, data can be provided to any external service such as visualization, analysis or control algorithms.
+
 Since most devices do not support the platform internal NGSI format, FIWARE offers a set of IoT Agents that translate IoT specific protocols and message formats, such as Ultralight 2.0, JSON, etc. into NGSI format.
 For example, devices located in a building energy system can send and receive data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
 Particularly, in this work, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/). 
 Mosquitto supports Transport Layer Security (TLS) and basic authentication and authorization features.
-In this work, we used an adapted version of mosquitto in order to realize communication between the MQTT broker and a centrla Identity and Access Management (IDAM) using openID-connect and OAUth 2.0. 
+In this work, we used an adapted version of mosquitto in order to realize communication between the MQTT broker and a central Identity and Access Management (IDAM) using openID-connect and OAUth 2.0. 
+
 To exploit the potentials of cloud technology, we deploy the platform via the virtualization technology docker. 
 All images are open source and available on docker hub.
 Using the virtualization technology docker, the setup is not bound to the host operating system since each container comes with its own running environment. Furthermore, the setup and configuration procedures are simplified by using pre-configured yml files. Last, docker swarm allows the distribution of platform components on multiple hardware nodes.
@@ -53,7 +56,7 @@ Thanks for any comments on it!**
 
 ## How to start
 
-We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there coulb be remnants that cause our setup to fail.
+We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there could be remnants that cause our setup to fail.
 
 **Single computer setup:**
 
