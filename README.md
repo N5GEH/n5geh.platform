@@ -1,4 +1,4 @@
-# FIWARE-Stack Setup
+# FIWARE Platform Setup
 
 Welcome to the quick setup of the FIWARE core on a Unix OS! 
 With some minor changes to the docker files it might also work on a Windows OS but this is not tested so far! There are possibilities to run a sandbox with a Unix OS for Windows OS.
@@ -83,6 +83,7 @@ We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines mi
 
 
 **Multi node setup:**
+(The according stack file is currently under review, we will update the file shortly.)
 
 7. If not already done install docker as described in step 1.
 
