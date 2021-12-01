@@ -3,7 +3,9 @@
 Welcome to the quick setup of the FIWARE core on a Unix OS! 
 With some minor changes to the docker files it might also work on a Windows OS but this is not tested so far! There are possibilities to run a sandbox with a Unix OS for Windows OS.
 
-**Note:** We mostly link, sum up and also copy official documentation written and published by the FIWARE (Future Internet Software) foundation for that we do not claim ownership. Furthermore, we used the the recipes created as part of the SmartSDK project (https://www.smartsdk.eu/) which can be found on github:
+**Note:** We mostly sum up parts from the official documentation written and published by FIWARE for that we do not claim ownership. 
+Based on our experiences from project phase 1, we provide configuration for a simple platform setup that runs out of the box. 
+Furthermore, you might have a look at the SmartSDK project (https://www.smartsdk.eu/) which can be found on github:
 https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
