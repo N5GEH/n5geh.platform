@@ -85,7 +85,7 @@ services:
       - CRATE_HOST=crate
       
   crate:
-    image: crate:4.5
+    image: crate:4.6.6
     restart: always
     hostname: crate
     container_name: crate
