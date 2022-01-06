@@ -58,7 +58,9 @@ Thanks for any comments on it!**
 
 ## How to start
 
-We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there could be remnants that cause our setup to fail.
+We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there could be remnants that cause our setup to fail. 
+CrateDB needs some setting in the operating system to be adjusted, usually with admin rights (sudo).
+        sudo sysctl -w vm.max_map_count=262144
 
 **Single computer setup:**
 
