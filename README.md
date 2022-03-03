@@ -1,27 +1,32 @@
 # FIWARE Platform Setup
 
-Welcome to the quick setup of the FIWARE core on a Unix OS! 
-With some minor changes to the docker files it might also work on a Windows OS but this is not tested so far! There are possibilities to run a sandbox with a Unix OS for Windows OS.
+Welcome to the quick setup of the FIWARE core on a Unix OS using docker! 
+With some minor changes to the according files it might also work on a Windows OS but this is not tested so far! There are possibilities to run a sandbox with a Unix OS for Windows OS.
 
 **Note:** We mostly sum up parts from the official documentation written and published by FIWARE for that we do not claim ownership. 
-Based on our experiences from project phase 1, we provide configuration for a simple platform setup that runs out of the box. 
+Based on our experiences from project phase 1, we provide useful information and configuration files for a basic platform setup that runs out of the box. 
 Furthermore, you might have a look at the SmartSDK project (https://www.smartsdk.eu/) which can be found on github:
 https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
 
-This repository contains example docker yml files for the easy deployment of core elements aka *Generic Enablers* of the FIWARE plattform on a single computer setup via docker-compose and a multi node setup via docker swarm (also docker stack).
+This repository contains example docker yml files for the easy deployment of a FIWARE-based plattform on a single computer setup via docker-compose and a multi node setup via docker stack (also known as docker swarm). The single node setup via docker-compose is supposed to function as a quick development setup only. It does not contain any security features! The multi node setup via docker stack is meant to be deployed on multiple nodes (but can be deployed on a single node as well) and pre-configured as a pure development setup as well. Nevertheless, we provide additional configuration suggestions and information about how a production-ready setup could look like.
+
+### What is FIWARE
+
 "FIWARE is a curated framework of open source platform components to
  accelerate the development of Smart Solutions." 
  Beside the fact that FIWARE is freely distributed, it comes along with the benefits of a large community and makes use of advanced components including high performance databases and a sophisticated set of Representational State Transfer (REST) application programming interfaces (API) using the standardized Next Generation Service Interface (NGSI) format. Latter is also the formal standard for context information management systems in smart cities.
  For more general information about FIWARE, why to use it and its core concept please check https://www.fiware.org/developers/ <br>
 
 At the moment, the FIWARE catalogue contains about 30 interoperable software modules, so-called Generic Enablers (GE) for developing and providing customized IoT platform solutions.
-The core of the FIWARE platform used in the N5GEH project provides functionalities suited for most IoT-Applications. An overview of the platform components and their communication is depicted in the image below.
+
+The core of the FIWARE platform used in the N5GEH project provides functionalities suited for most IoT-Applications. An overview of the platform components and their communication is depicted in the image below. Since FIWARE uses standardized interfaces, components can be exchanged according to your needs. 
+
  
 ![Overview of the core generic enablers of fiware](docs/figures/Fiware.png)
 
-***Figure 1:*** *Overview of the FIWARE platform and its components*
+***Figure 1:*** *Overview of the FIWARE platform and its components. Blue components are FIWARE GEs, grey components are other open source non-FIWARE components and the yellow components are not part of the platform and thus not part the yml files.*
 
 
 The Orion context broker is the central component of our platform that provides update, query, registration and subscription functionalities via its API for managing the context information (entities and attributes) stored in the platform.
@@ -63,7 +68,7 @@ CrateDB needs some setting in the operating system to be adjusted, usually with 
         
         sudo sysctl -w vm.max_map_count=262144
 
-**Single computer setup:**
+### Single computer setup:
 
 
 1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
@@ -90,34 +95,10 @@ CrateDB needs some setting in the operating system to be adjusted, usually with 
 6. Enjoy testing and leave your comments.
 
 
-**Multi node setup:**
-(The according stack file is currently under review, we will update the file shortly.)
+### **Multi node setup:** 
 
-7. If not already done install docker as described in step 1.
+This section and the according docker stack file is currently under review, we will update it shortly.
 
-
-8. If not already done clone this repository as described in step 2.
-Start a swarm with at least one worker. You may add additional workers as well. At the moment, we do not show how to deploy the platform in high availability (HA). This will follow shortly.
-
-
-9. Create a docker overlay network named **fiware_backend** and **fiware_service** which allows the attachment of additional containers following this tutorial from [docker](https://docs.docker.com/network/network-tutorial-overlay/).
-This first network will be used for all FIWARE backend components.
-The second one is meant for additional services you may want to add to your platform.
-
-10. You may adjust the docker-stack.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
-
-11. Start the stack using:
-
-        docker swarm init
-        docker stack deploy -c <stack file> <stack name> 
-
-    e.g    docker stack deploy -c docker-stack.yml fiware
-
-
-12. After a while, the platform should be up and running. You can check this by typing:
-    
-        docker stack ls
-        docker stack ps <stack name>  
 
 ## Security
 
