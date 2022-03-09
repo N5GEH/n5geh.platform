@@ -26,7 +26,7 @@ The core of the FIWARE platform used in the N5GEH project provides functionaliti
  
 ![Overview of the core generic enablers of fiware](docs/figures/Fiware.png)
 
-***Figure 1:*** *Overview of the FIWARE platform and its components. Blue components are FIWARE GEs, grey components are other open source non-FIWARE components and the yellow components are not part of the platform and thus not part the yml files.*
+***Figure 1:*** *Overview of the FIWARE platform and its components. Blue components are FIWARE GEs, grey components are other open source non-FIWARE components and the yellow components are not part of the platform and thus not part of the yml files. The communication between the applications and the corresponding default ports are indicated by by the :"port number" and the arrows.*
 
 
 The Orion context broker is the central component of our platform that provides update, query, registration and subscription functionalities via its API for managing the context information (entities and attributes) stored in the platform.
@@ -61,14 +61,67 @@ https://github.com/Fiware/catalogue/releases
 **Try it out!<br>
 Thanks for any comments on it!**
 
-## How to start
+# Let's start setting up the platform
+## Prerequisites 
+
+### The Host System
 
 We recommend to start with a fresh Ubuntu Linux 20.04 instance. Used machines might work as well but there could be remnants that cause our setup to fail. 
-CrateDB needs some setting in the operating system to be adjusted, usually with admin rights (sudo).
+
+In case you're already working on a Linux based OS, continue with the section "Further configuration for CrateDB". In case you want the platform to run on your Windows OS, we recommend using a Linux subsystem, WSL. The installation is described in the following section.
+
+***
+### WSL installation
+There are two ways to accomplish the installation of the subsystem in Windows. 
+
+1.  Open Control Panel -> Programs -> Turn Windows features on or off and activate the checkbox for Windows subsystem for Linux. Then restart your computer.
+
+2. Run PowerShell as an administrator and enter the following command:
+
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+Afterwards, the default version has to be set to wsl 2. Run PowerShell as administrator and type in the following command to enable virtual machine platform before rebooting your system: 
+
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+Download and install the update package for the Linux kernel at https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi for an x64 computer or search for the correct update version in other cases. Set wsl 2 as the default version by entering the command below in PowerShell:
+
+        wsl --set-default-version 2
+
+Now you can download the latest Ubuntu application from the store and register with UNIX. 
+***
+
+
+### Further configuration for CrateDB
+CrateDB requires a higher number of memory map areas.
+
+- If you use a **Linux based OS** type 
         
         sudo sysctl -w vm.max_map_count=262144
 
-### Single computer setup:
+  Confirm the changes by calling
+        
+        sysctl vm.max_map_count 
+
+- If you installed **WSL on your Windows computer** you can use the same command in your Linux environment. Unfortunately, this command has to be executed after every reboot of windows system, which is a known issue #4232. We provide one possible workaround:
+        
+        Create a .wslconfig file under “C:\Users\< username >” with following contents:
+
+        [wsl2]
+        kernelCommandLine = "sysctl.vm.max_map_count=262144"
+
+      **Note:** an easy way to create such file is to execute 
+        
+        New-Item -path .wslconfig
+
+      in Powershell, and then write the contents into it.
+  Reboot your windows system and confirm the changes by calling
+        
+        sysctl vm.max_map_count 
+  in your Linux subsystem.
+
+***
+## Single computer setup:
 
 
 1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
@@ -83,8 +136,9 @@ CrateDB needs some setting in the operating system to be adjusted, usually with 
 3. You may adjust the docker-compose.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
 
-4. Start the platform using:
+4. Change the working directory and start the platform:
 
+        cd n5geh.platform
         docker-compose up -d
 
 
@@ -94,18 +148,39 @@ CrateDB needs some setting in the operating system to be adjusted, usually with 
 
 6. Enjoy testing and leave your comments.
 
+   **Note:** In case are done using the platform or simply want to start all over again, all containers can be stopped and non-persistent volumes will be removed by typing:
+        
+        docker-compose down
 
-### **Multi node setup:** 
+## Multi node setup:
 
 This section and the according docker stack file is currently under review, we will update it shortly.
 
+***
+## Get Grafana running
 
+After successfully launching the platform, Crate DB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://localhost:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
+
+        username: admin
+        passwort: admin
+
+After logging in, visit: http://"yourIP":3001/datasources to connect to your database and select the type PostgreSQL. Replace "yourIP" with the IP address of your VM or "localhost" if you use WSL. For further configuration, the following data should be taken over:
+
+        name: CrateDB
+        host: crate:5432
+        database: mtopeniot
+        user: crate
+        TLS/SSL mode: disable
+
+The remaining parameters can be adopted. <br /> To verify that the connection was successful, just press "save & test".
+
+***
 ## Security
 
 This tutorial does not cover authentication for fiware services or Grafana. 
 This setup should run behind a firewall and no ports on your host system should be exposed to the outside world before you apply security measures.
 A suggestion of latter are shown in other tutorials, like [How to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications)
-
+***
 ## How to cite
 
 We used this platform setup in the following publications:
