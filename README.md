@@ -79,16 +79,16 @@ There are two ways to accomplish the installation of the subsystem in Windows.
 2. Run PowerShell as an administrator and enter the following command:
 
         dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-
-Afterwards, the default version has to be set to wsl 2. Run PowerShell as administrator and type in the following command to enable virtual machine platform before rebooting your system: 
+        
+   Afterwards, the default version has to be set to wsl 2. Run PowerShell as administrator and type in the following command to enable virtual machine platform before rebooting your system: 
 
         dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-
-Download and install the update package for the Linux kernel at https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi for an x64 computer or search for the correct update version in other cases. Set wsl 2 as the default version by entering the command below in PowerShell:
+        
+   Download and install the update package for the Linux kernel at https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi for an x64 computer or search for the correct update version in other cases. Set wsl 2 as the default version by entering the command below in PowerShell:
 
         wsl --set-default-version 2
-
-Now you can download the latest Ubuntu application from the store and register with UNIX. 
+        
+   Now you can download the latest Ubuntu application from the store and register with UNIX. 
 ***
 
 
@@ -104,17 +104,17 @@ CrateDB requires a higher number of memory map areas.
         sysctl vm.max_map_count 
 
 - If you installed **WSL on your Windows computer** you can use the same command in your Linux environment. Unfortunately, this command has to be executed after every reboot of windows system, which is a known issue #4232. We provide one possible workaround:
-        
-        Create a .wslconfig file under “C:\Users\< username >” with following contents:
+
+   Create a .wslconfig file under “C:\Users\< username >” with following contents:
 
         [wsl2]
         kernelCommandLine = "sysctl.vm.max_map_count=262144"
 
-      **Note:** an easy way to create such file is to execute 
+   **Note:** an easy way to create such file is to execute 
         
         New-Item -path .wslconfig
 
-      in Powershell, and then write the contents into it.
+   in Powershell, and then write the contents into it.
   Reboot your windows system and confirm the changes by calling
         
         sysctl vm.max_map_count 
@@ -185,6 +185,6 @@ A suggestion of latter are shown in other tutorials, like [How to route and secu
 
 We used this platform setup in the following publications:
 
-T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063
+T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063 
 
-A. Kümpel, T. Storek, M. Barnski, M. Schumacher & D. Müller (2019) A cloud-based operation optimization of building energy systems using a hierarchical multi-agent control. Journal of Physics: Conference Series, 1343, 12053. https://doi.org/10.1088/1742-6596/1343/1/012053
+A. Kümpel, T. Storek, M. Barnski, M. Schumacher & D. Müller (2019) A cloud-based operation optimization of building energy systems using a hierarchical multi-agent control. Journal of Physics: Conference Series, 1343, 12053. https://doi.org/10.1088/1742-6596/1343/1/012053 
