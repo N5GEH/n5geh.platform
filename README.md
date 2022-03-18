@@ -88,7 +88,9 @@ There are two ways to accomplish the installation of the subsystem in Windows.
 
         wsl --set-default-version 2
         
-   Now you can download the latest Ubuntu application from the store and register with UNIX. 
+   Now you can download the latest Ubuntu application from Microsoft Store and register with UNIX. 
+   
+   For further information about installation/update of WSL please refer to the [documentation of Microsoft](https://docs.microsoft.com/en-us/windows/wsl/install)
 ***
 
 
