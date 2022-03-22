@@ -176,6 +176,13 @@ After logging in, visit: http://"yourIP":3001/datasources to connect to your dat
 
 The remaining parameters can be adopted. <br /> To verify that the connection was successful, just press "save & test".
 
+Create a new dashboard in order to visualize timeseries data. Grafana uses SQL syntax, so the following statements should be familiar to you if you know a little bit about SQL.
+In the following picture, the example configuration to retrieve temperature data from a temperature sensor is shown. 
+
+![Overview of the core generic enablers of fiware](docs/figures/Grafana.png)
+
+The data is stored under the fiware-service "test" and the device was created with the entity type "sensor". This leads to the table name *"mttest"."etsensor"*. The timestamp is saved in the variable *time_index* and the temperature in the variable *temperature*. Adapt your settings according to your data and enjoy.
+
 ***
 ## Security
 
