@@ -71,7 +71,7 @@ services:
         - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   quantumleap:
-    image: orchestracities/quantumleap:0.8.2
+    image: orchestracities/quantumleap:0.8.3
     hostname: quantumleap
     container_name: quantumleap
     depends_on:
