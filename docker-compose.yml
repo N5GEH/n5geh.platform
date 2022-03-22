@@ -13,7 +13,7 @@ services:
       - mongo-db:/data/db
           
   orion:
-    image: fiware/orion:3.2.0 #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
+    image: fiware/orion:3.4.0 #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
     hostname: orion
     restart: always
     container_name: "orion"
@@ -27,7 +27,7 @@ services:
          
 
   iot-agent:
-    image: fiware/iotagent-json:1.19.0
+    image: fiware/iotagent-json:1.21.1
     hostname: iot-agent
     container_name: "iot-agent"
     restart: always
@@ -59,7 +59,7 @@ services:
       - IOTA_MQTT_KEEPALIVE=60
     
   mosquitto:
-    image: eclipse-mosquitto:2.0.10
+    image: eclipse-mosquitto:2.0.14
     restart: always
     hostname: mosquitto
     container_name: mosquitto
@@ -71,7 +71,7 @@ services:
         - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   quantumleap:
-    image: orchestracities/quantumleap:0.8.1
+    image: orchestracities/quantumleap:0.8.3
     hostname: quantumleap
     container_name: quantumleap
     depends_on:
@@ -85,7 +85,7 @@ services:
       - CRATE_HOST=crate
       
   crate:
-    image: crate:4.6.6
+    image: crate:4.7.1
     restart: always
     hostname: crate
     container_name: crate
