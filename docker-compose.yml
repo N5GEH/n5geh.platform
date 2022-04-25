@@ -3,7 +3,7 @@ version: "3.8"
 services:
   
   mongo-db:
-    image: mongo:4.4.13 #Check https://docs.mongodb.com/manual/release-notes/
+    image: mongo:4.4.13
     hostname: mongo-db
     container_name: "mongo-db"
     restart: always
