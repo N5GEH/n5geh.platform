@@ -126,6 +126,15 @@ CrateDB requires a higher number of memory map areas.
 ## Single computer setup:
 
 
+**Note:** Steps 1, 2 and the crate-setup are conventiently put into a shell script under scripts\installation_setup.sh. To run this, execute the following:
+
+```shell
+sudo git clone https://github.com/N5GEH/n5geh.platform.git
+sudo chmod +x n5geh.platform/scripts/installation_setup.sh
+sudo ./n5geh.platform/scripts/installation_setup.sh
+```
+Afterwards, continue with step 3.
+
 1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
 
 
@@ -134,7 +143,7 @@ CrateDB requires a higher number of memory map areas.
 2. Clone this repository
 
         git clone https://github.com/N5GEH/n5geh.platform.git
-
+		
 3. You may adjust the docker-compose.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
 
@@ -153,6 +162,8 @@ CrateDB requires a higher number of memory map areas.
    **Note:** In case are done using the platform or simply want to start all over again, all containers can be stopped and non-persistent volumes will be removed by typing:
         
         docker-compose down
+		
+
 
 ## Multi node setup:
 
