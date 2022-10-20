@@ -156,9 +156,34 @@ CrateDB requires a higher number of memory map areas.
 
 ## Multi node setup:
 
-This section and the according docker stack file is currently under review, we will update it shortly.
+Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster.
 
-***
+1. As prerequisite, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly.
+
+2. Install docker on each of the three nodes following steps 1 & 2 of the single computer setup.
+
+3. Next, you need to create a docker swarm and add all three nodes to it. On one of your nodes, e. g. test-1, you need to initiate your swarm by typing:
+
+        docker swarm init
+   Afterwards, the other two nodes, e. g. test-2 and test-3, need to join this swarm. On the node where the swarm was initiated, a command should be printed in the console with that other nodes can join this particular swarm as worker nodes. It should look similar to:
+   
+        docker swarm join --token <SomeToken> <IP:Port>
+   In case you want the other nodes to join as manager nodes, which usually makes sense for smaller setups, type:
+
+        docker stack join-token manager
+   and the corresponding command will be printed in the console. Simply copy the preferred command and execute it on the two remaining nodes. For further information about the different types of swarm nodes, we kindly refer to the [docker documentation](https://docs.docker.com/engine/swarm/manage-nodes/). 
+   Once the nodes are part of one cluster, you can check their availability using:
+
+        docker node ls
+4. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can run the following command on the manager node:
+
+        docker stack deploy -c docker-stack.yml <NameOfYourStack>
+   where the NameOfYourStack is a custom name you can give your stack. You can start different stacks using different names in order to be able to manage your stacks individually.
+
+5. In case you want to terminate your swarm, simply type:
+   
+        docker stack rm <NameOfYourStack>
+   
 ## Get Grafana running
 
 After successfully launching the platform, Crate DB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://localhost:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
@@ -166,7 +191,7 @@ After successfully launching the platform, Crate DB needs to be linked to Grafan
         username: admin
         passwort: admin
 
-After logging in, visit: http://"yourIP":3001/datasources to connect to your database and select the type PostgreSQL. Replace "yourIP" with the IP address of your VM or "localhost" if you use WSL. For further configuration, the following data should be taken over:
+After logging in, visit: http://"yourIP":3001/datasources to connect to your database and select the type PostgreSQL. Replace "yourIP" with the IP address of your VM or "localhost" if you use WSL. If you use a swarm you can use either (accessible) IP of any node in your cluster. For further configuration, the following data should be taken over:
 
         name: CrateDB
         host: crate:5432
@@ -181,12 +206,12 @@ In the following picture, the example configuration to retrieve temperature data
 
 ![Overview of the core generic enablers of fiware](docs/figures/Grafana.png)
 
-The data is stored under the fiware-service "test" and the device was created with the entity type "sensor". This leads to the table name *"mttest"."etsensor"*. The timestamp is saved in the variable *time_index* and the temperature in the variable *temperature*. Adapt your settings according to your data and enjoy.
+In this example, the data is stored under the fiware-service "test" and the device was created with the entity type "sensor". This leads to the table name *"mttest"."etsensor"*. The timestamp is saved in the variable *time_index* and the temperature in the variable *temperature*. Adapt your settings according to your data and enjoy.
 
 ***
 ## Security
 
-This tutorial does not cover authentication for fiware services or Grafana. 
+This tutorial does not cover authentication for databases, fiware services or Grafana. 
 This setup should run behind a firewall and no ports on your host system should be exposed to the outside world before you apply security measures.
 A suggestion of latter are shown in other tutorials, like [How to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications)
 ***
