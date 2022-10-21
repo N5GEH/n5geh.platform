@@ -133,7 +133,12 @@ sudo git clone https://github.com/N5GEH/n5geh.platform.git
 sudo chmod +x n5geh.platform/scripts/installation_setup.sh
 sudo ./n5geh.platform/scripts/installation_setup.sh
 ```
-If the script ran successfully, continue with step 3.
+If the script ran successfully, reboot your system with
+
+    sudo reboot
+and continue with step 3 afterwards. 
+
+**Note**: If you use the WSL setup the max map count will still be reset after a Windows reboot. So the workaround from the section above is still needed.
 
 1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
 
@@ -150,7 +155,7 @@ If the script ran successfully, continue with step 3.
 4. Change the working directory and start the platform:
 
         cd n5geh.platform
-        docker-compose up -d
+        docker compose up -d
 
 
 5. After a while, the platform should be up and running. You can check this by typing:
@@ -161,7 +166,7 @@ If the script ran successfully, continue with step 3.
 
    **Note:** In case are done using the platform or simply want to start all over again, all containers can be stopped and non-persistent volumes will be removed by typing:
         
-        docker-compose down
+        docker compose down
 		
 
 
