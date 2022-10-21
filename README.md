@@ -175,12 +175,16 @@ Deploying your services on a multi node setup makes sense if you, e. g. want to 
    Once the nodes are part of one cluster, you can check their availability using:
 
         docker node ls
-4. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can run the following command on the manager node:
+4. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can create an overlay network in which all containers will be put in. 
+        
+        docker network create fiware_backend-d overlay
+
+5. After that, run the following command on the manager node to start your stack:
 
         docker stack deploy -c docker-stack.yml <NameOfYourStack>
    where the NameOfYourStack is a custom name you can give your stack. You can start different stacks using different names in order to be able to manage your stacks individually.
 
-5. In case you want to terminate your swarm, simply type:
+6. In case you want to terminate your swarm, simply type:
    
         docker stack rm <NameOfYourStack>
    
