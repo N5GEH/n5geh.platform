@@ -10,7 +10,7 @@ https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
 
-This repository contains example docker yml files for the easy deployment of a FIWARE-based plattform on a single computer setup via docker-compose and a multi node setup via docker stack (also known as docker swarm). The single node setup via docker-compose is supposed to function as a quick development setup only. It does not contain any security features! The multi node setup via docker stack is meant to be deployed on multiple nodes (but can be deployed on a single node as well) and pre-configured as a pure development setup as well. Nevertheless, we provide additional configuration suggestions and information about how a production-ready setup could look like.
+This repository contains example docker yml files for the easy deployment of a FIWARE-based plattform on a single computer setup via docker compose and a multi node setup via docker stack (also known as docker swarm). The single node setup via docker compose is supposed to function as a quick development setup only. It does not contain any security features! The multi node setup via docker stack is meant to be deployed on multiple nodes (but can be deployed on a single node as well) and pre-configured as a pure development setup as well. Nevertheless, we provide additional configuration suggestions and information about how a production-ready setup could look like.
 
 ### What is FIWARE
 
@@ -140,10 +140,10 @@ and continue with step 3 afterwards.
 
 **Note**: If you use the WSL setup the max map count will still be reset after a Windows reboot. So the workaround from the section above is still needed.
 
-1. Install docker and docker-compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
+1. Install docker and docker compose from https://www.docker.com. Usually, the docker community edition is sufficient for our purposes. 
 
 
-      **Note:** In case you are not familiar with docker and docker-compose we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. In case of issues with docker the page contains docker's full guidebook and documentation.
+      **Note:** In case you are not familiar with docker and docker compose we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. In case of issues with docker the page contains docker's full guidebook and documentation.
 
 2. Clone this repository
 
