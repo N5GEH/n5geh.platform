@@ -206,10 +206,30 @@ This tutorial does not cover authentication for fiware services or Grafana.
 This setup should run behind a firewall and no ports on your host system should be exposed to the outside world before you apply security measures.
 A suggestion of latter are shown in other tutorials, like [How to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications)
 ***
-## How to cite
+
+## References
 
 We used this platform setup in the following publications:
 
 T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063 
 
 A. Kümpel, T. Storek, M. Barnski, M. Schumacher & D. Müller (2019) A cloud-based operation optimization of building energy systems using a hierarchical multi-agent control. Journal of Physics: Conference Series, 1343, 12053. https://doi.org/10.1088/1742-6596/1343/1/012053 
+
+
+## License
+
+This project is licensed under the MIT License - read the [LICENSE](LICENSE) file for details.
+
+## Further project information
+
+<a href="https://n5geh.de/"> <img alt="National 5G Energy Hub" 
+src="https://raw.githubusercontent.com/N5GEH/n5geh.platform/master/docs/logos/n5geh-logo.png" height="100"></a>
+
+## Acknowledgments
+
+We gratefully acknowledge the financial support of the Federal Ministry <br /> 
+for Economic Affairs and Climate Action (BMWK), promotional references 
+03EN1030B and 03ET1561B.
+
+<a href="https://www.bmwi.de/Navigation/EN/Home/home.html"> <img alt="BMWK" 
+src="https://raw.githubusercontent.com/N5GEH/n5geh.platform/master/docs/logos/BMWK-logo_en.png" height="100"> </a>
