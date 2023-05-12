@@ -2,6 +2,7 @@
 **/data/
 # ignoring personalized docker-compose-filesand configuration
 *.yaml
+*.env
 *.yml
 **/*.conf
 *.toml

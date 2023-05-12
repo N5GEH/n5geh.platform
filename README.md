@@ -10,7 +10,7 @@ https://github.com/smartsdk/smartsdk-recipes
 
 ## Introduction
 
-This repository contains example docker yml files for the easy deployment of a FIWARE-based plattform on a single computer setup via docker-compose and a multi node setup via docker stack (also known as docker swarm). The single node setup via docker-compose is supposed to function as a quick development setup only. It does not contain any security features! The multi node setup via docker stack is meant to be deployed on multiple nodes (but can be deployed on a single node as well) and pre-configured as a pure development setup as well. Nevertheless, we provide additional configuration suggestions and information about how a production-ready setup could look like.
+This repository contains example docker yml files for the easy deployment of a FIWARE-based plattform on a single computer setup via docker-compose and a multi node setup via docker stack (also referred to as docker swarm). The single node setup via docker-compose is supposed to function as a quick development setup only. It does not contain any security features! The multi node setup via docker stack is meant to be deployed on multiple nodes (but can be deployed on a single node as well) and pre-configured as a pure development setup as well. Nevertheless, we provide additional configuration suggestions and information about how a production-ready setup could look like.
 
 ### What is FIWARE
 
@@ -123,6 +123,23 @@ CrateDB requires a higher number of memory map areas.
   in your Linux subsystem.
 
 ***
+
+### Setup adjustments to your needs:
+We provide a general development setup and try to keep most of the information generic. Most of the configuration parameters of the setup can be changed either in the `.yml` files directly, which we do not recommend. We gathered most of the configuration parameters in `.env` files so the information is compessed and can be changed in one place. 
+When using the single computer setup, the .env files can be read using a specifig flag. Unfortunately, this does not work for the multi node setup. Portainer is a tool that can help managing your cluster, see following section. When using portainer,  the `.env` files can be used even in a multi node setup. 
+
+In general, we suggest using portainer in any case due to its nice graphical interface that assists to manage your containerized environments. 
+
+**Note:** Since portainer has full access to your whole cluster, make sure it it only accessible by authorized people and secured with all necessary means, e. g. encryption, encapsuled networks & vpn, IP-whitelisting.
+
+In the following, "yourIP" should be replaced with the IP address of your VM or "localhost" if you use WSL. If you use the multi node setup you can use either (accessible) IP of any node in your cluster. 
+
+***
+### Portainer setup:
+Portainer is a tool that helps you to manage your container environment. It comes with a graphical, web-based user interface and - depending on how you deploy it - a interface to the docker daemon so you can start, restart and stop containers, read container logs and even start completely new stacks.
+Further information can be found [here](https://docs.portainer.io). Make sure you fullfil the [system requirements](https://docs.portainer.io/start/install-ce). 
+
+***
 ## Single computer setup:
 
 
@@ -135,13 +152,13 @@ CrateDB requires a higher number of memory map areas.
 
         git clone https://github.com/N5GEH/n5geh.platform.git
 
-3. You may adjust the docker-compose.yml or *.conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
+3. You may adjust the docker-compose.yml, .env or .conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
 
 4. Change the working directory and start the platform:
 
         cd n5geh.platform
-        docker-compose up -d
+        docker-compose up -d --env-file=.env
 
 
 5. After a while, the platform should be up and running. You can check this by typing:
@@ -156,13 +173,19 @@ CrateDB requires a higher number of memory map areas.
 
 ## Multi node setup:
 
-Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster.
+Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - no security features are applied, so make sure your system is not exposed to unauthorized people.
 
-1. As prerequisite, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly.
+As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly. 
 
-2. Install docker on each of the three nodes following steps 1 & 2 of the single computer setup.
+Steps 1-3 are equal for both ways and need to be executed. Either jump to step 4 or step 6 depending if you wish or wish not to use portainer.
 
-3. Next, you need to create a docker swarm and add all three nodes to it. On one of your nodes, e. g. test-1, you need to initiate your swarm by typing:
+Steps 4-5 show the use without portainer if you apply changes  directly within the [stack file](docker-stack.yml).
+
+Steps 6-X show the use with portainer if you make changes within the [environment file](.env).
+
+1. Install docker on each of the three nodes following steps 1 & 2 of the single computer setup.
+
+2. Next, you need to create a docker swarm and add all three nodes to it. On one of your nodes, e. g. test-1, you need to initiate your swarm by typing:
 
         docker swarm init
    Afterwards, the other two nodes, e. g. test-2 and test-3, need to join this swarm. On the node where the swarm was initiated, a command should be printed in the console with that other nodes can join this particular swarm as worker nodes. It should look similar to:
@@ -175,27 +198,35 @@ Deploying your services on a multi node setup makes sense if you, e. g. want to 
    Once the nodes are part of one cluster, you can check their availability using:
 
         docker node ls
-4. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can create an overlay network in which all containers will be put in. 
+3. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can create an overlay network in which all containers will be put in. 
         
-        docker network create fiware_backend-d overlay
+        docker network create fiware_backend -d overlay
 
-5. After that, run the following command on the manager node to start your stack:
+4. After that, run the following command on the manager node to start your stack:
 
         docker stack deploy -c docker-stack.yml <NameOfYourStack>
    where the NameOfYourStack is a custom name you can give your stack. You can start different stacks using different names in order to be able to manage your stacks individually.
 
-6. In case you want to terminate your swarm, simply type:
+5. In case you want to terminate your swarm, simply type:
    
         docker stack rm <NameOfYourStack>
    
+6. Start portainer using
+        
+        docker stack deploy -c portainer.yml portainer
+
+    After a few minutes, portainer should be accessible via http://yourIP:9000. Enter a valid admin password.
+
 ## Get Grafana running
 
-After successfully launching the platform, Crate DB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://localhost:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
+After successfully launching the platform, CrateDB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://yourIP:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
 
         username: admin
         passwort: admin
 
-After logging in, visit: http://"yourIP":3001/datasources to connect to your database and select the type PostgreSQL. Replace "yourIP" with the IP address of your VM or "localhost" if you use WSL. If you use a swarm you can use either (accessible) IP of any node in your cluster. For further configuration, the following data should be taken over:
+After logging in, visit: http://"yourIP":3001/datasources to connect to your database and select the type PostgreSQL. For further configuration, the following data should be taken over.
+
+**Note:** Currently, there might be no data in your CrateDB yet. In order to put data into your database, either follow our tutorial [from sensor to application](https://github.com/N5GEH/n5geh.tutorials.from_sensor_to_application) or FIWARE's [time series tutorial](https://github.com/FIWARE/tutorials.Time-Series-Data/):
 
         name: CrateDB
         host: crate:5432
@@ -205,7 +236,7 @@ After logging in, visit: http://"yourIP":3001/datasources to connect to your dat
 
 The remaining parameters can be adopted. <br /> To verify that the connection was successful, just press "save & test".
 
-Create a new dashboard in order to visualize timeseries data. Grafana uses SQL syntax, so the following statements should be familiar to you if you know a little bit about SQL.
+Create a new dashboard in order to visualize time series data. Grafana uses SQL syntax, so the following statements should be familiar to you if you know a little bit about SQL.
 In the following picture, the example configuration to retrieve temperature data from a temperature sensor is shown. 
 
 ![Overview of the core generic enablers of fiware](docs/figures/Grafana.png)
@@ -217,11 +248,14 @@ In this example, the data is stored under the fiware-service "test" and the devi
 
 This tutorial does not cover authentication for databases, fiware services or Grafana. 
 This setup should run behind a firewall and no ports on your host system should be exposed to the outside world before you apply security measures.
-A suggestion of latter are shown in other tutorials, like [How to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications)
+A suggestion of latter are shown in other tutorials, like [how to route and secure your applications](https://github.com/N5GEH/n5geh.tutorials.route_and_secure_applications) and [api protection](https://github.com/N5GEH/n5geh.tutorials.api-protection).
 ***
 ## How to cite
 
 We used this platform setup in the following publications:
+
+S. Blechmann, I. Sowa, M. H. Schraven, R. Streblow, D. Müller & A. Monti. Open source platform application for smart building and smart grid controls. Automation in Construction 145 (2023), 104622. ISSN: 0926-5805. 
+https://doi.org/10.1016/j.autcon.2022.104622
 
 T. Storek, J. Lohmöller, A. Kümpel, M. Baranski & D. Müller (2019). Application of the open-source cloud platform FIWARE for future building energy management systems. Journal of Physics: Conference Series, 1343, 12063. https://doi.org/10.1088/1742-6596/1343/1/012063 
 

@@ -1,0 +1,431 @@
+version: "3.8"
+services:
+  orion:
+    image: telefonicaiot/fiware-orion:${ORION_VERSION:-3.7.0}
+    hostname: orion
+    networks:
+        - fiware_backend
+    # do only open ports if you are sure they are not accessible for unauthorized people and services
+    # port exposing is only required if access from outside the docker network is needed (and you do not use a proxy service)
+    ports:
+        - "1026:1026"
+    # Read orion's documentation for further information about its configuration:
+    # https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
+    # For in production mode please adjust these settings!
+    environment:
+      - ORION_LOG_LEVEL=${ORION_LOG_LEVEL:-DEBUG}
+      - ORION_LOG_FOR_HUMANS=${ORION_LOG_FOR_HUMANS:-TRUE}
+      - ORION_STAT_COUNTERS=${ORION_STAT_COUNTERS:-FALSE}
+      - ORION_STAT_SEM_WAIT=${ORION_STAT_SEM_WAIT:-FALSE}
+      - ORION_STAT_TIMING=${ORION_STAT_TIMING:-FALSE}
+      - ORION_STAT_NOTIF_QUEUE=${ORION_STAT_NOTIF_QUEUE:-TRUE}
+      - ORION_MONGO_HOST=${ORION_MONGO_HOST:-mongodb1,mongodb2,mongodb3}
+      - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
+      - ORION_MONGO_WRITE_CONCERN=${ORION_WRITE_CONCERN:-1}
+      - ORION_NOTIF_MODE=${ORION_NOTIFICATION_MODE:-transient} 
+      # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2} # use only if ORION_NOTIFICATION_MODE is set to "threadpool"
+      - ORION_MUTEX_POLICY=${ORION_REQUEST_POLICY:-all}
+      - ORION_CONN_MEMORY=${ORION_CONNECTION_MEMORY:-128}
+    
+    # healthcheck in order to determine if container has started successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://orion:1026/version"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    
+    deploy:
+      replicas: 1 # determines how many instances of orion are being started
+      # placement:
+      #   constraints: [node.role == worker] #  determines on which node the service gets deployed, one can e. g. differentiate between node roles, node types, node labels, etc.
+      # resources: # determines how many resources per instance are being used
+        # limits:
+            # cpus: '2'
+            # memory: 4G
+        # reservations:
+            # cpus: '2'
+            # memory: 2G
+      
+      # determines under which circumstances the service gets restarted
+      restart_policy: 
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    #Limitation of logging
+    logging:
+      driver: "json-file"
+      options:
+         max-file: 5
+         max-size: 10m
+
+  # Mongo-express is a simple visualisation of mongoDB-instances and their data
+  mongo-express:
+    image: mongo-express:${ME_VERSION:-0.54} # Check https://docs.mongodb.com/manual/release-notes/
+    hostname: mongo-express
+    ports:
+        - "8081:8081"
+    networks:
+        - fiware_backend
+    # adapt for production use!    
+    environment:
+        - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
+        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER:-mongodb1,mongodb2,mongodb3}
+        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
+        - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE:-admin}
+    # Settings for log-files
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+
+  mongo-setup: # This service will shut down automatically after initializing the replica set!
+    image: mongo:${MONGODB_VERSION:-4.4}
+    restart: on-failure
+    networks:
+      - fiware_backend
+    configs:
+      - source: mongo-setup
+        target: setup.sh
+    entrypoint: ["bash", "setup.sh"] # Make sure this file exists 
+    deploy:
+      replicas: 1
+
+  mongodb1:
+    image: mongo:${MONGODB_VERSION:-4.4}
+    hostname: mongodb1
+    networks:
+        - fiware_backend
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    environment:
+        - MONGODB_REPLICA_SET_MODE=primary
+        - ALLOW_EMPTY_PASSWORD=${MONGODB_ALLOW_EMPTY_PASSWORD:-yes}
+        - MONGODB_SYSTEM_LOG_VERBOSITY=${MONGODB_SYSTEM_LOG_VERBOSITY:-3}
+        - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
+        - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
+    volumes:
+        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+    deploy:
+      replicas: 1
+      placement: 
+        constraints:
+          - node.hostname == ${NODE1:-test1}
+    #ulimits:
+    #  memlock: -1
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+        
+  # MongoDB is the unterlying database engine
+  mongodb2:
+    image: mongo:${MONGODB_VERSION:-4.4}
+    hostname: mongodb2
+    networks:
+        - fiware_backend
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    environment:
+        - MONGODB_REPLICA_SET_MODE=secondary
+        - ALLOW_EMPTY_PASSWORD=${MONGODB_ALLOW_EMPTY_PASSWORD:-yes}
+        - MONGODB_SYSTEM_LOG_VERBOSITY=${MONGODB_SYSTEM_LOG_VERBOSITY:-3}
+        - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
+        - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
+    volumes:
+        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+    deploy:
+      replicas: 1
+      placement: 
+        constraints:
+          - node.hostname == ${NODE2:-test2}
+    #ulimits:
+    #  memlock: -1
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+        
+  # MongoDB is the unterlying database engine
+  mongodb3:
+    image: mongo:${MONGODB_VERSION:-4.4}
+    hostname: mongodb3
+    networks:
+        - fiware_backend
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    environment:
+        - MONGODB_REPLICA_SET_MODE=secondary
+        - ALLOW_EMPTY_PASSWORD=${MONGODB_ALLOW_EMPTY_PASSWORD:-yes}
+        - MONGODB_SYSTEM_LOG_VERBOSITY=${MONGODB_SYSTEM_LOG_VERBOSITY:-3}
+        - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
+        - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
+    volumes:
+        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.hostname == ${NODE3:-test3}
+    #ulimits:
+    #  memlock: -1
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+
+
+  quantumleap:
+    image: orchestracities/quantumleap:0.8.3
+    hostname: quantumleap
+    networks:
+      - fiware_backend
+    ports:
+      - "8668:8668"
+    environment:
+      - CRATE_HOST=cratedb-proxy # name of the crate proxy service
+      - CRATE_PORT=4200 # port of the crate proxy service
+      # - CRATE_DB_USER=<your crate user> # when using db authentication
+      # - CRATE_DB_PASS=<your crate user pw> # when using db authentication
+      - LOGLEVEL=${QL_LOG_LEVEL:-ERROR}
+      # - USE_GEOCODING=false
+      - REDIS_HOST=${QL_REDIS_HOST:-redis-cache}
+      - REDIS_PORT=${QL_REDIS_PORT:-6379}
+      - CACHE_QUERIES=${QL_CACHE_QUERIES:-TRUE}
+    deploy:
+      replicas: 1
+    #ulimits:
+    #  memlock: -1
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+
+  # The redis cache is used for performance reasons for quantumleap.
+  redis-cache:
+    image: redis:latest # make sure the lastest version is stable or use specific version
+    hostname: redis-cache
+    networks:
+      - fiware_backend
+    deploy:
+      replicas: 1
+
+  # We are accessing the cratedb via a proxy using roundrobin as basic loadbalancing mechanism.
+  # In used proxy service (https://proxy.dockerflow.com/) is based on HA-Proxy and will 
+  # reconfigureautomatically when scaling the database on multiple nodes.
+  cratedb-swarm-listener:
+    image: dockerflow/docker-flow-swarm-listener:latest
+    hostname: crate-swarm-listener
+    networks:
+      - fiware_backend
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock" # don't expose services that mount the docker socket!
+    environment:
+      - DF_NOTIFY_CREATE_SERVICE_URL=http://cratedb-proxy:8080/v1/docker-flow-proxy/reconfigure
+      - DF_NOTIFY_REMOVE_SERVICE_URL=http://cratedb-proxy:8080/v1/docker-flow-proxy/remove
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s            
+
+  cratedb-proxy:
+    image: dockerflow/docker-flow-proxy:latest
+    hostname: cratedb-proxy
+    ports:     
+       - "4200:4200" # the port under which the crate UI will be available
+    networks:
+      - fiware_backend
+    environment:
+      - SERVICE_NAME=cratedb-proxy     
+      - LISTENER_ADDRESS=cratedb-swarm-listener
+      - MODE=swarm
+      - BIND_PORTS=4200
+    deploy:
+      replicas: 1 
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      update_config:
+        parallelism: 1
+        delay: 10s
+     
+  # Setup for cratedb as distributed time-series storage.
+  
+  # Please check release notes!
+  # https://crate.io/docs/crate/guide/en/latest/deployment/containers/docker.html
+  # Since Crate-DB uses the elastic stack under the hood for discovery we recommend to check:
+  # https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-docker.html
+  cratedb:
+    image: crate/crate:${CRATEDB_VERSION:-4.6.6}
+    labels:
+      docker.service: cratedb
+    hostname: "{{.Node.Hostname}}"
+    networks:
+      - fiware_backend
+    volumes:
+      - ${CRATEDB_VOLUME_PATH:-cratedb}:/data
+    command: ["crate",
+               "-Ccluster.name=${CRATEDB_CLUSTER_NAME:-YourDefaultClusterName}",
+               "-Cnode.name=$$(hostname)",
+               "-Cnode.data=true",
+               "-Cnetwork.host=0.0.0.0",
+               "-Cnetwork.publish_host=_eth0_",
+               "-Cdiscovery.seed_hosts=cratedb",
+               "-Cauth.host_based.enabled=false",
+               "-Ccluster.initial_master_nodes=${CRATEDB_INITIAL_MASTER_NODES:-test1}",
+               "-Chttp.cors.enabled=true", # change for production
+               "-Chttp.cors.allow-origin='*'",
+               "-Cgateway.expected_nodes=${CRATEDB_EXPECTED_NODES:-3}",
+               "-Cgateway.recover_after_nodes=${CRATEDB_RECOVER_AFTER_NODES:-2}"]
+    deploy:
+      endpoint_mode: dnsrr
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/
+        - com.df.port.1=4200
+        - com.df.srcPort.1=4200
+      update_config:
+        parallelism: 1
+        delay: 10s
+    healthcheck:
+      disable: false
+    # Limiting of logging
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
+    environment:
+       - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g} # should be around half the VMs RAM
+       
+  mqtt-broker:
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
+    hostname: mqtt-broker
+    ports:
+      - "1883:1883"
+    networks:
+        - fiware_backend
+    configs:
+      - source: mosquitto-conf
+        target: mosquitto/config/mosquitto.conf
+    deploy:
+      replicas: 1
+            
+  iot-agent-json:
+    image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}
+    hostname: iot-agent-json
+    networks:
+      - fiware_backend
+    ports:
+      - "4041:4041"
+      - "7876:7896"
+    environment:
+      - IOTA_CB_HOST=orion # name of the context broker to update context
+      - IOTA_CB_PORT=1026 # port the context broker listens on to update context
+      - IOTA_NORTH_PORT=4041
+      - IOTA_REGISTRY_TYPE=${IOTA_JSON_REGISTRY_TYPE:-mongodb} # Whether to hold IoT device info in memory or in a database
+      - IOTA_LOG_LEVEL=${IOTA_JSON_LOG_LEVEL:-DEBUG} # The log level of the IoT Agent
+      - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true} # Supply timestamp information with each measurement
+      - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-v2} # use NGSIv2 when sending updates for active attributes
+      - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
+      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
+      - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017} # The port mongoDB is listening on
+      - IOTA_MONGO_REPLICASET=${IOTA_JSON_MONGO_REPLICASET:-rs0} # Optional - name of the replicaset if mongodb is instanciated as replicaset
+      - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson} # The name of the database used in mongoDB
+      - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker} # The host name of the MQTT Broker
+      - IOTA_MQTT_PORT=${IOTA_JSON_MQTT_PORT:-1883} # The port the MQTT Broker is listening on to receive topics
+      - IOTA_MQTT_KEEPALIVE=${IOTA_JSON_MQTT_KEEPALIVE:-60}
+      - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
+      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-json:4041}
+      - IOTA_MULTI_CORE=${IOTA_JSON_MULTI_CORE:-true}
+    #healthcheck:
+    #  test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    # ulimits: # suggested limits according to https://github.com/telefonicaid/iotagent-json/blob/5a70f661b5c6451d896d2697a00f99f6a187c4c5/docs/installationguide.md#high-performance-configuration
+    #          #  these limits do not get populated when deploying via portainer
+    #     core: -1
+    #     data: -1
+    #     fsize: -1
+    #     memlock: -1
+    #     nofile: 65535
+    #     rss: -1
+    #     stack: -1
+    #     nproc: -1
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 50m
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
+    ports:
+      - "3001:3000"
+    environment:
+      - TZ=Europe/Berlin
+      # - GF_INSTALL_PLUGINS=
+    volumes:
+      - "grafana:/var/lib/grafana"
+    networks:
+      - fiware_backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+configs:
+  mongo-setup:
+    name: mongo-setup
+    file: ./setup.sh # remove / comment when using portainer to handle your configs and secrets.
+  mosquitto-conf:
+    name: mosquitto-conf
+    file: ./mosquitto.conf # remove / comment when using portainer to handle your configs and secrets.
+
+volumes:
+  mongodb:
+    name: mongodb
+  cratedb:
+    name: cratedb
+  mqtt-redis:
+    name: mqtt-redis
+  grafana:
+    name: grafana
+
+networks:
+  fiware_backend:
+    external: true
