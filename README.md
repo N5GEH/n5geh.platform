@@ -148,7 +148,7 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
       **Note:** In case you are not familiar with docker and docker-compose we highly recommend to start here: https://docs.docker.com/. The get-started tutorial explains the basic functionalities in a very good way. In case of issues with docker the page contains docker's full guidebook and documentation.
 
-2. Clone this repository
+2. Clone this repository:
 
         git clone https://github.com/N5GEH/n5geh.platform.git
 
@@ -175,13 +175,13 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
 Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - no security features are applied, so make sure your system is not exposed to unauthorized people.
 
-As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly. 
+As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly. The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
 
-Steps 1-3 are equal for both ways and need to be executed. Either jump to step 4 or step 6 depending if you wish or wish not to use portainer.
+* Steps 1-3 are equal for both ways and need to be executed. Either jump to step 4 or step 6 depending if you wish or wish not to use portainer.
 
-Steps 4-5 show the use without portainer if you apply changes  directly within the [stack file](docker-stack.yml).
+* Steps 4-5 show the use without portainer if you apply changes  directly within the [stack file](docker-stack.yml).
 
-Steps 6-X show the use with portainer if you make changes within the [environment file](.env).
+* Steps 6-12 show the use with portainer if you make changes within the [environment file](.env).
 
 1. Install docker on each of the three nodes following steps 1 & 2 of the single computer setup.
 
@@ -198,25 +198,51 @@ Steps 6-X show the use with portainer if you make changes within the [environmen
    Once the nodes are part of one cluster, you can check their availability using:
 
         docker node ls
-3. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can create an overlay network in which all containers will be put in. 
+3. If the connection between the nodes failed we recommend to check your firewall and network settings. Once the swarm is successfully formed you can create an overlay network in which all containers will be put in: 
         
         docker network create fiware_backend -d overlay
 
 4. After that, run the following command on the manager node to start your stack:
 
         docker stack deploy -c docker-stack.yml <NameOfYourStack>
-   where the NameOfYourStack is a custom name you can give your stack. You can start different stacks using different names in order to be able to manage your stacks individually.
+   where the NameOfYourStack is a custom name you can give your stack, e. g. "fiware". You can start different stacks using different names in order to be able to manage your stacks individually.
 
 5. In case you want to terminate your swarm, simply type:
    
         docker stack rm <NameOfYourStack>
    
-6. Start portainer using
+6. Start portainer using:
         
         docker stack deploy -c portainer.yml portainer
 
-    After a few minutes, portainer should be accessible via http://yourIP:9000. Enter a valid admin password.
+    After a few minutes, portainer should be accessible via http://yourIP:9000. Enter a valid admin password and click on the environment that is automatically created, it should be called "primary". You will see an overview of your current cluster including all deployed stacks and services, created volumes and downloaded images. 
 
+7. Create the configs using the portainer GUI - they can still be created using docker via CLI though. Click on "Configs" (1) and then "Add config" (2):
+
+    ![Create config](docs/figures/Portainer_configs_add.png)
+
+8. Add a config called "mongo-setup" (1), copy the content of the [setup.sh](setup.sh) (2) and save it (3). Repeat this with the [mosquitto.conf](mosquitto.conf). 
+   
+    ![Enter config information](docs/figures/Portainer_configs_enter_data.png)
+
+9.  You should see two configs now:
+
+    ![Finished configs](docs/figures/Portainer_configs_finished.png)
+
+10. Create the stack by clicking on "Stacks" (1) and then "Add Stack" (2):
+
+    ![Create stack](docs/figures/Portainer_stack_add.png)
+
+11. Enter the stack name "fiware" (1), copy the content of the [docker-stack.yml](docker-stack.yml) in the Web editor and comment / uncomment the portainer sections for the configs (2). This is necessay because the configs are created outside of the stack creation itself. Click on "Advanced mode" (3) to fill in the environment information.
+
+    ![Enter stack information](docs/figures/Portainer_stack_enter_data.png)
+
+12. Copy the content of the [.env](.env) in the editor that has just expanded. Finally, scroll to the bottom and deploy the stack.
+
+    ![Enter env information](docs/figures/Portainer_env_enter_data.png)
+
+
+    After a few minutes, the stack should be deployed. You can check the status of your stack by clicking on "Stacks" in the sidebar and click on the stack named "fiware".
 ## Get Grafana running
 
 After successfully launching the platform, CrateDB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://yourIP:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
