@@ -152,10 +152,10 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
         git clone https://github.com/N5GEH/n5geh.platform.git
 
-3. You may adjust the docker-compose.yml, .env or .conf according to your preferences. Our provided file already provides a simple setup with all functionalities.
+3. You may adjust the [compose file](docker-compose.yml), [environment file](.env) or [mosquitto configuration file](mosquitto.conf) according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
 
-4. Change the working directory and start the platform:
+4. Change the working directory and start the platform using the [environment file](.env) file for configuration:
 
         cd n5geh.platform
         docker-compose up -d --env-file=.env
@@ -175,7 +175,7 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
 Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - no security features are applied, so make sure your system is not exposed to unauthorized people.
 
-As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) accordingly. The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
+As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) (lines 3-5 & 95) accordingly. The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
 
 * Steps 1-3 are equal for both ways and need to be executed. Either jump to step 4 or step 6 depending if you wish or wish not to use portainer.
 
@@ -194,7 +194,7 @@ As *prerequisite*, you need to have three nodes (that can be virtual machines or
    In case you want the other nodes to join as manager nodes, which usually makes sense for smaller setups, type:
 
         docker stack join-token manager
-   and the corresponding command will be printed in the console. Simply copy the preferred command and execute it on the two remaining nodes. For further information about the different types of swarm nodes, we kindly refer to the [docker documentation](https://docs.docker.com/engine/swarm/manage-nodes/). 
+   and the corresponding command will be printed in the console. Simply copy the preferred command and execute it on the two remaining nodes. In case the IP is not propagated correctly, you might need to use *docker swarm init --advertise-addr*. For further information about the different types of swarm nodes, we kindly refer to the [docker documentation](https://docs.docker.com/engine/swarm/manage-nodes/). 
    Once the nodes are part of one cluster, you can check their availability using:
 
         docker node ls

@@ -91,7 +91,6 @@ services:
 
   mongo-setup: # This service will shut down automatically after initializing the replica set!
     image: mongo:${MONGODB_VERSION:-4.4}
-    restart: on-failure
     networks:
       - fiware_backend
     configs:
@@ -100,6 +99,11 @@ services:
     entrypoint: ["bash", "setup.sh"] # Make sure this file exists 
     deploy:
       replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
   mongodb1:
     image: mongo:${MONGODB_VERSION:-4.4}
