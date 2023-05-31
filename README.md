@@ -165,7 +165,9 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
         docker ps
 
-6. Enjoy testing and leave your comments.
+6. After a few minutes, portainer should be accessible via http://yourIP:9000. Enter a valid admin password and confirm you just want to use your local environment. Click on your local environment and get an overview about your containers by clicking on "Stack" or "Stacks".
+
+7. Enjoy testing and leave your comments.
 
    **Note:** In case are done using the platform or simply want to start all over again, all containers can be stopped and non-persistent volumes will be removed by typing:
         

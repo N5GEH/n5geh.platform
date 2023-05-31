@@ -115,6 +115,21 @@ services:
     networks:
       - fiware
 
+  portainer:
+    image: portainer/portainer-ce:2.16.2
+    container_name: portainer
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - portainer
+    restart: always
+
+
 
 volumes:
   mongo-db:
@@ -123,7 +138,11 @@ volumes:
     name: crate
   grafana:
     name: grafana
+ portainer_data:
+   name: portainer_data
 
 networks:
   fiware:
     name: fiware
+  portainer:
+    name: portainer
