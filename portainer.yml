@@ -1,0 +1,61 @@
+version: '3.7'
+# make sure you read the requirements of portainer: https://docs.portainer.io/start/install-ce
+services:
+  agent:
+    image: portainer/agent:${PORTAINER_VERSION:-2.16.2}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+    networks:
+      - agent_network
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m
+  
+
+  portainer:
+    image: portainer/portainer-ce:${PORTAINER_VERSION:-2.16.2}
+    command: -H "tcp://tasks.agent:9001"
+            --tlsskipverify
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - data:/data
+    networks:
+      - agent_network
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    # Settings for log-files
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: 5m               
+
+networks:
+  agent_network:
+    driver: overlay
+    attachable: true
+
+volumes:
+  data:
