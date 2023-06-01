@@ -191,7 +191,7 @@ and continue with step 3 afterwards.
 
 ## Multi node setup:
 
-Deploying your services on a multi node setup makes sense if you, e. g. want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - no security features are applied, so make sure your system is not exposed to unauthorized people.
+Deploying your services on a multi node setup makes sense if you, e. g., want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - **no security features are applied**, so make sure your system is not exposed to unauthorized people.
 
 As *prerequisite*, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) (lines 3-5 & 95) accordingly. The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
 
@@ -201,7 +201,7 @@ As *prerequisite*, you need to have three nodes (that can be virtual machines or
 
 * Steps 6-12 show the use with portainer if you make changes within the [environment file](.env).
 
-1. Install docker on each of the three nodes following steps 1 & 2 of the single computer setup.
+1. Install docker on each of the three nodes following steps 1 & 2 or use the provided [installation script](./scripts/installation_setup.sh) both from the single computer setup.
 
 2. Next, you need to create a docker swarm and add all three nodes to it. On one of your nodes, e. g. test-1, you need to initiate your swarm by typing:
 
