@@ -172,7 +172,8 @@ and continue with step 3 afterwards.
 4. Change the working directory and start the platform using the [environment file](.env) file for configuration:
 
         cd n5geh.platform
-        docker-compose up -d --env-file=.env
+        docker compose --env-file .env up -d
+> For `Docker Compose V1` use `docker-compose up -d --env-file=.env`
 
 
 5. After a while, the platform should be up and running. You can check this by typing:
