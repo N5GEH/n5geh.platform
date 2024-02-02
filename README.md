@@ -107,10 +107,12 @@ CrateDB requires a higher number of memory map areas.
 
 - If you installed **WSL on your Windows computer** you can use the same command in your Linux environment. Unfortunately, this command has to be executed after every reboot of windows system, which is a known issue #4232. We provide one possible workaround:
 
-   Create a .wslconfig file under “C:\Users\< username >” with following contents:
+   Create a `.wslconfig` file under “C:\Users\\<Username>”* with following contents:
 
         [wsl2]
         kernelCommandLine = "sysctl.vm.max_map_count=262144"
+
+  \* For those who use docker desktop to manage their FIWARE platform, they may have to create the `.wslconfig` file under "C:\Users\\<Username>\AppData\Local\Docker\wsl"
 
    **Note:** an easy way to create such file is to execute 
         
