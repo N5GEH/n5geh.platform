@@ -415,11 +415,11 @@ services:
 configs:
   mongo-setup:
     name: mongo-setup
-    file: ./setup.sh # comment when using portainer to handle your configs and secrets.
+    file: ../scripts/setup.sh # comment when using portainer to handle your configs and secrets.
     # external: true # uncomment when using portainer
   mosquitto-conf:
     name: mosquitto-conf
-    file: ./mosquitto.conf # comment when using portainer to handle your configs and secrets.
+    file: ../general/mosquitto.conf # comment when using portainer to handle your configs and secrets.
     # external: true # uncomment when using portainer
 volumes:
   mongodb:
