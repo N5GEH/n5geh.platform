@@ -84,7 +84,7 @@ services:
     networks:
         - fiware
     volumes:
-        - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+        - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   quantumleap:
     image: orchestracities/quantumleap:${QL_VERSION:-0.8.3}
