@@ -34,7 +34,10 @@ and continue with step 3 afterwards.
 
         cd n5geh.platform/v2
         docker compose --env-file .env up -d
-> For `Docker Compose V1` use `docker-compose up -d --env-file=.env`
+    
+    For docker compose V1 use 
+    
+        docker-compose up -d --env-file=.env
 
 
 5. After a while, the platform should be up and running. You can check this by typing:

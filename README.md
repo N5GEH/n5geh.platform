@@ -146,19 +146,20 @@ Further information can be found [here](https://docs.portainer.io). Make sure yo
 
 
 For the single computer use, we currently provide setups for NGSI-v2 and NGSI-LD. For the next steps, please, refer to the corresponding setup.
+Further information on the different data models and the different APIs can be found in the corresponding tutorials for [NGSI-v2](https://github.com/FIWARE/tutorials.NGSI-v2) and [NGSI-LD](https://github.com/FIWARE/tutorials.NGSI-LD).
 
-- [NGSI-v2](/v2/README.md#single-computer-setup)
-- [NGSI-LD](/ld/README.md)
+- [NGSI-v2 setup](/v2/README.md#single-computer-setup)
+- [NGSI-LD setup](/ld/README.md)
 
 
 ## Multi node setup:
 
 For a multi computer use, we currently provide a setup for NGSI-v2.
 
-- [NGSI-v2](/v2/README.md#multi-node-setup)
+- [NGSI-v2 setup](/v2/README.md#multi-node-setup)
   
 
-## Get Grafana running
+## Get Grafana running (for all setups)
 
 After successfully launching the platform, CrateDB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://yourIP:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
 

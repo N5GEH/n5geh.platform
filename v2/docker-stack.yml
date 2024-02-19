@@ -62,7 +62,7 @@ services:
 
   # Mongo-express is a simple visualisation of mongoDB-instances and their data
   mongo-express:
-    image: mongo-express:${ME_VERSION:-0.54} # Check https://docs.mongodb.com/manual/release-notes/
+    image: mongo-express:${ME_VERSION:-1.0.2-20} # Check https://docs.mongodb.com/manual/release-notes/
     hostname: mongo-express
     ports:
         - "8081:8081"
@@ -71,7 +71,7 @@ services:
     # adapt for production use!    
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
-        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER:-mongodb1,mongodb2,mongodb3}
+        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_MN:-mongodb1,mongodb2,mongodb3}
         - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE:-admin}
@@ -350,7 +350,7 @@ services:
       - "4041:4041"
       - "7876:7896"
     environment:
-      - IOTA_CB_HOST=orion # name of the context broker to update context
+      - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion} # name of the context broker to update context
       - IOTA_CB_PORT=${IOTA_JSON_CB_PORT:-1026} # port the context broker listens on to update context
       - IOTA_NORTH_PORT=${IOTA_JSON_NORTH_PORT:-4041}
       - IOTA_REGISTRY_TYPE=${IOTA_JSON_REGISTRY_TYPE:-mongodb} # Whether to hold IoT device info in memory or in a database
@@ -358,7 +358,7 @@ services:
       - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true} # Supply timestamp information with each measurement
       - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-v2} # use NGSIv2 when sending updates for active attributes
       - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
+      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST_MN:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
       - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017} # The port mongoDB is listening on
       - IOTA_MONGO_REPLICASET=${IOTA_JSON_MONGO_REPLICASET:-rs0} # Optional - name of the replicaset if mongodb is instanciated as replicaset
       - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson} # The name of the database used in mongoDB
