@@ -8,7 +8,7 @@ services:
     container_name: "mongo-db"
     restart: always
     networks:
-        - ${NETWORK:-fiware}
+        - fiware
     volumes:
       - mongo-db:${MONGO_DATA_DIR:-/data/db}
 
@@ -19,7 +19,7 @@ services:
     ports:
         - "8081:8081"
     networks:
-        - ${NETWORK:-fiware}
+        - fiware
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
         - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_SN:-mongo-db}
@@ -35,7 +35,7 @@ services:
     depends_on:
         - mongo-db
     networks:
-        - ${NETWORK:-fiware}
+        - fiware
     ports:
        - "1026:1026"
     command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans
@@ -51,7 +51,7 @@ services:
     ports:
       - "4041:4041"
     networks:
-      - ${NETWORK:-fiware}
+      - fiware
     environment:
       - IOTA_CB_HOST=orion
       - IOTA_CB_PORT=1026
@@ -72,6 +72,7 @@ services:
       - IOTA_MQTT_PORT=1883
       - IOTA_MQTT_PROTOCOL=mqtt
       - IOTA_MQTT_KEEPALIVE=60
+      - IOTA_AMQP_DISABLED=true
     
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
@@ -81,7 +82,7 @@ services:
     ports: 
         - "1883:1883"
     networks:
-        - ${NETWORK:-fiware}
+        - fiware
     volumes:
         - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
@@ -93,7 +94,7 @@ services:
       - orion
       - crate
     networks:
-      - ${NETWORK:-fiware}
+      - fiware
     ports:
       - "8668:8668"
     environment:
@@ -105,7 +106,7 @@ services:
     hostname: crate
     container_name: crate
     networks:
-        - ${NETWORK:-fiware}
+        - fiware
     ports:
       - "4200:4200"
     volumes:
@@ -128,7 +129,7 @@ services:
     ports:
       - "3001:3000"
     networks:
-      - ${NETWORK:-fiware}
+      - fiware
 
   portainer:
     image: portainer/portainer-ce:${PORTAINER_VERSION:-2.16.2}
@@ -157,7 +158,7 @@ volumes:
    name: portainer_data
 
 networks:
-  ${NETWORK:-fiware}:
-    name: ${NETWORK:-fiware}
-  ${PORTAINER_NETWORK:-portainer}:
-    name: ${PORTAINER_NETWORK:-portainer}
+  fiware:
+    name: fiware
+  portainer:
+    name: portainer

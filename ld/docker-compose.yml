@@ -13,7 +13,7 @@ services:
     depends_on:
         - mongo-db-ld
     networks:
-        - ${LD-NETWORK:-fiware-ld}
+        - fiware-ld
 
     command: -experimental -t 0-255
     environment:
@@ -42,7 +42,7 @@ services:
     container_name: "mongo-db-ld"
     restart: always
     networks:
-        - ${LD-NETWORK:-fiware-ld}
+        - fiware-ld
     volumes:
       - mongo-db-ld:${MONGO_DATA_DIR:-/data/db}
   
@@ -53,7 +53,7 @@ services:
     ports:
         - "8082:8081"
     networks:
-        - ${LD-NETWORK:-fiware-ld}
+        - fiware-ld
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
         - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_SN:-mongo-db-ld}
@@ -72,7 +72,7 @@ services:
     ports:
       - "4042:4041"
     networks:
-      - ${LD-NETWORK:-fiware-ld}
+      - fiware-ld
     environment: # environments are not completely checked yet, thus the hard code
       - IOTA_CB_HOST=orion-ld
       - IOTA_CB_PORT=1026
@@ -81,7 +81,7 @@ services:
       - IOTA_LOG_LEVEL=DEBUG
       - IOTA_TIMESTAMP=true
       - IOTA_CB_NGSI_VERSION=LD
-      - IOTA_JSON_LD_CONTEXT=http://context-server:8050/context.jsonld
+      - IOTA_JSON_LD_CONTEXT=http://context-server:80/context.jsonld
       # - IOTA_FALLBACK_TENANT=
       # - IOTA_FALLBACK_PATH=/
       - IOTA_AUTOCAST=false
@@ -96,6 +96,7 @@ services:
       - IOTA_MQTT_PORT=1883
       # - IOTA_MQTT_USERNAME=
       # - IOTA_MQTT_PASSWORD=
+      - IOTA_AMQP_DISABLED=true
       - IOTA_MQTT_PROTOCOL=mqtt
       - IOTA_MQTT_KEEPALIVE=60
     
@@ -107,28 +108,28 @@ services:
     ports: 
         - "1884:1883"
     networks:
-        - ${LD-NETWORK:-fiware-ld}
+        - fiware-ld
     volumes:
-        - ../configs/mosquitto.conf:/mosquitto/config/mosquitto.conf 
+        - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf 
 
   quantumleap-ld:
     image: orchestracities/quantumleap:1.0.0
     hostname: quantumleap-ld
     container_name: quantumleap-ld
     networks:
-      - ${LD-NETWORK:-fiware-ld}
+      - fiware-ld
     ports:
       - "8669:8668"
     environment:
       - CRATE_HOST=crate-ld
       
   crate-ld:
-    image: crate:4.8.6 # Please check release notes!
+    image: crate:4.8.4 # Please check release notes!
     restart: always
     hostname: crate-ld
     container_name: crate-ld
     networks:
-        - ${LD-NETWORK:-fiware-ld}
+        - fiware-ld
     ports:
       - "4201:4200"
     volumes:
@@ -150,7 +151,7 @@ services:
     ports:
       - "3001:3000"
     networks:
-      - ${LD-NETWORK:-fiware-ld}
+      - fiware-ld
 
   portainer:
     image: portainer/portainer-ce:${PORTAINER_VERSION:-2.19.4}
@@ -164,7 +165,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
-      - ${PORTAINER_NETWORK:-portainer}
+      - portainer
     restart: always
 
   context-server:
@@ -174,7 +175,7 @@ services:
     ports:
         - "8050:80"
     networks:
-      - ${LD-NETWORK:-fiware-ld}
+      - fiware-ld
     volumes:
         - context-files:/usr/local/apache2/htdocs/
     restart: always
@@ -189,6 +190,7 @@ volumes:
   portainer_data:
    name: portainer_data
   context-files:
+    name: context-files
     driver: local
     driver_opts:
       type: none
@@ -196,7 +198,7 @@ volumes:
       device: ../general/context-files
   
 networks:
-  ${LD-NETWORK:-fiware-ld}:
-    name: ${LD-NETWORK:-fiware-ld}
-  ${PORTAINER_NETWORK:-portainer}:
-    name: ${PORTAINER_NETWORK:-portainer}
+  fiware-ld:
+    name: fiware-ld
+  portainer:
+    name: portainer
