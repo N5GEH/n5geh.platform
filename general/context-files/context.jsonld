@@ -1,0 +1,16 @@
+{
+    "@context": {
+      "brick": "https://brickschema.org/schema/brick#",
+  
+      "TemperatureSensor": "brick:Temperature_Sensor",
+      "Valve": "brick:Valve",
+    
+      "openCloseStatus": "brick:Open_Close_Status",
+      "openCloseSetpoint": "brick:Position_Command",
+      "setpoint": "brick:Setpoint",
+      "temperature": "brick:Temperature",
+      "temperatureSetpoint": "brick:Temperature_Setpoint"
+    },
+    "@graph": []
+  }
+  

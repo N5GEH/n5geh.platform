@@ -1,0 +1,202 @@
+version: "3.7"
+
+services:
+  orion-ld:
+    #Sometimes the newest builds fail. Hence, we fixed a stable version that
+    #probably will be updated once in a while
+    image: fiware/orion-ld:${ORIONLD_VERSION:-1.5.1}
+    hostname: orion-ld
+    restart: always
+    container_name: "orion-ld"
+    ports:
+       - "${ORIONLD_PORT:-1027}:1026"
+    depends_on:
+        - mongo-db-ld
+    networks:
+        - ${LD-NETWORK:-fiware-ld}
+
+    command: -experimental -t 0-255
+    environment:
+      - ORIONLD_LOG_LEVEL=${ORIONLD_LOG_LEVEL:-DEBUG}
+      - ORIONLD_TMP_TRACES=FALSE #log level is buggy in 1.5.1 (TMP messages in logs for every request)
+      - ORIONLD_LOG_FOR_HUMANS=${ORIONLD_LOG_FOR_HUMANS:-TRUE}
+      - ORIONLD_CONTEXT_DOWNLOAD_TIMEOUT=${ORIONLD_CONTEXT_DOWNLOAD_TIMEOUT:-1000}
+      - ORIONLD_CONTEXT_DOWNLOAD_ATTEMPTS=${ORIONLD_CONTEXT_DOWNLOAD_ATTEMPTS:-5}
+      - ORIONLD_FORWARDING=${ORIONLD_FORWARDING:-TRUE}
+      - ORIONLD_STAT_COUNTERS=${ORIONLD_STAT_COUNTERS:-TRUE}
+      - ORIONLD_STAT_SEM_WAIT=${ORIONLD_STAT_SEM_WAIT:-TRUE}
+      - ORIONLD_STAT_TIMING=${ORIONLD_STAT_TIMING:-TRUE}
+      - ORIONLD_STAT_NOTIF_QUEUE=${ORIONLD_STAT_NOTIF_QUEUE:-TRUE}
+      - ORIONLD_MONGO_HOST=${ORIONLD_MONGO_HOST:-mongo-db-ld}
+      # - ORIONLD_MONGO_REPLICA_SET=${ORIONLD_MONGO_REPLICA_SET:-rs0}
+      - ORIONLD_MONGO_DB=${ORIONLD_MONGO_DB:-orionld} 
+      - ORIONLD_MONGO_WRITE_CONCERN=${ORIONLD_MONGO_WRITE_CONCERN:-0}
+      - ORIONLD_MULTI_SERVICE=${ORIONLD_MULTI_SERVICE:-TRUE}
+      - ORIONLD_NOTIF_MODE=${ORIONLD_NOTIF_MODE:-persistent}
+      - ORIONLD_MUTEX_POLICY=${ORIONLD_MUTEX_POLICY:-all}
+      - ORIONLD_CONN_MEMORY=${ORIONLD_CONN_MEMORY:-128}
+
+  mongo-db-ld:
+    image: mongo:${MONGODB_VERSION:-5.0.24} #Check https://docs.mongodb.com/manual/release-notes/ im Zweifel 4.2
+    hostname: mongo-db-ld
+    container_name: "mongo-db-ld"
+    restart: always
+    networks:
+        - ${LD-NETWORK:-fiware-ld}
+    volumes:
+      - mongo-db-ld:${MONGO_DATA_DIR:-/data/db}
+  
+  mongo-express-ld:
+    image: mongo-express:${ME_VERSION:-1.0.2-20}
+    hostname: mongo-express-ld
+    container_name: "mongo-express-ld"
+    ports:
+        - "8082:8081"
+    networks:
+        - ${LD-NETWORK:-fiware-ld}
+    environment:
+        - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
+        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_SN:-mongo-db-ld}
+        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
+        #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+        
+
+  iot-agent-ld:
+    image: fiware/iotagent-json:1.25.0
+    hostname: iot-agent-ld
+    container_name: "iot-agent-ld"
+    restart: always
+    depends_on:
+      - mongo-db-ld
+    ports:
+      - "4042:4041"
+    networks:
+      - ${LD-NETWORK:-fiware-ld}
+    environment: # environments are not completely checked yet, thus the hard code
+      - IOTA_CB_HOST=orion-ld
+      - IOTA_CB_PORT=1026
+      - IOTA_NORTH_PORT=4041
+      - IOTA_REGISTRY_TYPE=mongodb
+      - IOTA_LOG_LEVEL=DEBUG
+      - IOTA_TIMESTAMP=true
+      - IOTA_CB_NGSI_VERSION=LD
+      - IOTA_JSON_LD_CONTEXT=http://context-server:8050/context.jsonld
+      # - IOTA_FALLBACK_TENANT=
+      # - IOTA_FALLBACK_PATH=/
+      - IOTA_AUTOCAST=false
+      - IOTA_EXPLICIT_ATTRS=true
+      - IOTA_MONGO_HOST=mongo-db-ld
+      - IOTA_MONGO_PORT=27017
+      - IOTA_MONGO_DB=iotagentjson-ld
+      - IOTA_PROVIDER_URL=http://iot-agent-ld:4041
+      - IOTA_DEFAULT_RESOURCE=/iot/json
+      - IOTA_HTTP_PORT=7896
+      - IOTA_MQTT_HOST=mqtt-broker-ld
+      - IOTA_MQTT_PORT=1883
+      # - IOTA_MQTT_USERNAME=
+      # - IOTA_MQTT_PASSWORD=
+      - IOTA_MQTT_PROTOCOL=mqtt
+      - IOTA_MQTT_KEEPALIVE=60
+    
+  mqtt-broker-ld:
+    image: eclipse-mosquitto:2.0.15
+    restart: always
+    hostname: mqtt-broker-ld
+    container_name: mqtt-broker-ld
+    ports: 
+        - "1884:1883"
+    networks:
+        - ${LD-NETWORK:-fiware-ld}
+    volumes:
+        - ../configs/mosquitto.conf:/mosquitto/config/mosquitto.conf 
+
+  quantumleap-ld:
+    image: orchestracities/quantumleap:1.0.0
+    hostname: quantumleap-ld
+    container_name: quantumleap-ld
+    networks:
+      - ${LD-NETWORK:-fiware-ld}
+    ports:
+      - "8669:8668"
+    environment:
+      - CRATE_HOST=crate-ld
+      
+  crate-ld:
+    image: crate:4.8.6 # Please check release notes!
+    restart: always
+    hostname: crate-ld
+    container_name: crate-ld
+    networks:
+        - ${LD-NETWORK:-fiware-ld}
+    ports:
+      - "4201:4200"
+    volumes:
+      - crate-ld:/data
+    environment: 
+      - TZ=Europe/Berlin
+      - CRATE_HEAP_SIZE=1g
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
+    restart: always
+    hostname: grafana
+    container_name: grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
+      - TZ=Europe/Berlin
+    volumes:
+      - "grafana:/var/lib/grafana"
+    ports:
+      - "3001:3000"
+    networks:
+      - ${LD-NETWORK:-fiware-ld}
+
+  portainer:
+    image: portainer/portainer-ce:${PORTAINER_VERSION:-2.19.4}
+    hostname: portainer
+    container_name: portainer
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - ${PORTAINER_NETWORK:-portainer}
+    restart: always
+
+  context-server:
+    image: httpd:alpine
+    hostname: context-server
+    container_name: context-server
+    ports:
+        - "8050:80"
+    networks:
+      - ${LD-NETWORK:-fiware-ld}
+    volumes:
+        - context-files:/usr/local/apache2/htdocs/
+    restart: always
+
+volumes:
+  mongo-db-ld:
+    name: mongodb-ld
+  crate-ld:
+    name: crate-ld
+  grafana:
+    name: grafana
+  portainer_data:
+   name: portainer_data
+  context-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../general/context-files
+  
+networks:
+  ${LD-NETWORK:-fiware-ld}:
+    name: ${LD-NETWORK:-fiware-ld}
+  ${PORTAINER_NETWORK:-portainer}:
+    name: ${PORTAINER_NETWORK:-portainer}
