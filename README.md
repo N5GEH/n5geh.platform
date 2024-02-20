@@ -161,12 +161,12 @@ For a multi computer use, we currently provide a setup for NGSI-v2.
 
 ## Get Grafana running (for all setups)
 
-After successfully launching the platform, CrateDB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3001, it can be accessed at http://yourIP:3001/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
+After successfully launching the platform, CrateDB needs to be linked to Grafana for using its time series analytics tool/for data visualisation. Since Grafana is listening on port 3000, it can be accessed at http://yourIP:3000/login. In order to use the application, a login is required first. You can do this using your personal account or a standard Grafana administrator user who has full permissions. The default login details are:
 
         username: admin
         passwort: admin
 
-After logging in, visit: http://yourIP:3001/datasources to connect to your database and select the type PostgreSQL. For further configuration, the following data should be taken over.
+After logging in, visit: http://yourIP:3000/datasources to connect to your database and select the type PostgreSQL. For further configuration, the following data should be taken over.
 
 **Note:** Currently, there might be no data in your CrateDB yet. In order to put data into your database, either follow our tutorial [from sensor to application](https://github.com/N5GEH/n5geh.tutorials.from_sensor_to_application) or FIWARE's [time series tutorial](https://github.com/FIWARE/tutorials.Time-Series-Data/):
 
