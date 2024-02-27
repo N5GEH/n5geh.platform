@@ -149,7 +149,7 @@ services:
     volumes:
       - "grafana:/var/lib/grafana"
     ports:
-      - "3001:3000"
+      - "3000:3000"
     networks:
       - fiware-ld
 
