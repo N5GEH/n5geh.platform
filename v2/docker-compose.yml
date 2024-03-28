@@ -3,14 +3,29 @@ version: "3.8"
 services:
   
   mongo-db:
-    image: mongo:${MONGODB_VERSION:-4.4}
+    image: mongo:${MONGODB_VERSION:-5.0.24}
     hostname: mongo-db
     container_name: "mongo-db"
     restart: always
     networks:
         - fiware
     volumes:
-      - mongo-db:/data/db
+      - mongo-db:${MONGO_DATA_DIR:-/data/db}
+
+  mongo-express:
+    image: mongo-express:${ME_VERSION:-1.0.2-20}
+    hostname: mongo-express
+    container_name: "mongo-express"
+    ports:
+        - "8081:8081"
+    networks:
+        - fiware
+    environment:
+        - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
+        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_SN:-mongo-db}
+        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
+        #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
           
   orion:
     image: fiware/orion:${ORION_VERSION:-3.7.0} #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
@@ -57,6 +72,7 @@ services:
       - IOTA_MQTT_PORT=1883
       - IOTA_MQTT_PROTOCOL=mqtt
       - IOTA_MQTT_KEEPALIVE=60
+      - IOTA_AMQP_DISABLED=true
     
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
@@ -68,7 +84,7 @@ services:
     networks:
         - fiware
     volumes:
-        - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+        - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   quantumleap:
     image: orchestracities/quantumleap:${QL_VERSION:-0.8.3}
@@ -106,12 +122,12 @@ services:
     depends_on:
       - crate
     environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
       - TZ=Europe/Berlin
     volumes:
       - "grafana:/var/lib/grafana"
     ports:
-      - "3001:3000"
+      - "3000:3000"
     networks:
       - fiware
 
@@ -126,7 +142,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
-      - portainer
+      - ${PORTAINER_NETWORK:-portainer}
     restart: always
 
 
