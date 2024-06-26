@@ -1,7 +1,20 @@
 version: "3.8"
 
 services:
-  
+          
+  orion:
+    image: fiware/orion:${ORION_VERSION:-3.7.0} #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
+    hostname: orion
+    restart: always
+    container_name: "orion"
+    depends_on:
+        - mongo-db
+    networks:
+        - fiware
+    ports:
+       - "1026:1026"
+    command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans
+
   mongo-db:
     image: mongo:${MONGODB_VERSION:-5.0.24}
     hostname: mongo-db
@@ -26,20 +39,7 @@ services:
         - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-          
-  orion:
-    image: fiware/orion:${ORION_VERSION:-3.7.0} #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
-    hostname: orion
-    restart: always
-    container_name: "orion"
-    depends_on:
-        - mongo-db
-    networks:
-        - fiware
-    ports:
-       - "1026:1026"
-    command: -dbhost mongo-db -logLevel DEBUG -noCache -logForHumans
-         
+        - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
 
   iot-agent:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}

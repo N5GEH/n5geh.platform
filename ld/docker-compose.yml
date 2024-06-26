@@ -60,10 +60,11 @@ services:
         - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+        - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
         
 
   iot-agent-ld:
-    image: fiware/iotagent-json:1.25.0
+    image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.25.0}
     hostname: iot-agent-ld
     container_name: "iot-agent-ld"
     restart: always
@@ -74,7 +75,7 @@ services:
     networks:
       - fiware-ld
     environment: # environments are not completely checked yet, thus the hard code
-      - IOTA_CB_HOST=orion-ld
+      - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion-ld}
       - IOTA_CB_PORT=1026
       - IOTA_NORTH_PORT=4041
       - IOTA_REGISTRY_TYPE=mongodb
@@ -101,7 +102,7 @@ services:
       - IOTA_MQTT_KEEPALIVE=60
     
   mqtt-broker-ld:
-    image: eclipse-mosquitto:2.0.15
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
     restart: always
     hostname: mqtt-broker-ld
     container_name: mqtt-broker-ld
@@ -113,7 +114,7 @@ services:
         - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf 
 
   quantumleap-ld:
-    image: orchestracities/quantumleap:1.0.0
+    image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
     hostname: quantumleap-ld
     container_name: quantumleap-ld
     networks:
@@ -124,7 +125,7 @@ services:
       - CRATE_HOST=crate-ld
       
   crate-ld:
-    image: crate:4.8.4 # Please check release notes!
+    image: crate:${CRATEDB_VERSION:-4.8.4} # Please check release notes!
     restart: always
     hostname: crate-ld
     container_name: crate-ld
@@ -149,7 +150,7 @@ services:
     volumes:
       - "grafana:/var/lib/grafana"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - fiware-ld
 
