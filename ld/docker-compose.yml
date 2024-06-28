@@ -50,6 +50,7 @@ services:
     image: mongo-express:${ME_VERSION:-1.0.2-20}
     hostname: mongo-express-ld
     container_name: "mongo-express-ld"
+    restart: always
     ports:
         - "8082:8081"
     networks:
@@ -117,6 +118,7 @@ services:
     image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
     hostname: quantumleap-ld
     container_name: quantumleap-ld
+    restart: always
     networks:
       - fiware-ld
     ports:
