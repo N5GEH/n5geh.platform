@@ -42,7 +42,7 @@ services:
     networks:
         - fiware-ld
     volumes:
-      - mongo-db-ld:${MONGO_DATA_DIR:-/data/db}
+      - ${MONGODB_VOLUME_PATH:-mongo-db-ld}:${MONGO_DATA_DIR:-/data/db}
   
   mongo-express-ld:
     image: mongo-express:${ME_VERSION:-1.0.2}
@@ -72,7 +72,8 @@ services:
       - fiware-ld
     depends_on:
       - mongo-db-ld
-    environment: # environments are not completely checked yet, thus the hard code
+    environment:
+      - IOTA_MULTI_CORE=${IOTA_JSON_MULTI_CORE:-true}
       - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion-ld}
       - IOTA_CB_PORT=${IOTA_JSON_CB_PORT:-1026}
       - IOTA_NORTH_PORT=${IOTA_JSON_NORTH_PORT:-4041}
@@ -122,7 +123,7 @@ services:
       - fiware-ld
     environment:
       - LOGLEVEL=${QL_LOG_LEVEL:-DEBUG}
-      - CRATE_HOST=${QL_CRATEDB_HOST:-crate-ld}
+      - CRATE_HOST=${QL_CRATEDB_HOST_SN:-crate-ld}
       # - CRATE_DB_USER=${QL_CRATEDB_USER:-ql}
       # - CRATE_DB_PASS=${QL_CRATEDB_PASSWORD:-myqlpassword}
       # - REDIS_HOST=${QL_REDIS_HOST:-redis-cache}
@@ -139,8 +140,7 @@ services:
     networks:
         - fiware-ld
     volumes:
-      - crate-ld:/data
-      # - ${CRATEDB_VOLUME_PATH}:/data
+      - ${CRATEDB_VOLUME_PATH:-crate-ld}:${CRATEDB_DATA_DIR:-/data}
     environment: 
       - TZ=${TIMEZONE:-Europe/Berlin}
       - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g}
