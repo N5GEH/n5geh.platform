@@ -101,7 +101,7 @@ services:
       - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
     
   mqtt-broker-ld:
-    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
     hostname: mqtt-broker-ld
     container_name: mqtt-broker-ld
     restart: always
