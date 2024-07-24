@@ -113,7 +113,7 @@ services:
       - crate:/data
     environment: 
       - TZ=Europe/Berlin
-      - CRATE_HEAP_SIZE=2g
+      - CRATE_HEAP_SIZE=1g
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
