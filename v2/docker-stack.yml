@@ -329,7 +329,7 @@ services:
        - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g} # should be around half the VMs RAM
        
   mqtt-broker:
-    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
     hostname: mqtt-broker
     ports:
       - "${MOSQUITTO_PORT:-1883}:1883"

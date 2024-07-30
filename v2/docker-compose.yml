@@ -20,8 +20,8 @@ services:
       - ORION_STAT_SEM_WAIT=${ORION_STAT_SEM_WAIT:-FALSE}
       - ORION_STAT_TIMING=${ORION_STAT_TIMING:-FALSE}
       - ORION_STAT_NOTIF_QUEUE=${ORION_STAT_NOTIF_QUEUE:-TRUE}
-      - ORION_MONGO_HOST=${ORION_MONGO_HOST_SN:-mongodb1,mongodb2,mongodb3}
-      - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
+      - ORION_MONGO_HOST=${ORION_MONGO_HOST_SN:-mongo-db}
+      # - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
       - ORION_MONGO_WRITE_CONCERN=${ORION_WRITE_CONCERN:-1}
       - ORION_NOTIF_MODE=${ORION_NOTIFICATION_MODE:-transient} 
       # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2} # use only if ORION_NOTIFICATION_MODE is set to "threadpool"
@@ -60,7 +60,7 @@ services:
     container_name: "iot-agent"
     restart: always
     ports:
-      - "${IOTA_JSON_PORT:-4042}:${IOTA_JSON_NORTH_PORT:-4041}"
+      - "${IOTA_JSON_PORT:-4041}:${IOTA_JSON_NORTH_PORT:-4041}"
     networks:
       - fiware
     depends_on:
