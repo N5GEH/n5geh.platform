@@ -71,8 +71,7 @@ services:
     # adapt for production use!    
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
-        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_MN:-mongodb1,mongodb2,mongodb3}
-        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL_MN:-mongodb://mongodb1:27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         # - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE:-admin}
         - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
@@ -119,12 +118,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH}:${MONGO_DATA_DIR:-/data/db}
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement: 
         constraints:
-          - node.hostname == ${NODE1:-test1}
+          - node.hostname == ${NODE1:-test-1}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -148,12 +147,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH}:${MONGO_DATA_DIR:-/data/db}
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement: 
         constraints:
-          - node.hostname == ${NODE2:-test2}
+          - node.hostname == ${NODE2:-test-2}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -177,12 +176,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH}:${MONGO_DATA_DIR:-/data/db}
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement:
         constraints: 
-          - node.hostname == ${NODE3:-test3}
+          - node.hostname == ${NODE3:-test-3}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -194,7 +193,7 @@ services:
 
 
   quantumleap:
-    image: orchestracities/quantumleap:${QL_VERSION:-0.8.3}
+    image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
     hostname: quantumleap
     networks:
       - fiware_backend
@@ -296,7 +295,7 @@ services:
                "-Cnetwork.publish_host=_eth0_",
                "-Cdiscovery.seed_hosts=cratedb",
                "-Cauth.host_based.enabled=false",
-               "-Ccluster.initial_master_nodes=${CRATEDB_INITIAL_MASTER_NODES:-test1}",
+               "-Ccluster.initial_master_nodes=${CRATEDB_INITIAL_MASTER_NODES:-test-1}",
                "-Chttp.cors.enabled=true", # change for production
                "-Chttp.cors.allow-origin='*'",
                "-Cgateway.expected_nodes=${CRATEDB_EXPECTED_NODES:-3}",
@@ -435,6 +434,8 @@ volumes:
     name: mqtt-redis
   grafana:
     name: grafana
+  mongodb:
+    name: mongodb
 
 networks:
   fiware_backend:

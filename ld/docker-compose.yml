@@ -55,7 +55,7 @@ services:
         - fiware-ld
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
-        - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL:-mongodb://mongo-db-ld:27017}
+        - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL_SN:-mongodb://mongo-db-ld:27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
         - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
