@@ -44,7 +44,7 @@ services:
     container_name: "mongo-express"
     restart: always
     ports:
-        - "8081:8081"
+        - "${ME_PORT:-8081}:8081"
     networks:
         - fiware
     environment:
@@ -54,7 +54,7 @@ services:
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
         - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
 
-  iot-agent:
+  iot-agent-json:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}
     hostname: iot-agent
     container_name: "iot-agent"

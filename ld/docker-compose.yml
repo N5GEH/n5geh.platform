@@ -50,7 +50,7 @@ services:
     container_name: "mongo-express-ld"
     restart: always
     ports:
-        - "8082:8081"
+        - "${ME_PORT:-8082}:8081"
     networks:
         - fiware-ld
     environment:
@@ -61,10 +61,10 @@ services:
         - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
         
 
-  iot-agent-ld:
+  iot-agent-json-ld:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.25.0}
-    hostname: iot-agent-ld
-    container_name: "iot-agent-ld"
+    hostname: iot-agent-json-ld
+    container_name: "iot-agent-json-ld"
     restart: always
     ports:
       - "${IOTA_JSON_PORT:-4042}:${IOTA_JSON_NORTH_PORT:-4041}"
@@ -89,7 +89,7 @@ services:
       - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST_SN:-mongo-db-ld}
       - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017}
       - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson-ld}
-      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-ld:4041}
+      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-json-ld:4041}
       - IOTA_DEFAULT_RESOURCE=${IOTA_JSON_DEFAULT_RESOURCE:-/iot/json}
       - IOTA_HTTP_PORT=${IOTA_JSON_HTTP_PORT:-7896}
       - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker-ld}
