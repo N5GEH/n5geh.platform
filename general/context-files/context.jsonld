@@ -1,21 +1,25 @@
 {
     "@context": {
       "brick": "https://brickschema.org/schema/brick#",
+      "sense": "https://w3id.org/sense#",
       "unit": "http://qudt.org/vocab/unit/",
 
-
+      "MultiSensor": "sense:MultiSensor",
+      "Location": "brick:Location",
       "Heater": "brick:Electric_Radiator",
       "SensorEquipment": "brick:Sensor_Equipment",
+      "SensorPoint": "brick:Sensor",
       "Setpoint": "brick:Setpoint",
       "TemperatureSensor": "brick:Temperature_Sensor",
+      "TemperatureSetpoint": "brick:Temperature_Setpoint",
       "Valve": "brick:Valve",
       "ValvePosition": "brick:Valve_Position_Sensor",
       "ValveCommand": "brick:Valve_Position_Command",
       "WeatherStation": "brick:Weather_Station",
     
+      "isPointOf": "brick:isPointOf",
       "heaterPower": "brick:Setpoint",
       "temperature": "brick:Temperature",
-      "temperatureSetpoint": "brick:Temperature_Setpoint",
 
       "degC": "unit:DEG_C",
       "percent": "unit:PERCENT"
