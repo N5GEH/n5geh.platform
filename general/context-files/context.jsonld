@@ -3,19 +3,22 @@
       "brick": "https://brickschema.org/schema/brick#",
       "unit": "http://qudt.org/vocab/unit/",
 
+
       "Heater": "brick:Electric_Radiator",
+      "SensorEquipment": "brick:Sensor_Equipment",
+      "Setpoint": "brick:Setpoint",
       "TemperatureSensor": "brick:Temperature_Sensor",
       "Valve": "brick:Valve",
+      "ValvePosition": "brick:Valve_Position_Sensor",
+      "ValveCommand": "brick:Valve_Position_Command",
       "WeatherStation": "brick:Weather_Station",
     
       "heaterPower": "brick:Setpoint",
-      "openCloseStatus": "brick:Open_Close_Status",
-      "openCloseSetpoint": "brick:Position_Command",
-      "setpoint": "brick:Setpoint",
       "temperature": "brick:Temperature",
       "temperatureSetpoint": "brick:Temperature_Setpoint",
 
-      "degC": "unit:DEG_C"
+      "degC": "unit:DEG_C",
+      "percent": "unit:PERCENT"
     },
     "@graph": []
   }
