@@ -6,16 +6,14 @@ services:
     #probably will be updated once in a while
     image: fiware/orion-ld:${ORIONLD_VERSION:-1.5.1}
     hostname: orion-ld
-    restart: always
     container_name: "orion-ld"
+    restart: always
     ports:
        - "${ORIONLD_PORT:-1027}:1026"
-    depends_on:
-        - mongo-db-ld
     networks:
         - fiware-ld
-
-    command: -experimental -t 0-255
+    depends_on:
+        - mongo-db-ld
     environment:
       - ORIONLD_LOG_LEVEL=${ORIONLD_LOG_LEVEL:-DEBUG}
       - ORIONLD_TMP_TRACES=FALSE #log level is buggy in 1.5.1 (TMP messages in logs for every request)
@@ -44,128 +42,137 @@ services:
     networks:
         - fiware-ld
     volumes:
-      - mongo-db-ld:${MONGO_DATA_DIR:-/data/db}
+      - ${MONGODB_VOLUME_PATH:-mongo-db-ld}:${MONGO_DATA_DIR:-/data/db}
   
   mongo-express-ld:
-    image: mongo-express:${ME_VERSION:-1.0.2-20}
+    image: mongo-express:${ME_VERSION:-1.0.2}
     hostname: mongo-express-ld
     container_name: "mongo-express-ld"
+    restart: always
     ports:
-        - "8082:8081"
+        - "${ME_PORT:-8082}:8081"
     networks:
         - fiware-ld
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
-        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_SN:-mongo-db-ld}
-        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL_SN:-mongodb://mongo-db-ld:27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+        - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
         
 
-  iot-agent-ld:
-    image: fiware/iotagent-json:1.25.0
-    hostname: iot-agent-ld
-    container_name: "iot-agent-ld"
+  iot-agent-json-ld:
+    image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.25.0}
+    hostname: iot-agent-json-ld
+    container_name: "iot-agent-json-ld"
     restart: always
-    depends_on:
-      - mongo-db-ld
     ports:
-      - "4042:4041"
+      - "${IOTA_JSON_PORT:-4042}:${IOTA_JSON_NORTH_PORT:-4041}"
     networks:
       - fiware-ld
-    environment: # environments are not completely checked yet, thus the hard code
-      - IOTA_CB_HOST=orion-ld
-      - IOTA_CB_PORT=1026
-      - IOTA_NORTH_PORT=4041
-      - IOTA_REGISTRY_TYPE=mongodb
-      - IOTA_LOG_LEVEL=DEBUG
-      - IOTA_TIMESTAMP=true
-      - IOTA_CB_NGSI_VERSION=LD
-      - IOTA_JSON_LD_CONTEXT=http://context-server:80/context.jsonld
-      # - IOTA_FALLBACK_TENANT=
-      # - IOTA_FALLBACK_PATH=/
-      - IOTA_AUTOCAST=false
-      - IOTA_EXPLICIT_ATTRS=true
-      - IOTA_MONGO_HOST=mongo-db-ld
-      - IOTA_MONGO_PORT=27017
-      - IOTA_MONGO_DB=iotagentjson-ld
-      - IOTA_PROVIDER_URL=http://iot-agent-ld:4041
-      - IOTA_DEFAULT_RESOURCE=/iot/json
-      - IOTA_HTTP_PORT=7896
-      - IOTA_MQTT_HOST=mqtt-broker-ld
-      - IOTA_MQTT_PORT=1883
-      # - IOTA_MQTT_USERNAME=
-      # - IOTA_MQTT_PASSWORD=
-      - IOTA_AMQP_DISABLED=true
-      - IOTA_MQTT_PROTOCOL=mqtt
-      - IOTA_MQTT_KEEPALIVE=60
+    depends_on:
+      - mongo-db-ld
+    environment:
+      - IOTA_MULTI_CORE=${IOTA_JSON_MULTI_CORE:-true}
+      - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion-ld}
+      - IOTA_CB_PORT=${IOTA_JSON_CB_PORT:-1026}
+      - IOTA_NORTH_PORT=${IOTA_JSON_NORTH_PORT:-4041}
+      - IOTA_REGISTRY_TYPE=${IOTA_JSON_REGISTRY_TYPE:-mongodb}
+      - IOTA_LOG_LEVEL=${IOTA_JSON_LOG_LEVEL:-DEBUG}
+      - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true}
+      - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-LD}
+      - IOTA_JSON_LD_CONTEXT=${IOTA_JSON_LD_CONTEXT:-http://context-server:80/context.jsonld}
+      # - IOTA_FALLBACK_TENANT=${IOTA_JSON_FALLBACK_TENANT:-default}
+      # - IOTA_FALLBACK_PATH=${IOTA_JSON_FALLBACK_PATH:-/}
+      - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-false}
+      - IOTA_EXPLICIT_ATTRS=${IOTA_JSON_EXPLICIT_ATTRS:-true}
+      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST_SN:-mongo-db-ld}
+      - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017}
+      - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson-ld}
+      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-json-ld:4041}
+      - IOTA_DEFAULT_RESOURCE=${IOTA_JSON_DEFAULT_RESOURCE:-/iot/json}
+      - IOTA_HTTP_PORT=${IOTA_JSON_HTTP_PORT:-7896}
+      - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker-ld}
+      - IOTA_MQTT_PORT=${IOTA_JSON_MQTT_PORT:-1883}
+      # - IOTA_MQTT_USERNAME=${IOTA_JSON_MQTT_USERNAME:-iotagent}
+      # - IOTA_MQTT_PASSWORD=${IOTA_JSON_MQTT_PASSWORD:-mypassword}
+      - IOTA_MQTT_PROTOCOL=${IOTA_JSON_MQTT_PROTOCOL:-mqtt}
+      - IOTA_MQTT_KEEPALIVE=${IOTA_JSON_MQTT_KEEPALIVE:-60}
+      - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
     
   mqtt-broker-ld:
-    image: eclipse-mosquitto:2.0.15
-    restart: always
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
     hostname: mqtt-broker-ld
     container_name: mqtt-broker-ld
+    restart: always
     ports: 
-        - "1884:1883"
+        - "${MOSQUITTO_PORT:-1884}:1883"
     networks:
         - fiware-ld
     volumes:
         - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf 
 
   quantumleap-ld:
-    image: orchestracities/quantumleap:1.0.0
+    image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
     hostname: quantumleap-ld
     container_name: quantumleap-ld
+    restart: always
+    ports:
+      - "${QL_PORT:-8669}:8668"
     networks:
       - fiware-ld
-    ports:
-      - "8669:8668"
     environment:
-      - CRATE_HOST=crate-ld
+      - LOGLEVEL=${QL_LOG_LEVEL:-DEBUG}
+      - CRATE_HOST=${QL_CRATEDB_HOST_SN:-crate-ld}
+      # - CRATE_DB_USER=${QL_CRATEDB_USER:-ql}
+      # - CRATE_DB_PASS=${QL_CRATEDB_PASSWORD:-myqlpassword}
+      # - REDIS_HOST=${QL_REDIS_HOST:-redis-cache}
+      # - REDIS_PORT=${QL_REDIS_PORT:-6379}
+      # - CACHE_QUERIES=${QL_CACHE_QUERIES:-True}
       
   crate-ld:
-    image: crate:4.8.4 # Please check release notes!
-    restart: always
+    image: crate:${CRATEDB_VERSION:-4.8.4} # Please check release notes!
     hostname: crate-ld
     container_name: crate-ld
+    restart: always
+    ports:
+      - "${CRATEDB_Port:-4201}:4200"
     networks:
         - fiware-ld
-    ports:
-      - "4201:4200"
     volumes:
-      - crate-ld:/data
+      - ${CRATEDB_VOLUME_PATH:-crate-ld}:${CRATEDB_DATA_DIR:-/data}
     environment: 
-      - TZ=Europe/Berlin
-      - CRATE_HEAP_SIZE=1g
+      - TZ=${TIMEZONE:-Europe/Berlin}
+      - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g}
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
-    restart: always
     hostname: grafana
     container_name: grafana
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
-      - TZ=Europe/Berlin
-    volumes:
-      - "grafana:/var/lib/grafana"
+    restart: always
     ports:
-      - "3000:3000"
+      - "${GRAFANA_PORT:-3001}:3000"
     networks:
       - fiware-ld
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
+      - TZ=${TIMEZONE:-Europe/Berlin}
+    volumes:
+      - "grafana:/var/lib/grafana"
 
   portainer:
     image: portainer/portainer-ce:${PORTAINER_VERSION:-2.19.4}
     hostname: portainer
     container_name: portainer
     ports:
-      - "9000:9000"
-      - "9443:9443"
-      - "8000:8000"
+      - "${PORTAINER_PORT:-9000}:9000"
+      # - "9443:9443"
+      # - "8000:8000"
+    networks:
+      - portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
-    networks:
-      - portainer
     restart: always
 
   context-server:

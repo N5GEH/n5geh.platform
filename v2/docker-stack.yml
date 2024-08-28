@@ -8,7 +8,7 @@ services:
     # do only open ports if you are sure they are not accessible for unauthorized people and services
     # port exposing is only required if access from outside the docker network is needed (and you do not use a proxy service)
     ports:
-        - "1026:1026"
+        - "${ORION_PORT:-1026}:1026"
     # Read orion's documentation for further information about its configuration:
     # https://fiware-orion.readthedocs.io/en/master/admin/cli/index.html
     # For in production mode please adjust these settings!
@@ -19,7 +19,7 @@ services:
       - ORION_STAT_SEM_WAIT=${ORION_STAT_SEM_WAIT:-FALSE}
       - ORION_STAT_TIMING=${ORION_STAT_TIMING:-FALSE}
       - ORION_STAT_NOTIF_QUEUE=${ORION_STAT_NOTIF_QUEUE:-TRUE}
-      - ORION_MONGO_HOST=${ORION_MONGO_HOST:-mongodb1,mongodb2,mongodb3}
+      - ORION_MONGO_HOST=${ORION_MONGO_HOST_MN:-mongodb1,mongodb2,mongodb3}
       - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
       - ORION_MONGO_WRITE_CONCERN=${ORION_WRITE_CONCERN:-1}
       - ORION_NOTIF_MODE=${ORION_NOTIFICATION_MODE:-transient} 
@@ -62,19 +62,19 @@ services:
 
   # Mongo-express is a simple visualisation of mongoDB-instances and their data
   mongo-express:
-    image: mongo-express:${ME_VERSION:-1.0.2-20} # Check https://docs.mongodb.com/manual/release-notes/
+    image: mongo-express:${ME_VERSION:-1.0.2} # Check https://docs.mongodb.com/manual/release-notes/
     hostname: mongo-express
     ports:
-        - "8081:8081"
+        - "${ME_PORT:-8081}:8081"
     networks:
         - fiware_backend
     # adapt for production use!    
     environment:
         - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME:-ambiance}
-        - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER_MN:-mongodb1,mongodb2,mongodb3}
-        - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT:-27017}
+        - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL_MN:-mongodb://mongodb1:27017}
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
-        - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE:-admin}
+        # - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE:-admin}
+        - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
     # Settings for log-files
     deploy:
       replicas: 1
@@ -118,12 +118,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement: 
         constraints:
-          - node.hostname == ${NODE1:-test1}
+          - node.hostname == ${NODE1:-test-1}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -147,12 +147,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement: 
         constraints:
-          - node.hostname == ${NODE2:-test2}
+          - node.hostname == ${NODE2:-test-2}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -176,12 +176,12 @@ services:
         - MONGO_DATA_DIR=${MONGO_DATA_DIR:-/data/db}
         - MONGO_LOG_DIR=$MONGO_LOG_DIR:-/dev/null}
     volumes:
-        - ${MONGODB_VOLUME_PATH:-mongodb}:/data/db
+        - ${MONGODB_VOLUME_PATH:-mongodb}:${MONGO_DATA_DIR:-/data/db}
     deploy:
       replicas: 1
       placement:
         constraints: 
-          - node.hostname == ${NODE3:-test3}
+          - node.hostname == ${NODE3:-test-3}
     #ulimits:
     #  memlock: -1
     # Settings for log-files
@@ -193,7 +193,7 @@ services:
 
 
   quantumleap:
-    image: orchestracities/quantumleap:${QL_VERSION:-0.8.3}
+    image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
     hostname: quantumleap
     networks:
       - fiware_backend
@@ -295,7 +295,7 @@ services:
                "-Cnetwork.publish_host=_eth0_",
                "-Cdiscovery.seed_hosts=cratedb",
                "-Cauth.host_based.enabled=false",
-               "-Ccluster.initial_master_nodes=${CRATEDB_INITIAL_MASTER_NODES:-test1}",
+               "-Ccluster.initial_master_nodes=${CRATEDB_INITIAL_MASTER_NODES:-test-1}",
                "-Chttp.cors.enabled=true", # change for production
                "-Chttp.cors.allow-origin='*'",
                "-Cgateway.expected_nodes=${CRATEDB_EXPECTED_NODES:-3}",
@@ -329,10 +329,10 @@ services:
        - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g} # should be around half the VMs RAM
        
   mqtt-broker:
-    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.15}
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
     hostname: mqtt-broker
     ports:
-      - "1883:1883"
+      - "${MOSQUITTO_PORT:-1883}:1883"
     networks:
         - fiware_backend
     configs:
@@ -347,27 +347,33 @@ services:
     networks:
       - fiware_backend
     ports:
-      - "4041:4041"
-      - "7876:7896"
+      - "${IOTA_JSON_PORT:-4041}:${IOTA_JSON_NORTH_PORT:-4041}"
+      # - "7876:7896"
     environment:
-      - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion} # name of the context broker to update context
-      - IOTA_CB_PORT=${IOTA_JSON_CB_PORT:-1026} # port the context broker listens on to update context
+      - IOTA_MULTI_CORE=${IOTA_JSON_MULTI_CORE:-true}
+      - IOTA_CB_HOST=${IOTA_JSON_CB_HOST:-orion} 
+      - IOTA_CB_PORT=${IOTA_JSON_CB_PORT:-1026} 
       - IOTA_NORTH_PORT=${IOTA_JSON_NORTH_PORT:-4041}
-      - IOTA_REGISTRY_TYPE=${IOTA_JSON_REGISTRY_TYPE:-mongodb} # Whether to hold IoT device info in memory or in a database
-      - IOTA_LOG_LEVEL=${IOTA_JSON_LOG_LEVEL:-DEBUG} # The log level of the IoT Agent
-      - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true} # Supply timestamp information with each measurement
-      - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-v2} # use NGSIv2 when sending updates for active attributes
-      - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-true} # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST_MN:-mongodb1,mongodb2,mongodb3} # The host name of MongoDB or list of hosts in case mongodb is instanciated as replicaset
-      - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017} # The port mongoDB is listening on
-      - IOTA_MONGO_REPLICASET=${IOTA_JSON_MONGO_REPLICASET:-rs0} # Optional - name of the replicaset if mongodb is instanciated as replicaset
-      - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson} # The name of the database used in mongoDB
-      - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker} # The host name of the MQTT Broker
-      - IOTA_MQTT_PORT=${IOTA_JSON_MQTT_PORT:-1883} # The port the MQTT Broker is listening on to receive topics
+      - IOTA_REGISTRY_TYPE=${IOTA_JSON_REGISTRY_TYPE:-mongodb} 
+      - IOTA_LOG_LEVEL=${IOTA_JSON_LOG_LEVEL:-DEBUG} 
+      - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true} 
+      - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-v2} 
+      - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-true} 
+      - IOTA_EXPLICIT_ATTRS=${IOTA_JSON_EXPLICIT_ATTRS:-true}
+      - IOTA_MONGO_HOST=${IOTA_JSON_MONGODB_HOST_MN:-mongodb1,mongodb2,mongodb3} 
+      - IOTA_MONGO_PORT=${IOTA_JSON_MONGODB_PORT:-27017} 
+      - IOTA_MONGO_REPLICASET=${IOTA_JSON_MONGO_REPLICASET:-rs0} 
+      - IOTA_MONGO_DB=${IOTA_JSON_MONGODB_DB_NAME:-iotagentjson} 
+      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-json:4041}
+      - IOTA_DEFAULT_RESOURCE=${IOTA_JSON_DEFAULT_RESOURCE:-/iot/json}
+      - IOTA_HTTP_PORT=${IOTA_JSON_HTTP_PORT:-7896}
+      - IOTA_MQTT_HOST=${IOTA_JSON_MQTT_HOST:-mqtt-broker} 
+      - IOTA_MQTT_PORT=${IOTA_JSON_MQTT_PORT:-1883} 
+      # - IOTA_MQTT_USERNAME=${IOTA_JSON_MQTT_USERNAME:-iotagent}
+      # - IOTA_MQTT_PASSWORD=${IOTA_JSON_MQTT_PASSWORD:-mypassword}
+      - IOTA_MQTT_PROTOCOL=${IOTA_JSON_MQTT_PROTOCOL:-mqtt}
       - IOTA_MQTT_KEEPALIVE=${IOTA_JSON_MQTT_KEEPALIVE:-60}
       - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
-      - IOTA_PROVIDER_URL=${IOTA_JSON_PROVIDER_URL:-http://iot-agent-json:4041}
-      - IOTA_MULTI_CORE=${IOTA_JSON_MULTI_CORE:-true}
     #healthcheck:
     #  test: curl --fail -s http://iot-agent-json:4041/iot/about || exit 1
     deploy:
@@ -422,14 +428,14 @@ configs:
     file: ../general/mosquitto.conf # comment when using portainer to handle your configs and secrets.
     # external: true # uncomment when using portainer
 volumes:
-  mongodb:
-    name: mongodb
   cratedb:
     name: cratedb
   mqtt-redis:
     name: mqtt-redis
   grafana:
     name: grafana
+  mongodb:
+    name: mongodb
 
 networks:
   fiware_backend:
