@@ -176,7 +176,7 @@ services:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-simple-json-datasource
       - TZ=${TIMEZONE:-Europe/Berlin}
     volumes:
-      - "grafana:/var/lib/grafana"
+      - ${GRAFANA_VOLUME_PATH:-grafana}:${GRAFANA_DATA_DIR:-/var/lib/grafana}
 
   portainer:
     image: portainer/portainer-ce:${PORTAINER_VERSION:-2.19.4}
