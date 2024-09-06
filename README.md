@@ -127,8 +127,8 @@ CrateDB requires a higher number of memory map areas.
 ***
 
 ### Setup adjustments to your needs:
-We provide a general development setup and try to keep most of the information generic. Most of the configuration parameters of the setup can be changed either in the `.yml` files directly, which we do not recommend. We gathered most of the configuration parameters in `.env` files so the information is well-arranged and can be changed in one place. 
-When using the single computer setup, the `.env` files can be read using a specifig flag. Unfortunately, this does not work for the multi node setup. Portainer is a tool that can help managing your cluster, see following section. When using portainer,  the `.env` files can be used even in a multi node setup. 
+We provide a general development setup and try to keep most of the information generic. Most of the configuration parameters of the setup can be changed either in the `.yml` files directly, which we do not recommend. We gathered most of the configuration parameters in `.env` files so the information is well-arranged and can be changed in one place. For example, to save storage space on the host machine of your platform, log levels can be changed from `DEBUG` to `WARN`. 
+When using the single computer setup, the `.env` files can be read using a specific flag. Unfortunately, this does not work for the multi node setup. Portainer is a tool that can help managing your cluster, see following section. When using portainer,  the `.env` files can be used even in a multi node setup. 
 
 In general, we suggest using portainer in any case due to its nice graphical interface that assists to manage your containerized environments. 
 
