@@ -1,5 +1,24 @@
 version: "3.8"
 
+# Define levels for log file size limits
+x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap
+  driver: "json-file"
+  options:
+      max-file: 5
+      max-size: 5m
+
+x-logging-medium: &logging-medium # Used by: orion
+  driver: "json-file"
+  options:
+      max-file: 5
+      max-size: 10m
+
+x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
+  driver: "json-file"
+  options:
+      max-file: 5
+      max-size: 50m
+
 services:
           
   orion:
@@ -27,6 +46,7 @@ services:
       # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2} # use only if ORION_NOTIFICATION_MODE is set to "threadpool"
       - ORION_MUTEX_POLICY=${ORION_REQUEST_POLICY:-all}
       - ORION_CONN_MEMORY=${ORION_CONNECTION_MEMORY:-128}
+    logging: *logging-medium
 
   mongo-db:
     image: mongo:${MONGODB_VERSION:-5.0.24}
@@ -37,6 +57,7 @@ services:
         - fiware
     volumes:
       - ${MONGODB_VOLUME_PATH:-mongo-db}:${MONGO_DATA_DIR:-/data/db}
+    logging: *logging-low
 
   mongo-express:
     image: mongo-express:${ME_VERSION:-1.0.2}
@@ -53,6 +74,7 @@ services:
         - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN:-true}
         #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
         - ME_CONFIG_BASICAUTH=${ME_CONFIG_MONGODB_BASICAUTH:-false}
+    logging: *logging-low
 
   iot-agent-json:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}
@@ -89,6 +111,7 @@ services:
       - IOTA_MQTT_PROTOCOL=${IOTA_JSON_MQTT_PROTOCOL:-mqtt}
       - IOTA_MQTT_KEEPALIVE=${IOTA_JSON_MQTT_KEEPALIVE:-60}
       - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
+    logging: *logging-high
     
   mqtt-broker:
     image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
@@ -122,6 +145,7 @@ services:
       # - REDIS_HOST=${QL_REDIS_HOST:-redis-cache}
       # - REDIS_PORT=${QL_REDIS_PORT:-6379}
       # - CACHE_QUERIES=${QL_CACHE_QUERIES:-True}
+    logging: *logging-low
       
   crate:
     image: crate:${CRATEDB_VERSION:-4.8.4} # Please check release notes!
@@ -137,6 +161,7 @@ services:
     environment: 
       - TZ=${TIMEZONE:-Europe/Berlin}
       - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g}
+    logging: *logging-high
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
