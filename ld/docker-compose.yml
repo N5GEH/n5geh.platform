@@ -81,7 +81,7 @@ services:
       - IOTA_LOG_LEVEL=${IOTA_JSON_LOG_LEVEL:-DEBUG}
       - IOTA_TIMESTAMP=${IOTA_JSON_TIMESTAMP:-true}
       - IOTA_CB_NGSI_VERSION=${IOTA_JSON_CB_NGSI_VERSION:-LD}
-      - IOTA_JSON_LD_CONTEXT=${IOTA_JSON_LD_CONTEXT:-http://context-server:80/context.jsonld}
+      - IOTA_JSON_LD_CONTEXT=${IOTA_JSON_LD_CONTEXT:-http://context-server:80/building.jsonld}
       # - IOTA_FALLBACK_TENANT=${IOTA_JSON_FALLBACK_TENANT:-default}
       # - IOTA_FALLBACK_PATH=${IOTA_JSON_FALLBACK_PATH:-/}
       - IOTA_AUTOCAST=${IOTA_JSON_AUTOCAST:-false}
