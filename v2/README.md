@@ -58,11 +58,11 @@ and continue with step 3 afterwards.
 
 Deploying your services on a multi node setup makes sense if you, e. g., want to increase the availability of, or increase the available ressources for your services. Here, we give a quick tutorial on how to deploy the setup on a three node setup with distributed services, including the databases, on a docker swarm cluster for development purposes - **no security features are applied**, so make sure your system is not exposed to unauthorized people.
 
-As **prerequisite**, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) (lines 3-5 & 95) accordingly. The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
+As **prerequisite**, you need to have three nodes (that can be virtual machines or different instances of your WSL2) that can communicate with each other. In our setup the nodes are named "test-1", "test-2", and "test-3". If your nodes have different names, you need to change the [stack file](docker-stack.yml) or [environment file](.env) (lines 3-5 & 121) accordingly (we highly recommend the deployment via portainer using the environment file. Directly deploying via docker stack won't read the values from the environment file but take the defaults from the stack file!). The same applies whether you want to store your data in docker volumes or on a designated path on your nodes.
 
 * Steps 1-3 are equal for both ways and need to be executed. Either jump to step 4 or step 6 depending if you wish or wish not to use portainer.
 
-* Steps 4-5 show the use without portainer if you apply changes  directly within the [stack file](docker-stack.yml).
+* Steps 4-5 show the use without portainer if you apply changes directly within the [stack file](docker-stack.yml).
 
 * Steps 6-12 show the use with portainer if you make changes within the [environment file](.env).
 
