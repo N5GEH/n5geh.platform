@@ -1,22 +1,22 @@
 version: "3.8"
 
 # Define levels for log file size limits
-x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap
+x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap, mqtt-broker, grafana, portainer
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 5m
 
 x-logging-medium: &logging-medium # Used by: orion
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 10m
 
 x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 50m
 
 services:
@@ -124,6 +124,7 @@ services:
         - fiware
     volumes:
         - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    logging: *logging-low
 
   quantumleap:
     image: orchestracities/quantumleap:${QL_VERSION:-1.0.0}
@@ -177,6 +178,7 @@ services:
       - TZ=${TIMEZONE:-Europe/Berlin}
     volumes:
       - ${GRAFANA_VOLUME_PATH:-grafana}:${GRAFANA_DATA_DIR:-/var/lib/grafana}
+    logging: *logging-low
 
   portainer:
     image: portainer/portainer-ce:${PORTAINER_VERSION:-2.19.4}
@@ -192,6 +194,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    logging: *logging-low
 
 
 

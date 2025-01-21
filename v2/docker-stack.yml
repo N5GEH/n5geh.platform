@@ -1,22 +1,22 @@
 version: "3.8"
 
 # Define levels for log file size limits
-x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap
+x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap, crate-swarm-listener, cratedb-proxy, redis-cache, mqtt-broker, grafana
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 5m
 
 x-logging-medium: &logging-medium # Used by: orion
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 10m
 
 x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
   driver: "json-file"
   options:
-      max-file: 5
+      max-file: 2
       max-size: 50m
 
 services:
@@ -220,6 +220,7 @@ services:
       - fiware_backend
     deploy:
       replicas: 1
+    logging: *logging-low
 
   # We are accessing the cratedb via a proxy using roundrobin as basic loadbalancing mechanism.
   # In used proxy service (https://proxy.dockerflow.com/) is based on HA-Proxy and will 
@@ -239,7 +240,8 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-        window: 120s            
+        window: 120s
+    logging: *logging-low            
 
   cratedb-proxy:
     image: dockerflow/docker-flow-proxy:latest
@@ -263,6 +265,7 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
+    logging: *logging-low
      
   # Setup for cratedb as distributed time-series storage.
   
@@ -327,6 +330,7 @@ services:
         target: mosquitto/config/mosquitto.conf
     deploy:
       replicas: 1
+    logging: *logging-low
             
   iot-agent-json:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}
@@ -400,6 +404,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+    logging: *logging-low
 
 configs:
   mongo-setup:
