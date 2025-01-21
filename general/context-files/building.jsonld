@@ -1,0 +1,46 @@
+{
+    "@context": {
+      "brick": "https://brickschema.org/schema/brick#",
+      "sense": "https://w3id.org/sense#",
+      "unit": "http://qudt.org/vocab/unit/",
+      "esim": "https://w3id.org/esim#",
+      "mm": "https://w3id.org/mm#",
+      "example": "https://www.example.com/",
+      
+      
+      "AirTemperatureSensor": "brick:Air_Temperature_Sensor",
+      "Computed": "mm:Computed",
+      "DataPoint": "sense:DataPoint",
+      "Measured": "mm:Measured",
+      "MultiSensor": "sense:MultiSensor",
+      "Location": "brick:Location",
+      "Heater": "brick:Electric_Radiator",
+      "Humidity": "mm:Humidity",
+      "HumiditySensor": "brick:HumiditySensor",
+      "MetricType": "mm:MetricType",
+      "SensorEquipment": "brick:Sensor_Equipment",
+      "SensorPoint": "brick:Sensor",
+      "Setpoint": "brick:Setpoint",
+      "Space": "brick:Space",
+      "Temperature": "brick:Temperature",
+      "TemperatureSensor": "brick:Temperature_Sensor",
+      "TemperatureSetpoint": "brick:Temperature_Setpoint",
+      "Valve": "brick:Valve",
+      "ValvePosition": "brick:Valve_Position_Sensor",
+      "ValveCommand": "brick:Valve_Position_Command",
+      "WeatherStation": "brick:Weather_Station",
+
+      
+      "hasDataPoint": "sense:hasDataPoint",
+      "isHostedBy": "esim:isHostedBy",
+      "isDataPointOf": "sense:isDataPointOf",
+      "heaterPower": "brick:Heating_Command",
+            
+      
+      "degC": "unit:DEG_C",
+      "percent": "unit:PERCENT"   
+      
+      
+    },
+    "@graph": []
+  }

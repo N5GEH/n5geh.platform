@@ -1,4 +1,24 @@
 version: "3.8"
+
+# Define levels for log file size limits
+x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap, crate-swarm-listener, cratedb-proxy, redis-cache, mqtt-broker, grafana
+  driver: "json-file"
+  options:
+      max-file: 2
+      max-size: 5m
+
+x-logging-medium: &logging-medium # Used by: orion
+  driver: "json-file"
+  options:
+      max-file: 2
+      max-size: 10m
+
+x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
+  driver: "json-file"
+  options:
+      max-file: 2
+      max-size: 50m
+
 services:
   orion:
     image: telefonicaiot/fiware-orion:${ORION_VERSION:-3.7.0}
@@ -54,11 +74,7 @@ services:
         max_attempts: 3
         window: 120s
     #Limitation of logging
-    logging:
-      driver: "json-file"
-      options:
-         max-file: 5
-         max-size: 10m
+    logging: *logging-medium
 
   # Mongo-express is a simple visualisation of mongoDB-instances and their data
   mongo-express:
@@ -83,11 +99,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
+    logging: *logging-low
 
   mongo-setup: # This service will shut down automatically after initializing the replica set!
     image: mongo:${MONGODB_VERSION:-4.4}
@@ -126,12 +138,7 @@ services:
           - node.hostname == ${NODE1:-test-1}
     #ulimits:
     #  memlock: -1
-    # Settings for log-files
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
+    logging: *logging-low
         
   # MongoDB is the unterlying database engine
   mongodb2:
@@ -155,12 +162,7 @@ services:
           - node.hostname == ${NODE2:-test-2}
     #ulimits:
     #  memlock: -1
-    # Settings for log-files
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
+    logging: *logging-low
         
   # MongoDB is the unterlying database engine
   mongodb3:
@@ -184,12 +186,7 @@ services:
           - node.hostname == ${NODE3:-test-3}
     #ulimits:
     #  memlock: -1
-    # Settings for log-files
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
+    logging: *logging-low
 
 
   quantumleap:
@@ -213,12 +210,7 @@ services:
       replicas: 1
     #ulimits:
     #  memlock: -1
-    # Settings for log-files
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 5m
+    logging: *logging-low
 
   # The redis cache is used for performance reasons for quantumleap.
   redis-cache:
@@ -228,6 +220,7 @@ services:
       - fiware_backend
     deploy:
       replicas: 1
+    logging: *logging-low
 
   # We are accessing the cratedb via a proxy using roundrobin as basic loadbalancing mechanism.
   # In used proxy service (https://proxy.dockerflow.com/) is based on HA-Proxy and will 
@@ -247,7 +240,8 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-        window: 120s            
+        window: 120s
+    logging: *logging-low            
 
   cratedb-proxy:
     image: dockerflow/docker-flow-proxy:latest
@@ -271,6 +265,7 @@ services:
       update_config:
         parallelism: 1
         delay: 10s
+    logging: *logging-low
      
   # Setup for cratedb as distributed time-series storage.
   
@@ -319,12 +314,7 @@ services:
         delay: 10s
     healthcheck:
       disable: false
-    # Limiting of logging
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 50m
+    logging: *logging-high
     environment:
        - CRATE_HEAP_SIZE=${CRATEDB_HEAP_SIZE:-1g} # should be around half the VMs RAM
        
@@ -340,6 +330,7 @@ services:
         target: mosquitto/config/mosquitto.conf
     deploy:
       replicas: 1
+    logging: *logging-low
             
   iot-agent-json:
     image: fiware/iotagent-json:${IOTA_JSON_VERSION:-1.19.0}
@@ -393,11 +384,7 @@ services:
     #     rss: -1
     #     stack: -1
     #     nproc: -1
-    logging:
-      driver: "json-file"
-      options:
-        max-file: 5
-        max-size: 50m
+    logging: *logging-high
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-9.3.0}
@@ -417,6 +404,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+    logging: *logging-low
 
 configs:
   mongo-setup:
