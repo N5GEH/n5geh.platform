@@ -22,7 +22,7 @@ x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
 services:
           
   orion:
-    image: fiware/orion:${ORION_VERSION:-3.7.0}
+    image: fiware/orion:${ORION_VERSION:-3.7.0} #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
     hostname: orion
     container_name: "orion"
     restart: always
@@ -43,7 +43,7 @@ services:
       # - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
       - ORION_MONGO_WRITE_CONCERN=${ORION_WRITE_CONCERN:-1}
       - ORION_NOTIF_MODE=${ORION_NOTIFICATION_MODE:-transient} 
-      # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2}
+      # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2} # use only if ORION_NOTIFICATION_MODE is set to "threadpool"
       - ORION_MUTEX_POLICY=${ORION_REQUEST_POLICY:-all}
       - ORION_CONN_MEMORY=${ORION_CONNECTION_MEMORY:-128}
     logging: *logging-medium
@@ -149,7 +149,7 @@ services:
     logging: *logging-low
       
   crate:
-    image: crate:${CRATEDB_VERSION:-4.8.4}
+    image: crate:${CRATEDB_VERSION:-4.8.4} # Please check release notes!
     hostname: crate
     container_name: crate
     restart: always
