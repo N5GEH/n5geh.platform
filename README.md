@@ -41,9 +41,9 @@ Via the two APIs of Orion and QuantumLeap, data can be provided to any external 
 
 Since most devices do not support the platform internal NGSI format, FIWARE offers a set of IoT Agents that translate IoT specific protocols and message formats, such as Ultralight 2.0, JSON, etc. into NGSI format.
 For example, devices located in a building energy system can send and receive data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
-Particularly, in this work, we use the open source broker implementation of [Eclipse Mosquitto](https://mosquitto.org/). 
-Mosquitto supports Transport Layer Security (TLS) and basic authentication and authorization features.
-In this work, we used an adapted version of mosquitto in order to realize communication between the MQTT broker and a central Identity and Access Management (IDAM) using openID-connect and OAUth 2.0. 
+Particularly, in this work, we use [EMQX](https://www.emqx.com/) as MQTT broker.
+EMQX supports Transport Layer Security (TLS) and provides a web-based dashboard for monitoring and administration of the broker; depending on your setup, it is usually available via the EMQX dashboard port configured in your deployment.
+For authentication and authorization, please refer to the official EMQX documentation: [Authentication](https://docs.emqx.com/en/emqx/latest/access-control/authn/authn.html) and [Authorization](https://docs.emqx.com/en/emqx/latest/access-control/authz/authz.html).
 
 To exploit the potentials of cloud technology, we deploy the platform via the virtualization technology docker. 
 All images are open source and available on docker hub.
