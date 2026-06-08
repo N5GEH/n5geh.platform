@@ -1,7 +1,7 @@
 version: "3.8"
 
 # Define levels for log file size limits
-x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap, mqtt-broker, grafana, portainer
+x-logging-low: &logging-low # Used by: mongo-express, mongodb1, mongodb2, mongodb3, quantumleap, emqx, grafana, portainer
   driver: "json-file"
   options:
       max-file: 2
@@ -22,7 +22,7 @@ x-logging-high: &logging-high # Used by: cratedb, iot-agent-json
 services:
           
   orion:
-    image: fiware/orion:${ORION_VERSION:-3.7.0} #Sometimes the latest builds fail. Hence, we recommend to use fixed, stable versions
+    image: fiware/orion:${ORION_VERSION:-3.7.0}
     hostname: orion
     container_name: "orion"
     restart: always
@@ -43,7 +43,7 @@ services:
       # - ORION_MONGO_REPLICA_SET=${ORION_MONGO_REPLICA_SET:-rs0}
       - ORION_MONGO_WRITE_CONCERN=${ORION_WRITE_CONCERN:-1}
       - ORION_NOTIF_MODE=${ORION_NOTIFICATION_MODE:-transient} 
-      # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2} # use only if ORION_NOTIFICATION_MODE is set to "threadpool"
+      # - ORION_TRQ_POOL_SIZE={ORION_THREADPOOL_SIZE=-2}
       - ORION_MUTEX_POLICY=${ORION_REQUEST_POLICY:-all}
       - ORION_CONN_MEMORY=${ORION_CONNECTION_MEMORY:-128}
     logging: *logging-medium
@@ -83,6 +83,7 @@ services:
     restart: always
     ports:
       - "${IOTA_JSON_PORT:-4041}:${IOTA_JSON_NORTH_PORT:-4041}"
+      - "${IOTA_JSON_HTTP_PORT:-7896}:${IOTA_JSON_HTTP_PORT:-7896}"
     networks:
       - fiware
     depends_on:
@@ -113,17 +114,16 @@ services:
       - IOTA_AMQP_DISABLED=${IOTA_JSON_AMQP_DISABLED:-true}
     logging: *logging-high
     
-  mqtt-broker:
-    image: eclipse-mosquitto:${MOSQUITTO_VERSION:-2.0.11}
+  emqx:
+    image: emqx:${EMQX_VERSION:-5.8.8}
     hostname: mqtt-broker
-    container_name: mqtt-broker
+    container_name: emqx
     restart: always
-    ports: 
-        - "${MOSQUITTO_PORT:-1883}:1883"
     networks:
-        - fiware
-    volumes:
-        - ../general/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - fiware
+    ports:
+      - "${EMQX_PORT:-1883}:1883"
+      - "${EMQX_GUI_PORT:-18083}:18083" # EMQX Dashboard
     logging: *logging-low
 
   quantumleap:
@@ -149,7 +149,7 @@ services:
     logging: *logging-low
       
   crate:
-    image: crate:${CRATEDB_VERSION:-4.8.4} # Please check release notes!
+    image: crate:${CRATEDB_VERSION:-4.8.4}
     hostname: crate
     container_name: crate
     restart: always
@@ -187,16 +187,12 @@ services:
     restart: always
     ports:
       - "${PORTAINER_PORT:-9000}:9000"
-      # - "9443:9443"
-      # - "8000:8000"
     networks:
       - portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     logging: *logging-low
-
-
 
 volumes:
   mongo-db:
