@@ -43,6 +43,10 @@ Since most devices do not support the platform internal NGSI format, FIWARE offe
 For example, devices located in a building energy system can send and receive data either directly via HTTP or via an additional Message Queueing and Telemetry Transport (MQTT) Broker.
 Particularly, in this work, we use [EMQX](https://www.emqx.com/) as MQTT broker.
 EMQX supports Transport Layer Security (TLS) and provides a web-based dashboard for monitoring and administration of the broker; depending on your setup, it is usually available via the EMQX dashboard port configured in your deployment.
+You can log in with the default credentials:
+
+        username: admin
+        password: public
 For authentication and authorization, please refer to the official EMQX documentation: [Authentication](https://docs.emqx.com/en/emqx/latest/access-control/authn/authn.html) and [Authorization](https://docs.emqx.com/en/emqx/latest/access-control/authz/authz.html).
 
 To exploit the potentials of cloud technology, we deploy the platform via the virtualization technology docker. 

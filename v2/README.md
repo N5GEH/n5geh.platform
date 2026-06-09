@@ -27,7 +27,7 @@ and continue with step 3 afterwards.
 
        git clone https://github.com/N5GEH/n5geh.platform.git
 
-3. You may adjust the [compose file](docker-compose.yml), [environment file](.env) or [mosquitto configuration file](/general/mosquitto.conf) according to your preferences. Our provided file already provides a simple setup with all functionalities.
+3. You may adjust the [compose file](docker-compose.yml) or [environment file](.env) according to your preferences. Our provided file already provides a simple setup with all functionalities.
 
 
 4. Change the working directory and start the platform using the [environment file](.env) file for configuration:
@@ -105,7 +105,7 @@ As **prerequisite**, you need to have three nodes (that can be virtual machines 
 
     ![Create config](/docs/figures/Portainer_configs_add.png)
 
-8. Add a config called "mongo-setup" (1), copy the content of the [setup.sh](/scripts/setup.sh) (2) and save it (3). Repeat this with the [mosquitto.conf](/general/mosquitto.conf). 
+8. Add a config called "mongo-setup" (1), copy the content of the [setup.sh](/scripts/setup.sh) (2) and save it (3).
    
     ![Enter config information](/docs/figures/Portainer_configs_enter_data.png)
 
